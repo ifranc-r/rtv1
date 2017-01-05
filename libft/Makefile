@@ -10,6 +10,32 @@
 #                                                                              #
 # **************************************************************************** #
 
+# This is a minimal set of ANSI/VT100 color codes
+_END=\x1b[0m
+_BOLD=\x1b[1m  
+_UNDER=\x1b[4m
+_REV=\x1b[7m
+
+# Colors
+_GREY=\x1b[30m
+_RED=\x1b[31m
+_GREEN=\x1b[32m
+_YELLOW=\x1b[33m
+_BLUE=\x1b[34m
+_PURPLE=\x1b[35m
+_CYAN=\x1b[36m
+_WHITE=\x1b[37m
+
+# Inverted, i.e. colored backgrounds
+_IGREY=\x1b[40m
+_IRED=\x1b[41m
+_IGREEN=\x1b[42m
+_IYELLOW=\x1b[43m
+_IBLUE=\x1b[44m
+_IPURPLE=\x1b[45m
+_ICYAN=\x1b[46m
+_IWHITE=\x1b[47m
+
 NAME = libft.a
 
 SRC = ft_atoi.c\
@@ -80,18 +106,26 @@ SRC = ft_atoi.c\
 
 OUTPUT = $(SRC:.c=.o)
 
+.PHONY: all clean fclean
+
 all: $(NAME)
 
 $(NAME) : $(OUTPUT)
-	ar rc $(NAME) $(OUTPUT)
+	@echo "  ${_CYAN}Start${_END} to compile -> ${_BLUE}${_IGREEN}LIBFT${_END} "
+	@echo "   | "
+	@echo "   \/ "
+	@ar rc $(NAME) $(OUTPUT)
+	@echo "  ${_GREEN}Success${_END} -> ${_BLUE}${_IGREEN}LIBFT${_END} as been compile"
 
 %.o : %.c
-	gcc -I -Werror -Wall -Wextra -c $<
+	@gcc -I -Werror -Wall -Wextra -c $<
 
 clean :
-	rm -rf $(OUTPUT)
+	@echo "  ${_BLUE}${_IGREEN}LIBFT${_END}: ${_PURPLE}Delete${_END}-> -.o-"
+	@rm -rf $(OUTPUT)
 
 fclean : clean
-	rm -rf $(NAME)
+	@echo "  ${_BLUE}${_IGREEN}LIBFT${_END}: ${_PURPLE}Delete${_END}-> ${_BLUE}${_IGREEN}libft${_END}.a"
+	@rm -rf $(NAME)
 
 re : fclean all

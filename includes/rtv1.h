@@ -26,8 +26,30 @@
 # define PLUS_GREEN 5
 # define LESS_GREEN 4
 
+typedef struct		s_vect
+{
+	float			x;
+	float			y;
+	float			z;
+}					t_vect
+
+typedef struct		s_ray
+{
+	t_vect			o; // origin
+	t_vect			d; // direction
+}					t_ray
+
+typedef struct		s_sphere
+{
+	t_vect			c; // centre
+	float			r; // rayon de la sphere
+}					t_sphere
+
+
+
 typedef struct		s_all
 {
+	t_sphere		sphere;
 	SDL_Surface		*win_surf;
 	SDL_Window		*screen;
 	SDL_Event		event;
