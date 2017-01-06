@@ -26,6 +26,8 @@ t_vect		normalize(t_vect v)
 	return (tmp);
 }
 
+t
+
 void		init_sphere_light(t_sphere *sphere_light)
 {
 	sphere_light->c.x = WIN_X/2;
@@ -100,6 +102,7 @@ void		draw(t_all *all)
 	t_vect		inter;	// position of intersection
 	t_vect		l;	// light 
 	t_vect		n;
+	double		dt;
 
 	x = 0;
 	//couleur fond vert

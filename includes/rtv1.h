@@ -52,6 +52,7 @@ typedef struct		s_all
 {
 	t_ray			ray;
 	t_sphere		sphere;
+	t_sphere		sphere_light;
 	SDL_Surface		*win_surf;
 	SDL_Window		*screen;
 	SDL_Event		event;
