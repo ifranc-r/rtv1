@@ -115,7 +115,7 @@ $(NAME) : $(OUTPUT)
 	@echo "   | "
 	@echo "   \/ "
 	@ar rc $(NAME) $(OUTPUT)
-	@echo "  ${_GREEN}Success${_END} -> ${_BLUE}${_IGREEN}LIBFT${_END} as been compile"
+	@echo "  ${_GREEN}Success${_END} -> ${_BLUE}${_IGREEN}LIBFT${_END} has been compile"
 
 %.o : %.c
 	@gcc -I -Werror -Wall -Wextra -c $<

@@ -55,7 +55,7 @@ $(NAME):
 	@$(GCC) -o $(NAME) $(OBJS) $(SDL)
 	@echo " | "
 	@echo " \/ "
-	@echo "${_GREEN}Succes${_END}-> ${_BLUE}${_IWHITE}RTV1${_END} as been compile"
+	@echo "${_GREEN}Succes${_END}-> ${_BLUE}${_IWHITE}RTV1${_END} has been compile"
 
 
 clean:
