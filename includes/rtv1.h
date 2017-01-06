@@ -28,27 +28,29 @@
 
 typedef struct		s_vect
 {
-	float			x;
-	float			y;
-	float			z;
-}					t_vect
+	double			x;
+	double			y;
+	double			z;
+}					t_vect;
 
 typedef struct		s_ray
 {
 	t_vect			o; // origin
 	t_vect			d; // direction
-}					t_ray
+	double			t;
+}					t_ray;
 
 typedef struct		s_sphere
 {
 	t_vect			c; // centre
-	float			r; // rayon de la sphere
-}					t_sphere
+	double			r; // rayon de la sphere
+}					t_sphere;
 
 
 
 typedef struct		s_all
 {
+	t_ray			ray;
 	t_sphere		sphere;
 	SDL_Surface		*win_surf;
 	SDL_Window		*screen;

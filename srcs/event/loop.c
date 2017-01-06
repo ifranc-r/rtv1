@@ -17,6 +17,6 @@ void	event(t_all *all)
 				--isrunning;
 			}
 		}
-		SDL_UpdateWindowSurface(all->screen);
 	}
+		SDL_UpdateWindowSurface(all->screen);
 }
