@@ -25,7 +25,6 @@ _IPURPLE=\x1b[45m
 _ICYAN=\x1b[46m
 _IWHITE=\x1b[47m
 
-
 NAME = rtv1
 
 SRC = ./srcs/main.c\

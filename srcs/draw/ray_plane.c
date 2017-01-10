@@ -94,7 +94,6 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	}
 	return (0);
 }
-
 void		draw(t_all *all)
 {
 	int 		x;

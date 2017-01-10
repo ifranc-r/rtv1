@@ -17,6 +17,7 @@ void	sdl_close(t_all *all)
 	SDL_Quit();
 }
 
+
 void	sdl_init(t_all *all)
 {
 	all->screen = SDL_CreateWindow("Hello World!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_X, WIN_Y, SDL_WINDOW_SHOWN);

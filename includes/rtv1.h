@@ -26,6 +26,8 @@
 # define PLUS_GREEN 5
 # define LESS_GREEN 4
 
+
+
 typedef struct		s_vect
 {
 	double			x;
