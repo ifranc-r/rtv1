@@ -11,23 +11,22 @@ void		init_sphere(t_sphere *sphere)
 	sphere->c.x = WIN_X/2;
 	sphere->c.y = WIN_Y/2;
 	sphere->c.z = 50;
+
 	sphere->r = 50;
 }
 
-t_vect		normalize(t_vect v)
+void		init_ray(t_ray *ray, int x, int y)
 {
-	double		mg;
-	t_vect		tmp;
+	ray->t = 200;
 
-	mg = sqrt(v.x*v.x+v.y*v.y+v.z+v.z);
-	tmp.x = v.x / mg;
-	tmp.y = v.y / mg;
-	tmp.z = v.z / mg; 
-	return (tmp);
+	ray->o.x = (double)x;
+	ray->o.y = (double)y;
+	ray->o.z = 0;
+
+	ray->d.x = 0;
+	ray->d.y = 0;
+	ray->d.z = 1;
 }
-
-t
-
 void		init_sphere_light(t_sphere *sphere_light)
 {
 	sphere_light->c.x = WIN_X/2;
@@ -94,6 +93,7 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	}
 	return (0);
 }
+
 void		draw(t_all *all)
 {
 	int 		x;
@@ -102,46 +102,39 @@ void		draw(t_all *all)
 	t_vect		l;	// light 
 	t_vect		n;
 	double		dt;
+	t_color		color;
+	t_color		white;
 
 	x = 0;
 	//couleur fond vert
 	init_sphere(&all->sphere);
 	init_sphere_light(&all->sphere_light);
+	init_white(&white);
 	//Boucle pour chaque pixel
 	while (++x < WIN_X)
 	{
 		y = 0;
 		while (++y < WIN_Y)
 		{
-			all->ray.t = 200;
-			all->ray.o.x = x;
-			all->ray.o.y = y;
-			all->ray.o.z = 0;
-
-			all->ray.d.x = 0;
-			all->ray.d.y = 0;
-			all->ray.d.z = 1;
+			init_ray(&all->ray, x, y);
 			// checker pour intersection
 			if (intersect_sphere(&all->ray, all->sphere))
 			{
-				inter.x =all->ray.o.x + all->ray.d.x * all->ray.t;
-				inter.y =all->ray.o.y + all->ray.d.y * all->ray.t;
-				inter.z =all->ray.o.z + all->ray.d.z * all->ray.t;
+				inter = add_vect(all->ray.o, all->ray.d); 
+				inter = multi_vect_double(inter, all->ray.t); // inter =all->ray.o + all->ray.d * all->ray.t;
 
-				l.x = all->sphere_light.c.x - inter.x;
-				l.y = all->sphere_light.c.y - inter.y;
-				l.z = all->sphere_light.c.z - inter.z;
+				l = minus_vect(all->sphere_light.c, inter);// l = spherelight - inter
 
-				n.x = all->sphere.c.x - inter.x / all->sphere.r;
-				n.y = all->sphere.c.y - inter.y / all->sphere.r;
-				n.z = all->sphere.c.z - inter.z / all->sphere.r; // (centre - inter )/ rayon
+				n = minus_vect(all->sphere.c, inter);
+				n = devide_vect_double(n, all->sphere.r);//n.z = all->sphere.c.z - inter.z / all->sphere.r; // (centre - inter )/ rayon
 
-				// dt  = dot (l n)
+				dt  = dot(normalize_vect(l), normalize_vect(n));
 				//
 				// 
 				//
-
-				SDL_SetRenderDrawColor(all->ren, 255, 255, 255, 40);
+				color = multi_color_double(white, dt);
+				//color_condition(&color);
+				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
 			}
 			else 
 				SDL_SetRenderDrawColor(all->ren, 0, 51, 51, 40);

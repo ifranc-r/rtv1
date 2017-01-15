@@ -48,7 +48,13 @@ typedef struct		s_sphere
 	double			r; // rayon de la sphere
 }					t_sphere;
 
-
+typedef struct		s_color
+{
+	int				a;
+	int				r;
+	int				g;
+	int				b;
+}					t_color;
 
 typedef struct		s_all
 {
@@ -67,4 +73,15 @@ void 				sdl(t_all *all);
 void				draw(t_all *all);
 void				event(t_all *all);
 void				sdl_close(t_all *all);
+t_vect				add_vect(t_vect a, t_vect b);
+t_vect				minus_vect(t_vect a, t_vect b);
+t_vect				multi_vect(t_vect a, t_vect b);
+t_vect				devide_vect_double(t_vect a, double b);
+t_vect				multi_vect_double(t_vect a, double b);
+t_vect				normalize_vect(t_vect a);
+void				init_white(t_color *white);
+t_color				multi_color_double(t_color color, double b);
+t_color				add_color(t_color a, t_color b);
+void				color_condition(t_color *color);
+double 				dot(t_vect a, t_vect b);
 #endif

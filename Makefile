@@ -30,6 +30,8 @@ NAME = rtv1
 SRC = ./srcs/main.c\
 	  srcs/sdl_fct/sdl_init.c\
 	  srcs/draw/ray_plane.c\
+	  srcs/draw/color_operator.c\
+	  srcs/draw/vect_operator.c\
 	  srcs/event/loop.c\
 
 SDL = -L ./libft/ -lft  -framework SDL2
