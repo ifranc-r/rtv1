@@ -50,10 +50,10 @@ typedef struct		s_sphere
 
 typedef struct		s_color
 {
-	int				a;
-	int				r;
-	int				g;
-	int				b;
+	double			a;
+	double			r;
+	double			g;
+	double			b;
 }					t_color;
 
 typedef struct		s_all
@@ -84,4 +84,5 @@ t_color				multi_color_double(t_color color, double b);
 t_color				add_color(t_color a, t_color b);
 void				color_condition(t_color *color);
 double 				dot(t_vect a, t_vect b);
+void				init_color_sphere(t_color *color);
 #endif

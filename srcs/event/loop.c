@@ -5,9 +5,9 @@ void	event(t_all *all)
 	int isrunning;
 
 	isrunning = 1;
+	draw(&*all);
 	while (isrunning == 1)
 	{
-		draw(&*all);
 		all->state = SDL_GetKeyboardState(NULL);
 		while (SDL_PollEvent(&all->event) != 0)
 		{

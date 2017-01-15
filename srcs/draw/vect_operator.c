@@ -45,7 +45,7 @@ t_vect	multi_vect_double(t_vect a, double b)
 double 	dot(t_vect a, t_vect b)
 {
 	double tmp;
-	tmp = a.x * b.x+a.y * b.y+a.z * b.z;
+	tmp = a.x * b.x + a.y * b.y + a.z * b.z;
 	return (tmp);
 }
 
@@ -54,7 +54,7 @@ t_vect	normalize_vect(t_vect a)
 	double 		mg;
 	t_vect 		tmp;
 
-	mg = sqrt(a.x*a.x+a.y*a.y+a.z*a.z);
-	tmp = devide_vect_double(a,mg);
+	mg = sqrt(a.x *a.x +a.y * a.y + a.z * a.z);
+	tmp = devide_vect_double(a, mg);
 	return (tmp);
 }

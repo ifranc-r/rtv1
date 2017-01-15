@@ -17,7 +17,7 @@ void		init_sphere(t_sphere *sphere)
 
 void		init_ray(t_ray *ray, int x, int y)
 {
-	ray->t = 200;
+	ray->t = 20;
 
 	ray->o.x = (double)x;
 	ray->o.y = (double)y;
@@ -29,9 +29,9 @@ void		init_ray(t_ray *ray, int x, int y)
 }
 void		init_sphere_light(t_sphere *sphere_light)
 {
-	sphere_light->c.x = WIN_X/2;
+	sphere_light->c.x = 0;
 	sphere_light->c.y = 0;
-	sphere_light->c.z = 50;
+	sphere_light->c.z = 0;
 	sphere_light->r = 1;
 }
 
@@ -104,12 +104,14 @@ void		draw(t_all *all)
 	double		dt;
 	t_color		color;
 	t_color		white;
+	t_color		color_sphere;
 
 	x = 0;
 	//couleur fond vert
 	init_sphere(&all->sphere);
 	init_sphere_light(&all->sphere_light);
 	init_white(&white);
+	init_color_sphere(&color_sphere);
 	//Boucle pour chaque pixel
 	while (++x < WIN_X)
 	{
@@ -120,24 +122,32 @@ void		draw(t_all *all)
 			// checker pour intersection
 			if (intersect_sphere(&all->ray, all->sphere))
 			{
-				inter = add_vect(all->ray.o, all->ray.d); 
-				inter = multi_vect_double(inter, all->ray.t); // inter =all->ray.o + all->ray.d * all->ray.t;
+				inter = multi_vect_double(all->ray.d, all->ray.t);
+				inter = add_vect(all->ray.o, inter);
+				//inter.x = all->ray.o.x + (all->ray.d.x * all->ray.t);
+				////inter.y = all->ray.o.y + (all->ray.d.y * all->ray.t);
+				//inter.z = all->ray.o.z + (all->ray.d.z * all->ray.t);
 
-				l = minus_vect(all->sphere_light.c, inter);// l = spherelight - inter
+				l = minus_vect(all->sphere_light.c, inter);
+				// l = spherelight - inter
 
-				n = minus_vect(all->sphere.c, inter);
-				n = devide_vect_double(n, all->sphere.r);//n.z = all->sphere.c.z - inter.z / all->sphere.r; // (centre - inter )/ rayon
+				n = minus_vect(inter, all->sphere.c);
+				n = devide_vect_double(n, all->sphere.r);
+				//n.x = (all->sphere.c.x - inter.x) / all->sphere.r;
+				////n.y = (all->sphere.c.y - inter.y) / all->sphere.r;
+				//n.z = (all->sphere.c.z - inter.z) / all->sphere.r;
 
 				dt  = dot(normalize_vect(l), normalize_vect(n));
-				//
-				// 
-				//
+
 				color = multi_color_double(white, dt);
-				//color_condition(&color);
+				color = add_color(color_sphere, color);
+				color = multi_color_double(color, 0.7);
+				color_condition(&color);
 				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
+				printf("rouge :%f\nbleue :%f\nvert :%f\n\n dt : %f\n\n", color.r, color.g, color.b, dt );
 			}
 			else 
-				SDL_SetRenderDrawColor(all->ren, 0, 51, 51, 40);
+				SDL_SetRenderDrawColor(all->ren, 0, 0, 0, 40);
 			// envoyer ray par chaque pixel		
 			SDL_RenderDrawPoint(all->ren, x, y);
 		}
