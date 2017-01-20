@@ -35,6 +35,17 @@ typedef struct		s_vect
 	double			z;
 }					t_vect;
 
+
+typedef struct		s_plane
+{
+	t_vect			n;
+	t_vect			p_ray;
+	t_vect			p1;
+	t_vect			p2;
+	t_vect			p3;
+	t_vect			p4;
+}					t_plane;
+
 typedef struct		s_ray
 {
 	t_vect			o; // origin
@@ -82,6 +93,9 @@ t_vect				normalize_vect(t_vect a);
 void				init_white(t_color *white);
 t_color				multi_color_double(t_color color, double b);
 t_color				add_color(t_color a, t_color b);
+void				init_sphere(t_sphere *sphere);
+void				init_sphere_light(t_sphere *sphere_light);
+void				init_ray(t_ray *ray, int x, int y);
 void				color_condition(t_color *color);
 double 				dot(t_vect a, t_vect b);
 void				init_color_sphere(t_color *color);

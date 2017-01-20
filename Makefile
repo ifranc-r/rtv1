@@ -28,6 +28,7 @@ _IWHITE=\x1b[47m
 NAME = rtv1
 
 SRC = ./srcs/main.c\
+	  srcs/obj/init_obj.c\
 	  srcs/sdl_fct/sdl_init.c\
 	  srcs/draw/ray_plane.c\
 	  srcs/draw/color_operator.c\

@@ -6,34 +6,6 @@
 // sphere centre rayon 
 // intersect
 
-void		init_sphere(t_sphere *sphere)
-{
-	sphere->c.x = WIN_X/2;
-	sphere->c.y = WIN_Y/2;
-	sphere->c.z = 50;
-
-	sphere->r = 50;
-}
-
-void		init_ray(t_ray *ray, int x, int y)
-{
-	ray->t = 20;
-
-	ray->o.x = (double)x;
-	ray->o.y = (double)y;
-	ray->o.z = 0;
-
-	ray->d.x = 0;
-	ray->d.y = 0;
-	ray->d.z = 1;
-}
-void		init_sphere_light(t_sphere *sphere_light)
-{
-	sphere_light->c.x = 0;
-	sphere_light->c.y = 0;
-	sphere_light->c.z = 0;
-	sphere_light->r = 1;
-}
 
 int		intersect_sphere(t_ray *ray, t_sphere sphere)
 {
@@ -44,7 +16,7 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	double		dy; // direction
 	double		dz;
 
-//	double		a;
+	//double		a;
 	double		b;
 	double		c;
 
@@ -68,7 +40,7 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 
 	x1 = ray->d.x; //direction
 	y1 = ray->d.y;
-	z1 = ray->d.z;
+	z1 = ray->d.z;// probleme avec la gestion de l'axe z
 	
 	dx = ray->o.x - cx; // origin - direction = distance
 	dy = ray->o.y - cy;
@@ -76,18 +48,25 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 
 	b = 2 * (dx*x1 + dy*y1 + dz*z1);
 	c = (dx*dx+dy*dy+dz*dz) - R*R;
+	//a = pow(x1,2) + pow(y1,2) + pow(z1,2);
+	//b = 2 * (DIR.x * (O.x - Xc) + DIR.y * (O.y - Yc) + DIR.z * (O.z - Zc))
+	//c = ((O.x - Xc)^2 + (O.y - Yc)^2 + (O.z - Zc)^2) - r^2
+	//c = pow((x0 - cx),2) + pow((y0 - cy),2) + pow((z0 - cz),2) - R*R;
 	//a = dx*dx + dy*dy + dz*dz;
-	//b = 2*dx*(x0-cx) +  2*dy*(y0-cy) +  2*dz*(z0-cz);
+	//b = 2*(dx*(x0-cx) + dy*(y0-cy) + dz*(z0-cz));
 	//c = cx*cx + cy*cy + cz*cz + x0*x0 + y0*y0 + z0*z0 -2*(cx*x0 + cy*y0 + cz*z0) - R*R;
-	distriminant = pow(b,2) - (4*c);
-	//t = ((-b-sqrt(pow(b,2)-4*a*c)) / (2*a));
+	distriminant = pow(b,2) - (4/**a*/*c);
+	//else if (a == 1/4)
+	//	return (0);
 	if (distriminant < 0) // no intersection
 		return (0);
 	else  // ray->is tangent to sphere
 	{
 		distriminant = sqrt(distriminant);
-		t0 = -b - distriminant;
-		t1 = -b + distriminant;
+		t0 = ((-b - distriminant) /*/ 2*a*/);
+		t1 = ((-b + distriminant) /*/ 2*a*/);
+		//t0 = -b - distriminant;
+		//t1 = -b + distriminant;
 		ray->t = (t0 < t1) ? t0 : t1;
 		return (1);
 	}
@@ -120,7 +99,7 @@ void		draw(t_all *all)
 		{
 			init_ray(&all->ray, x, y);
 			// checker pour intersection
-			if (intersect_sphere(&all->ray, all->sphere))
+			if (intersect_sphere(&all->ray, all->sphere))// probleme avec la gestion de l'axe z
 			{
 				inter = multi_vect_double(all->ray.d, all->ray.t);
 				inter = add_vect(all->ray.o, inter);
@@ -141,7 +120,7 @@ void		draw(t_all *all)
 
 				color = multi_color_double(white, dt);
 				color = add_color(color_sphere, color);
-				color = multi_color_double(color, 0.7);
+				color = multi_color_double(color, 0.5);
 				color_condition(&color);
 				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
 				printf("rouge :%f\nbleue :%f\nvert :%f\n\n dt : %f\n\n", color.r, color.g, color.b, dt );

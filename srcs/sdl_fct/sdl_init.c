@@ -20,7 +20,7 @@ void	sdl_close(t_all *all)
 
 void	sdl_init(t_all *all)
 {
-	all->screen = SDL_CreateWindow("Hello World!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_X, WIN_Y, SDL_WINDOW_SHOWN);
+	all->screen = SDL_CreateWindow("RTV1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_X, WIN_Y, SDL_WINDOW_SHOWN);
 	if (all->screen == NULL)
 		sdl_err();
 	all->ren = SDL_CreateRenderer(all->screen, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

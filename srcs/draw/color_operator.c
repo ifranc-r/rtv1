@@ -14,8 +14,8 @@ void	init_color_sphere(t_color *color)
 {
 	color->a = 40;
 	color->r = 0;
-	color->b = 151;
-	color->g = 151;
+	color->b = 102;
+	color->g = 101;
 }
 
 t_color	multi_color_double(t_color color, double b)
@@ -44,7 +44,7 @@ void	color_condition(t_color *color)
 {
 	if (color->r > 255)
 		color->r = 255;
-	 if (color->g > 255)
+	if (color->g > 255)
 		color->g = 255;
 	if (color->b > 255)
 		color->b = 255;
