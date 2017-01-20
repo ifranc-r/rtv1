@@ -15,7 +15,7 @@ void		init_ray(t_ray *ray, int x, int y)
 
 void		init_sphere_light(t_sphere *sphere_light)
 {
-	sphere_light->c.x = 0;
+	sphere_light->c.x = WIN_X/2;
 	sphere_light->c.y = 0;
 	sphere_light->c.z = 0;
 	sphere_light->r = 0;
@@ -35,7 +35,7 @@ void		init_plane(t_plane *plane)
 {
 	plane->n.x = 0;
 	plane->n.y = 0;
-	plane->n.z = 2;
+	plane->n.z = 1;
 
 	plane->p1.x = WIN_X;
 	plane->p1.y = WIN_Y;

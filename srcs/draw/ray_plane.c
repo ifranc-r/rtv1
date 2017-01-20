@@ -16,8 +16,8 @@ int 	intersect_plane(t_ray *ray, t_plane *plane)
 	a = dot(ray->d, plane->n);
 	if (a == 0) // plane parallel to the ray
 		return (0);
-	t = (plane->p1.x * plane->n.x +plane->p1.y * plane->n.y +plane->p1.z * plane->n.z) -(plane->n.x * ray->o.x -plane->n.y * ray->o.y -plane->n.z * ray->o.z);
-	// ((dot(plane->p1, plane->n)+(minus_double(plane->n,ray->o)))/a);
+	//t = (((plane->p1.x * plane->n.x +plane->p1.y * plane->n.y +plane->p1.z * plane->n.z) -(plane->n.x * ray->o.x) -(plane->n.y * ray->o.y) -(plane->n.z * ray->o.z)) / a);
+	t = ((dot(plane->p1, plane->n)+(minus_double(plane->n,ray->o)))/a);
 	if (t < 0)
 		return (0);
 	//plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
@@ -32,7 +32,7 @@ int 	intersect_plane(t_ray *ray, t_plane *plane)
 		triangle_area(plane->p1,plane->p2,plane->inter) - \
 		triangle_area(plane->p2,plane->p3,plane->inter) - \
 		triangle_area(plane->p1,plane->p3,plane->inter));
-	if ((v_tri - (int)v_tri) || (v_tri_tmp -(int)v_tri_tmp))
+	if (((v_tri - (int)v_tri) > 0.00001) || ((v_tri_tmp -(int)v_tri_tmp) > 0.00001))
 		return (1);
 	return (0);
 }
