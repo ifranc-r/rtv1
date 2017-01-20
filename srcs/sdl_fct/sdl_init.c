@@ -23,7 +23,7 @@ void	sdl_init(t_all *all)
 	all->screen = SDL_CreateWindow("RTV1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_X, WIN_Y, SDL_WINDOW_SHOWN);
 	if (all->screen == NULL)
 		sdl_err();
-	all->ren = SDL_CreateRenderer(all->screen, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	all->ren = SDL_CreateRenderer(all->screen, -1, SDL_RENDERER_SOFTWARE);
 	if (all->ren == NULL)
 		sdl_err();
 	all->win_surf = SDL_GetWindowSurface(all->screen);

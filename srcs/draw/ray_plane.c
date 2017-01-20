@@ -4,8 +4,38 @@
 // vecteur x y z
 // ray	vecteur origin et vecteur direction
 // sphere centre rayon 
-// intersect
+// intersec
 
+int 	intersect_plane(t_ray *ray, t_plane *plane)
+{
+	double 		a;
+	double 		t;
+	double 		v_tri;
+	double 		v_tri_tmp;
+
+	a = dot(ray->d, plane->n);
+	if (a == 0) // plane parallel to the ray
+		return (0);
+	t = (plane->p1.x * plane->n.x +plane->p1.y * plane->n.y +plane->p1.z * plane->n.z) -(plane->n.x * ray->o.x -plane->n.y * ray->o.y -plane->n.z * ray->o.z);
+	// ((dot(plane->p1, plane->n)+(minus_double(plane->n,ray->o)))/a);
+	if (t < 0)
+		return (0);
+	//plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
+	plane->inter.x = ray->o.x + (ray->d.x * t);
+	plane->inter.y = ray->o.y + (ray->d.y * t);
+	plane->inter.z = ray->o.z + (ray->d.z * t);
+	v_tri = fabs(triangle_area(plane->p1,plane->p2,plane->p4) - \
+		triangle_area(plane->p1,plane->p4,plane->inter) - \
+		triangle_area(plane->p1,plane->p3,plane->inter) - \
+		triangle_area(plane->p3,plane->p4,plane->inter));
+	v_tri_tmp = fabs(triangle_area(plane->p1,plane->p2,plane->p3) - \
+		triangle_area(plane->p1,plane->p2,plane->inter) - \
+		triangle_area(plane->p2,plane->p3,plane->inter) - \
+		triangle_area(plane->p1,plane->p3,plane->inter));
+	if ((v_tri - (int)v_tri) || (v_tri_tmp -(int)v_tri_tmp))
+		return (1);
+	return (0);
+}
 
 int		intersect_sphere(t_ray *ray, t_sphere sphere)
 {
@@ -77,53 +107,63 @@ void		draw(t_all *all)
 {
 	int 		x;
 	int			y;
-	t_vect		inter;	// position of intersection
 	t_vect		l;	// light 
 	t_vect		n;
 	double		dt;
 	t_color		color;
-	t_color		white;
-	t_color		color_sphere;
+	t_color		color_background;
 
-	x = 0;
+	x = -1;
 	//couleur fond vert
 	init_sphere(&all->sphere);
 	init_sphere_light(&all->sphere_light);
-	init_white(&white);
-	init_color_sphere(&color_sphere);
+	init_plane(&all->plane);
+	init_color_background(&color_background);
 	//Boucle pour chaque pixel
-	while (++x < WIN_X)
+	while (x++ < WIN_X)
 	{
-		y = 0;
-		while (++y < WIN_Y)
+		y = -1;
+		while (y++ < WIN_Y)
 		{
 			init_ray(&all->ray, x, y);
 			// checker pour intersection
 			if (intersect_sphere(&all->ray, all->sphere))// probleme avec la gestion de l'axe z
 			{
-				inter = multi_vect_double(all->ray.d, all->ray.t);
-				inter = add_vect(all->ray.o, inter);
-				//inter.x = all->ray.o.x + (all->ray.d.x * all->ray.t);
-				////inter.y = all->ray.o.y + (all->ray.d.y * all->ray.t);
-				//inter.z = all->ray.o.z + (all->ray.d.z * all->ray.t);
+				//all->sphere.inter = multi_vect_double(all->ray.d, all->ray.t);
+				//all->sphere.inter = add_vect(all->ray.o, all->sphere.inter);
+				all->sphere.inter.x = all->ray.o.x + (all->ray.d.x * all->ray.t);
+				all->sphere.inter.y = all->ray.o.y + (all->ray.d.y * all->ray.t);
+				all->sphere.inter.z = all->ray.o.z + (all->ray.d.z * all->ray.t);
 
-				l = minus_vect(all->sphere_light.c, inter);
-				// l = spherelight - inter
+				l = minus_vect(all->sphere_light.c, all->sphere.inter);
+				// l = spherelight - all->sphere.inter
 
-				n = minus_vect(inter, all->sphere.c);
+				n = minus_vect(all->sphere.inter, all->sphere.c);
 				n = devide_vect_double(n, all->sphere.r);
-				//n.x = (all->sphere.c.x - inter.x) / all->sphere.r;
-				////n.y = (all->sphere.c.y - inter.y) / all->sphere.r;
-				//n.z = (all->sphere.c.z - inter.z) / all->sphere.r;
+				//n.x = (all->sphere.c.x - all->sphere.inter.x) / all->sphere.r;
+				////n.y = (all->sphere.c.y - all->sphere.inter.y) / all->sphere.r;
+				//n.z = (all->sphere.c.z - all->sphere.inter.z) / all->sphere.r;
 
 				dt  = dot(normalize_vect(l), normalize_vect(n));
 
-				color = multi_color_double(white, dt);
-				color = add_color(color_sphere, color);
+				color = multi_color_double(color_background, dt);
+				color = add_color(all->sphere.color_sphere, color);
 				color = multi_color_double(color, 0.5);
 				color_condition(&color);
 				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
-				printf("rouge :%f\nbleue :%f\nvert :%f\n\n dt : %f\n\n", color.r, color.g, color.b, dt );
+				//printf("rouge :%f\nbleue :%f\nvert :%f\n\n dt : %f\n\n", color.r, color.g, color.b, dt );
+			}
+			else if (intersect_plane(&all->ray, &all->plane))
+			{
+				l = minus_vect(all->sphere_light.c, all->plane.inter);
+				n = minus_vect(all->plane.inter, all->plane.n);
+				dt  = dot(normalize_vect(n), normalize_vect(l));
+				color = multi_color_double(color_background, dt);
+				color = add_color(all->plane.color_plane, color);
+				color = multi_color_double(color, 0.5);
+			//	color = all->plane.color_plane;
+				color_condition(&color);
+				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
 			}
 			else 
 				SDL_SetRenderDrawColor(all->ren, 0, 0, 0, 40);

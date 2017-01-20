@@ -2,12 +2,20 @@
 
 #include "../includes/rtv1.h"
 
-void	init_white(t_color *white)
+void	init_color_background(t_color *color_background)
 {
-	white->a = 40;
-	white->r = 255;
-	white->b = 255;
-	white->g = 255;
+	color_background->a = 40;
+	color_background->r = 255;
+	color_background->b = 255;
+	color_background->g = 255;
+}
+
+void	init_color_plane(t_color *color)
+{
+	color->a = 40;
+	color->r = 0;
+	color->b = 0;
+	color->g = 101;
 }
 
 void	init_color_sphere(t_color *color)
