@@ -2,7 +2,7 @@
 
 void		init_cam(t_cam *cam)
 {
-	init_vect(&cam->campos,5,1.5,-4);
+	init_vect(&cam->campos,0,0,-50);
 	init_vect(&cam->camdir,0,0,1);
 	init_vect(&cam->camdown,0,0,0);
 	init_vect(&cam->camright,0,0,0);
@@ -24,15 +24,17 @@ void		init_vect(t_vect *vect, double x, double y, double z)
 
 void		init_ray(t_cam cam, t_ray *ray, int x, int y)
 {
+	double 		aspectratio;
 	t_vect 		cam_r;
 	t_vect 		cam_do;
-	double 		xd;
-	double 		yd;
+	double 		cam_pix_x;
+	double 		cam_pix_y;
 
-	xd = (double)x;
-	yd = (double)y;
-	cam_do = multi_vect_double(cam.camdown, (yd - 0.5));
-	cam_r = multi_vect_double(cam.camright, (xd - 0.5)) ;
+	aspectratio = WIN_X / WIN_Y;
+	cam_pix_x = ((0.5 + (double)x) / WIN_X * aspectratio) -(((WIN_X - WIN_Y)/WIN_Y)/2);
+	cam_pix_y = ((WIN_Y - (double)y) + 0.5)/WIN_Y;
+	cam_do = multi_vect_double(cam.camdown, (cam_pix_y - 0.5));
+	cam_r = multi_vect_double(cam.camright, (cam_pix_x - 0.5)) ;
 	init_vect(&ray->o,cam.campos.x,cam.campos.y,cam.campos.z);
 	ray->d =  normalize_vect(add_vect(cam.camdir, add_vect(cam_r, cam_do)));
 }
@@ -47,9 +49,9 @@ void		init_sphere_light(t_sphere *sphere_light)
 
 void		init_sphere(t_sphere *sphere)
 {
-	sphere->c.x = WIN_X/2;
-	sphere->c.y = WIN_Y/2;
-	sphere->c.z = -50;
+	sphere->c.x = 0;
+	sphere->c.y = 0;
+	sphere->c.z = 50;
 
 	sphere->r = 50;
 	init_color_sphere(&sphere->color_sphere);
