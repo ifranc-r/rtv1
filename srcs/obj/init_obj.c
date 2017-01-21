@@ -2,7 +2,7 @@
 
 void		init_cam(t_cam *cam)
 {
-	init_vect(&cam->campos,0,0,-50);
+	init_vect(&cam->campos,0,0,0);
 	init_vect(&cam->camdir,0,0,1);
 	init_vect(&cam->camdown,0,0,0);
 	init_vect(&cam->camright,0,0,0);
@@ -29,10 +29,14 @@ void		init_ray(t_cam cam, t_ray *ray, int x, int y)
 	t_vect 		cam_do;
 	double 		cam_pix_x;
 	double 		cam_pix_y;
+	double 		pix_x;
+	double 		pix_y;
 
+	pix_x = (double)x;
+	pix_y = (double)y;
 	aspectratio = WIN_X / WIN_Y;
-	cam_pix_x = ((0.5 + (double)x) / WIN_X * aspectratio) -(((WIN_X - WIN_Y)/WIN_Y)/2);
-	cam_pix_y = ((WIN_Y - (double)y) + 0.5)/WIN_Y;
+	cam_pix_x = ((0.5 + pix_x) / WIN_X * aspectratio) -(((WIN_X - WIN_Y)/WIN_Y)/2);
+	cam_pix_y = ((WIN_Y - pix_y) + 0.5)/WIN_Y;
 	cam_do = multi_vect_double(cam.camdown, (cam_pix_y - 0.5));
 	cam_r = multi_vect_double(cam.camright, (cam_pix_x - 0.5)) ;
 	init_vect(&ray->o,cam.campos.x,cam.campos.y,cam.campos.z);
