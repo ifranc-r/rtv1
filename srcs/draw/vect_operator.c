@@ -22,6 +22,16 @@ t_vect	minus_vect(t_vect a, t_vect b)
 	return (tmp);
 }
 
+t_vect	cross_prod(t_vect a, t_vect b) 
+{
+	t_vect		tmp;
+
+	tmp.x = a.y * b.z - a.z * b.y;
+	tmp.y = a.z * b.x - a.x * b.z;
+	tmp.z = a.x * b.y - a.y * b.x;
+	return (tmp);
+}
+
 t_vect	devide_vect_double(t_vect a, double b)
 {
 	t_vect		tmp;
@@ -74,6 +84,21 @@ t_vect	normalize_vect(t_vect a)
 	mg = sqrt(a.x *a.x +a.y * a.y + a.z * a.z);
 	tmp = devide_vect_double(a, mg);
 	return (tmp);
+}
+
+t_vect	negative_vect(t_vect a)
+{
+	t_vect		tmp;
+
+	tmp.x = -a.x;
+	tmp.y = -a.y;
+	tmp.z = -a.z;
+	return (tmp);
+}
+
+double magintude(t_vect a)
+{
+	return (sqrt(a.x *a.x +a.y * a.y + a.z * a.z));
 }
 
 double triangle_area(t_vect p1, t_vect p2, t_vect p3)

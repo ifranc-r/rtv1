@@ -11,6 +11,7 @@
 # include <math.h>
 # define WIN_X 800
 # define WIN_Y 600
+# define Z_CAM 300
 # define I_X 600
 # define I_Y 600
 # define PI 3.14159265359
@@ -35,6 +36,7 @@ typedef struct		s_color
 	double			b;
 }					t_color;
 
+
 typedef struct		s_vect
 {
 	double			x;
@@ -42,6 +44,12 @@ typedef struct		s_vect
 	double			z;
 }					t_vect;
 
+typedef struct		s_axe
+{
+	t_vect			x;
+	t_vect			y;
+	t_vect			z;
+}					t_axe;
 
 typedef struct		s_plane
 {
@@ -60,6 +68,14 @@ typedef struct		s_ray
 	t_vect			d; // direction
 	double			t;
 }					t_ray;
+
+typedef struct		s_cam
+{
+	t_vect			campos; // camposition
+	t_vect			camdir; // cam direction
+	t_vect			camdown; // 
+	t_vect			camright;
+}					t_cam;
 
 typedef struct		s_sphere
 {
@@ -97,9 +113,12 @@ t_vect				devide_vect_double(t_vect a, double b);
 t_vect				multi_vect_double(t_vect a, double b);
 t_vect				normalize_vect(t_vect a);
 t_vect				add_vect_double(t_vect a, double b);
+t_vect				negative_vect(t_vect a);
+double 				magintude(t_vect a);
 double 				dot(t_vect a, t_vect b);
 double 				minus_double(t_vect a, t_vect b);
 double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
+t_vect				cross_prod(t_vect a, t_vect b);
 //color
 void				init_color_background(t_color *color_background);
 t_color				multi_color_double(t_color color, double b);
@@ -108,8 +127,11 @@ void				color_condition(t_color *color);
 void				init_color_sphere(t_color *color);
 void				init_color_plane(t_color *color);
 //obj
+void				init_vect(t_vect *vect, double x, double y, double z);
+void				init_axe(t_axe *axe);
 void				init_plane(t_plane *plane);
 void				init_sphere(t_sphere *sphere);
 void				init_sphere_light(t_sphere *sphere_light);
-void				init_ray(t_ray *ray, int x, int y);
+void				init_ray(t_cam cam, t_ray *ray, int x, int y);
+void				init_cam(t_cam *cam);
 #endif
