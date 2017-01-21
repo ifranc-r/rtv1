@@ -90,11 +90,13 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	//	return (0);
 	if (distriminant < 0) // no intersection
 		return (0);
+	else if (distriminant == 0) 
+		ray->t = - 0.5 * b;
 	else  // ray->is tangent to sphere
 	{
 		distriminant = sqrt(distriminant);
-		t0 = ((-b - distriminant) /*/ 2*a*/);
-		t1 = ((-b + distriminant) /*/ 2*a*/);
+		t0 = ((-b - distriminant)/2 /*/ 2*a*/);
+		t1 = ((-b + distriminant)/2 /*/ 2*a*/);
 		//t0 = -b - distriminant;
 		//t1 = -b + distriminant;
 		ray->t = (t0 < t1) ? t0 : t1;
