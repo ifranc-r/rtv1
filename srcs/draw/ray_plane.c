@@ -46,7 +46,6 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	// double		dy; // direction
 	// double		dz;
 
-	double		a;
 	double		b;
 	double		c;
 
@@ -57,7 +56,6 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	double		cx, cy, cz; // centre spher
 	double		x0, y0, z0; // directtion
 	double		x1, y1, z1; // origin
-	// double		lx, ly, lz;
 	// double		ox, oy, oz;
 	// double		thcx, thcy, thcz;
 
@@ -76,9 +74,6 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	y1 = ray->d.y;
 	z1 = ray->d.z;// probleme avec la gestion de l'axe z
 	
-	// lx =	(cx - x0);//(centresphere - origin ) = distance du centre sphere ou triangle hypothenuse
-	// ly =	(cy - y0);
-	// lz =	(cz - z0);
 
 	// dx =  lx*x1; // cote hypothenus * ray direction = distance de la droite adjacente triangle
 	// dy =  ly*y1;
@@ -92,9 +87,22 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	// thcy =  sqrt(pow(R, 2) - pow(oy, 2));
 	// thcz =  sqrt(pow(R, 2) - pow(oz, 2));
 
-	a = pow(x1,2)+pow(y1,2)+pow(z1,2);
-	b = 2 * (x1*x0+y1*y0+ z1*z0);
-	c = (pow(x0,2)+pow(y0,2)+pow(z0,2)) - R*R;
+//scratchapixel
+	//double		a;
+	//a = pow(x1,2)+pow(y1,2)+pow(z1,2);
+	//b = 2 * (x1*x0+y1*y0+ z1*z0);
+	//c = (pow(x0,2)+pow(y0,2)+pow(z0,2)) - R*R;
+	//discriminant = pow(b,2) - (4*a*c);
+
+//basic algo
+	double		lx, ly, lz;
+	lx = (cx - x0);//(centresphere - origin ) = distance du centre sphere ou triangle hypothenuse
+	ly = (cy - y0);
+	lz = (cz - z0);
+	b = 2 * (x1*lx+y1*ly+ z1*lz);
+	c = (pow(lx,2)+pow(ly,2)+pow(lz,2)) - pow(R,2);
+	discriminant = pow(b,2) - (4*c);
+
 	//a = pow(x1,2) + pow(y1,2) + pow(z1,2);
 	//b = 2 * (DIR.x * (O.x - Xc) + DIR.y * (O.y - Yc) + DIR.z * (O.z - Zc))
 	//c = ((O.x - Xc)^2 + (O.y - Yc)^2 + (O.z - Zc)^2) - r^2
@@ -102,23 +110,30 @@ int		intersect_sphere(t_ray *ray, t_sphere sphere)
 	//a = dx*dx + dy*dy + dz*dz;
 	//b = 2*(dx*(x0-cx) + dy*(y0-cy) + dz*(z0-cz));
 	//c = cx*cx + cy*cy + cz*cz + x0*x0 + y0*y0 + z0*z0 -2*(cx*x0 + cy*y0 + cz*z0) - R*R;
-	discriminant = pow(b,2) - (4*a*c);
 	//else if (a == 1/4)
 	//	return (0);
 	if (discriminant < 0) // no intersection
 		return (0);
 	else if (discriminant == 0) 
 	{
-		ray->t = - 0.5 * b / a;
+		//basic algo
+		ray->t = - 0.5 * b;
+
+		//scratchapixel
+		//ray->t = - 0.5 * b / a;
+
 		return (1);
 	}
 	else if (discriminant > 0)  // ray->is tangent to sphere
 	{
 		discriminant = sqrt(discriminant);
-		t0 = c / ((-b + discriminant)/2);
-		t1 = ((-b - discriminant)/2)/a;
-		//t0 = -b - discriminant;
-		//t1 = -b + discriminant;
+		//scratchapixel
+		//t0 = c / ((-b + discriminant)/2);
+		//t1 = ((-b - discriminant)/2)/a;
+
+		//basic algo
+		t0 = -b - discriminant;
+		t1 = -b + discriminant;
 		ray->t = (t0 < t1) ? t0 : t1;
 		return (1);
 	}
