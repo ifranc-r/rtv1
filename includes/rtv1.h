@@ -9,7 +9,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <math.h>
-# define WIN_X 800
+# define WIN_X 600
 # define WIN_Y 600
 # define Z_CAM 300
 # define I_X 600
@@ -53,11 +53,9 @@ typedef struct		s_axe
 
 typedef struct		s_plane
 {
-	t_vect			n; //vector normal
-	t_vect			p1;
-	t_vect			p2;
-	t_vect			p3;
-	t_vect			p4;
+	t_vect			n; //vector derector
+	t_vect			o; //origin
+	double 			d;
 	t_vect			inter;
 	t_color			color_plane;
 }					t_plane;
@@ -72,9 +70,9 @@ typedef struct		s_ray
 typedef struct		s_cam
 {
 	t_vect			campos; // camposition
-	t_vect			camdir; // cam direction
-	t_vect			camdown; // 
-	t_vect			camright;
+	t_vect			camdir; // cam direction vecto
+	t_vect			camup; // cam axis Y 
+	t_vect			camright; 
 }					t_cam;
 
 typedef struct		s_sphere
@@ -119,6 +117,7 @@ double 				dot(t_vect a, t_vect b);
 double 				minus_double(t_vect a, t_vect b);
 double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 t_vect				cross_prod(t_vect a, t_vect b);
+double 				neg_dot(t_vect a, t_vect b);
 //color
 void				init_color_background(t_color *color_background);
 t_color				multi_color_double(t_color color, double b);
@@ -132,6 +131,6 @@ void				init_axe(t_axe *axe);
 void				init_plane(t_plane *plane);
 void				init_sphere(t_sphere *sphere);
 void				init_sphere_light(t_sphere *sphere_light);
-void				init_ray(t_cam cam, t_ray *ray, int x, int y);
+void				compute_ray(t_cam cam, t_ray *ray, int x, int y);
 void				init_cam(t_cam *cam);
 #endif

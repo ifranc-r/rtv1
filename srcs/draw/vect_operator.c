@@ -69,6 +69,13 @@ double 	dot(t_vect a, t_vect b)
 	return (tmp);
 }
 
+double 	neg_dot(t_vect a, t_vect b)
+{
+	double tmp;
+	tmp = -(a.x * b.x) - (a.y * b.y) - (a.z * b.z);
+	return (tmp);
+}
+
 double 	minus_double(t_vect a, t_vect b)
 {
 	double tmp;
@@ -78,11 +85,11 @@ double 	minus_double(t_vect a, t_vect b)
 
 t_vect	normalize_vect(t_vect a)
 {
-	double 		mg;
+	double 		dist;
 	t_vect 		tmp;
 
-	mg = sqrt(a.x *a.x +a.y * a.y + a.z * a.z);
-	tmp = devide_vect_double(a, mg);
+	dist = sqrt(a.x *a.x +a.y * a.y + a.z * a.z);
+	tmp = devide_vect_double(a, dist);
 	return (tmp);
 }
 
