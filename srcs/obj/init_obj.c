@@ -2,7 +2,7 @@
 
 void		init_cam(t_cam *cam)
 {
-	init_vect(&cam->campos, 0,0,-80);
+	init_vect(&cam->campos, -40,0,-80);
 	init_vect(&cam->camdir,0,0,1);
 	init_vect(&cam->camup,0,1,0);
 	init_vect(&cam->camright,1,0,0);
@@ -78,7 +78,7 @@ void		init_sphere(t_sphere *sphere)
 {
 	sphere->c.x = 0;
 	sphere->c.y = 0;
-	sphere->c.z = 10;
+	sphere->c.z = 0;
 
 	sphere->r = 5;
 	init_color_sphere(&sphere->color_sphere);

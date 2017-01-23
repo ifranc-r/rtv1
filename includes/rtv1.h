@@ -61,6 +61,23 @@ typedef struct		s_plane
 	t_color			color_plane;
 }					t_plane;
 
+typedef struct		s_sphere
+{
+	t_vect			c; // centre
+	double			r; // rayon de la sphere
+	t_vect			inter;// position of intersection
+	t_color			color_sphere;
+}					t_sphere;
+
+typedef struct		s_cylinder
+{
+	t_vect			axe; // direction d'axe
+	t_vect			c; // centre
+	double			r; // rayon du disc
+	double			h; // hauteur
+	t_color			color_cylind;
+}					t_sphere;
+
 typedef struct		s_ray
 {
 	t_vect			o; // origin
@@ -75,15 +92,6 @@ typedef struct		s_cam
 	t_vect			camup; // cam axis Y 
 	t_vect			camright; 
 }					t_cam;
-
-typedef struct		s_sphere
-{
-	t_vect			c; // centre
-	double			r; // rayon de la sphere
-	t_vect			inter;// position of intersection
-	t_color			color_sphere;
-}					t_sphere;
-
 
 typedef struct		s_all
 {
