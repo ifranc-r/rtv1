@@ -11,11 +11,16 @@ int 	intersect_plane(t_ray *ray, t_plane *plane)
 	double 		a;
 	double 		t;
 
-	a = dot(ray->d, plane->n); // calcule angle of the vect
+
+	a = dot(ray->d, plane->d); // calcule angle of the vect
 	if (a == 0) // plane parallel to the ray no intersection
 		return (0);
+	//sratchc++ vide
 	//t = (((plane->p1.x * plane->n.x +plane->p1.y * plane->n.y +plane->p1.z * plane->n.z) -(plane->n.x * ray->o.x) -(plane->n.y * ray->o.y) -(plane->n.z * ray->o.z)) / a);
-	t = (((dot(plane->o, plane->n) - neg_dot(plane->n,ray->o))* plane->d)/a); // problem hereeeee ,<<<<<<<<<<<<<<<<<
+	// myself
+	//t = (((neg_dot(plane->d,ray->o) + dot(plane->o, plane->d))* plane->di)/a); // problem hereeeee ,<<<<<<<<<<<<<<<<<
+	//scratchapixel wedsite
+	t  = dot(add_vect(plane->o,negative_vect(ray->o)), plane->d)/a;
 	if (t < 0)
 		return (0);
 	//plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
@@ -205,19 +210,20 @@ void		draw(t_all *all)
 
 
 				l = minus_vect(all->sphere_light.c, all->plane.inter);
-				n = normalize_vect(all->plane.inter);
-				dt  = dot(n,l);
+				n = minus_vect(all->plane.d, normalize_vect(all->plane.inter));
+				dt  = dot(n, normalize_vect(l));
 				//printf("%f\n", dt);
 			//	printf("%f\n", all->plane.inter.z);
 					//basic algo
-				// l = minus_vect(all->sphere_light.c, all->plane.inter);
-				// n = minus_vect(all->plane.n, all->plane.inter);
-				// dt  = dot(normalize_vect(n), normalize_vect(l));
+				//l = minus_vect(all->sphere_light.c, all->plane.inter);
+				//n = minus_vect(all->plane.n, all->plane.inter);
+				//dt  = dot(normalize_vect(n), normalize_vect(l));
 				color = multi_color_double(color_background, dt);
 				color = add_color(all->plane.color_plane, color);
+				//color = multi_color_double(all->plane.color_plane, dt*4);
 				color = multi_color_double(color, 0.5);
-			//	color = all->plane.color_plane;
-				//color_condition(&color);
+				//color = all->plane.color_plane;
+				color_condition(&color);
 				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
 
 			}

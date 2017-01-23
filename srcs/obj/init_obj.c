@@ -86,14 +86,21 @@ void		init_sphere(t_sphere *sphere)
 
 void		init_plane(t_plane *plane)
 {
-	plane->n.x = 2;
-	plane->n.y = 2;
-	plane->n.z = 1;
+	//before
+	// plane->n.x = 0;
+	// plane->n.y = -10000000;
+	// plane->n.z = 1;
 
-	plane->n.x = 0;
-	plane->n.y = -50;
-	plane->n.z = 0;
-	plane->d = 20;
+	plane->d.x = 0;
+	plane->d.y = 0;
+	plane->d.z = 1;
+	plane->d = normalize_vect(plane->d);
+
+	plane->o.x = 0;
+	plane->o.y = 0;
+	plane->o.z = 0;
+
+	plane->di = 30;
 
 	init_color_plane(&plane->color_plane);
 }

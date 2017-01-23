@@ -53,9 +53,10 @@ typedef struct		s_axe
 
 typedef struct		s_plane
 {
-	t_vect			n; //vector derector
+	t_vect			d; //vector derector
 	t_vect			o; //origin
-	double 			d;
+	t_vect			in; //inclinaison
+	double 			di;
 	t_vect			inter;
 	t_color			color_plane;
 }					t_plane;
