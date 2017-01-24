@@ -56,7 +56,7 @@ typedef struct		s_plane
 	t_vect			d; //vector derector
 	t_vect			o; //origin
 	t_vect			in; //inclinaison
-	double 			di;
+	double 			t;
 	t_vect			inter;
 	t_color			color_plane;
 }					t_plane;
@@ -65,6 +65,9 @@ typedef struct		s_sphere
 {
 	t_vect			c; // centre
 	double			r; // rayon de la sphere
+	double 			t;
+	double 			t0;
+	double 			t1;
 	t_vect			inter;// position of intersection
 	t_color			color_sphere;
 }					t_sphere;
@@ -76,13 +79,12 @@ typedef struct		s_cylinder
 	double			r; // rayon du disc
 	double			h; // hauteur
 	t_color			color_cylind;
-}					t_sphere;
+}					t_cylinder;
 
 typedef struct		s_ray
 {
 	t_vect			o; // origin
 	t_vect			d; // direction
-	double			t;
 }					t_ray;
 
 typedef struct		s_cam
@@ -127,6 +129,7 @@ double 				minus_double(t_vect a, t_vect b);
 double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 t_vect				cross_prod(t_vect a, t_vect b);
 double 				neg_dot(t_vect a, t_vect b);
+int					solveQuadratic(double a, double b, double c, t_sphere *sphere);
 //color
 void				init_color_background(t_color *color_background);
 t_color				multi_color_double(t_color color, double b);

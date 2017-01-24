@@ -122,6 +122,24 @@ double triangle_area(t_vect p1, t_vect p2, t_vect p3)
 	return (sqrt(s*(s - a)*(s - b)*(s - c)));
 }
 
+int		solveQuadratic(double a, double b, double c, t_sphere *sphere)
+{
+    double 		discr;
+
+    discr = b * b - 4 * a * c; 
+    if (discr <= 0) 
+    	return (1); 
+    else if (discr == 0) 
+    	sphere->t0 = sphere->t1 = - 0.5 * b / a; 
+    else 
+    { 
+		sphere->t0 = ((-b + discr)/(2*a));
+		sphere->t1 = ((-b - discr)/(2*a));
+		return (1);
+    }
+    return (0);
+}
+
 
 
 
