@@ -1,6 +1,76 @@
 #include "../includes/rtv1.h"
 
+// pseudo algo de degrader
 
+// find point dot = 0 (angle droit)
+
+// t_vect		find_brigter_point(t_vect inter, t_vect light)
+// {
+// 	t_vect l = l.c-inter;
+// 	double nl = normalize_vect(l);
+// 	double n = normalize_vect(inter);
+// 	if (dot(nl,n)== 0){
+// 		t_vect brighter_pixel = inter;
+// 		return (brighter_pixel);
+// 	}
+// 	else 
+// 		return (0)
+// }
+
+// t_vect		degrader()
+// {
+
+// }
+
+
+ // pseudo algo de phong
+
+t_color sphere_color_phong(t_color objct_color, t_vect inter, t_sphere sphere_light, t_all all)
+{
+	t_color		light_c;
+	t_color		final_color;
+	t_color		diff_color;
+	t_color		spect_color;
+	double 		diff;
+	t_vect 		n;
+	t_vect 		h;
+
+	light_c = init_color(255,255,255,40);
+
+	n = minus_vect(inter, all.sphere.c);
+	diff = clamp(dot(normalize_vect(n),normalize_vect(sphere_light.c)),0,1);
+	h = add_vect(normalize_vect(all.ray.d),normalize_vect(sphere_light.c));
+	spect_color = multi_color(light_c, multi_color_double(objct_color, 6*pow(fmax((dot(normalize_vect(h), normalize_vect(n))),0), 1.4)));
+	diff_color = multi_color(light_c, multi_color_double(objct_color, diff));
+	//color_condition(&diff_color);
+	//color_condition(&spect_color);
+	printf("%f\n", diff);
+	final_color = multi_color(spect_color, diff_color);
+	//color_condition(&final_color);
+	return (spect_color);
+}
+
+t_color color_phong(t_color objct_color, t_vect inter, t_sphere sphere_light, t_all all)
+{
+	t_color		light_c;
+	t_color		final_color;
+	t_color		diff_color;
+	t_color		spect_color;
+	double 		diff;
+	t_vect 		h;
+
+	light_c = init_color(255,255,255,40);
+
+	diff = clamp(dot(normalize_vect(inter),normalize_vect(sphere_light.c)),0,1);
+	h = add_vect(normalize_vect(all.ray.d),normalize_vect(sphere_light.c));
+	spect_color = multi_color(light_c, multi_color_double(objct_color, fmax(pow((dot(normalize_vect(h), normalize_vect(inter))), 1),0)));
+	diff_color = multi_color(light_c, multi_color_double(objct_color, diff));
+	//color_condition(&diff_color);
+	//color_max(&diff_color);
+	color_max(&spect_color);
+	final_color = multi_color(spect_color, diff_color);
+	return (diff_color);
+}
 // vecteur x y z
 // ray	vecteur origin et vecteur direction
 // sphere centre rayon 
@@ -87,32 +157,18 @@ int 	intersect_plane(t_ray *ray, t_plane *plane)
 
 int		intersect_sphere(t_ray *ray, t_sphere *sphere)
 {
-
 	t_vect		L;
 	double 		a;
 	double 		b;
 	double 		c;
-	double 		discriminant;
 
 	L = minus_vect(sphere->c, ray->o);
 	a = dot(ray->d,ray->d);
 	b = 2 * dot(ray->d, L);
 	c = dot(L, L) - pow(sphere->r, 2);
-	discriminant = b * b - 4 * a * c;
-	 if (discriminant < 0) // no intersection
-		return (0);
-	else if (discriminant == 0) 
+	if (solveQuadratic(a, b, c, &*sphere) == 1)
 	{
-		sphere->t = - 0.5 * b / a;
-		return (1);
-	}
-	else if (discriminant > 0)  // ray->is tangent to sphere
-	{
-		discriminant = sqrt(discriminant);
-		sphere->t0 = ((-b + discriminant)/(2*a));
-		sphere->t1 = ((-b - discriminant)/(2*a));
-		sphere->t = (sphere->t0 < sphere->t1) ? sphere->t0 : sphere->t1;
-		sphere->inter = add_vect(ray->o, multi_vect_double(ray->d , sphere->t));
+		sphere->inter = add_vect(ray->o, multi_vect_double(ray->d, sphere->t));
 		return (1);
 	}
 	return (0);
@@ -165,13 +221,19 @@ void		draw(t_all *all)
 			if (intersect_sphere(&all->ray, &all->sphere))
 			{
 				//l = minus_vect(normalize_vect(all->sphere_light.c), normalize_vect(all->sphere.inter));
-				n = minus_vect(all->sphere.inter, all->sphere.c);
-				dt  = dot(normalize_vect(n), normalize_vect(all->sphere_light.c));
+				//n = minus_vect(all->sphere.inter, all->sphere.c);
+				//dt  = dot(normalize_vect(n), normalize_vect(all->sphere_light.c));
 
-				color = multi_color_double(color_background, dt*100);
-				color = add_color(all->sphere.color_sphere, color);
-				color = multi_color_double(color, 0.5);
-				color_condition(&color);
+				// normal light
+				//color = multi_color_double(color_background, dt*100);
+				//color = add_color(all->sphere.color_sphere, color);
+				//color = multi_color_double(color, 0.5);
+				//color_condition(&color);
+
+				// phong light
+				color = sphere_color_phong(all->sphere.color_sphere, all->sphere.inter, all->sphere_light, *all);
+				//color_condition(&color);
+
 				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
 			}
 			else if (intersect_plane(&all->ray, &all->plane))
@@ -184,13 +246,14 @@ void		draw(t_all *all)
 				//l = minus_vect(all->sphere_light.c, all->plane.inter);
 				//n = minus_vect(all->plane.n, all->plane.inter);
 				//dt  = dot(normalize_vect(n), normalize_vect(l));
-				printf("%f\n", dt);
+				//printf("%f\n", dt);
 				color = multi_color_double(all->plane.color_plane, dt*1000);
 				color = multi_color_double(color_background, dt);
 				color = add_color(all->plane.color_plane, color);
 				color = multi_color_double(color, 0.5);
 				//color = all->plane.color_plane;
-				color_condition(&color);
+				color = color_phong(all->plane.color_plane, all->plane.inter, all->sphere_light, *all);
+				//color_condition(&color);
 				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
 
 			}

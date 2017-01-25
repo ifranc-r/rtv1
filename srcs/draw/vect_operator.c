@@ -124,19 +124,24 @@ double triangle_area(t_vect p1, t_vect p2, t_vect p3)
 
 int		solveQuadratic(double a, double b, double c, t_sphere *sphere)
 {
-    double 		discr;
+	double 		discriminant;
 
-    discr = b * b - 4 * a * c; 
-    if (discr <= 0) 
-    	return (1); 
-    else if (discr == 0) 
-    	sphere->t0 = sphere->t1 = - 0.5 * b / a; 
-    else 
-    { 
-		sphere->t0 = ((-b + discr)/(2*a));
-		sphere->t1 = ((-b - discr)/(2*a));
+    discriminant = b * b - 4 * a * c;
+	if (discriminant < 0) // no intersection
+		return (0);
+	else if (discriminant == 0) 
+	{
+		sphere->t = - 0.5 * b / a;
 		return (1);
-    }
+	}
+	else if (discriminant > 0)  // ray->is tangent to sphere
+	{
+		discriminant = sqrt(discriminant);
+		sphere->t0 = ((-b + discriminant)/(2*a));
+		sphere->t1 = ((-b - discriminant)/(2*a));
+		sphere->t = (sphere->t0 < sphere->t1) ? sphere->t0 : sphere->t1;
+		return (1);
+	}
     return (0);
 }
 

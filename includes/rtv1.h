@@ -130,6 +130,8 @@ double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 t_vect				cross_prod(t_vect a, t_vect b);
 double 				neg_dot(t_vect a, t_vect b);
 int					solveQuadratic(double a, double b, double c, t_sphere *sphere);
+double 				clamp(double x, double upper, double lower);
+
 //color
 void				init_color_background(t_color *color_background);
 t_color				multi_color_double(t_color color, double b);
@@ -137,6 +139,10 @@ t_color				add_color(t_color a, t_color b);
 void				color_condition(t_color *color);
 void				init_color_sphere(t_color *color);
 void				init_color_plane(t_color *color);
+t_color 			init_color(double r, double g, double b, double a);
+t_color				multi_color(t_color color, t_color b);
+t_color				minus_color(t_color a, t_color b);
+void				color_max(t_color *color);
 //obj
 void				init_vect(t_vect *vect, double x, double y, double z);
 void				init_axe(t_axe *axe);
