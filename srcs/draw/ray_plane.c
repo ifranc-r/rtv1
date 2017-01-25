@@ -38,16 +38,19 @@ t_color sphere_color_phong(t_color objct_color, t_vect inter, t_sphere sphere_li
 	light_c = init_color(255,255,255,40);
 
 	n = minus_vect(inter, all.sphere.c);
-	diff = clamp(dot(normalize_vect(n),normalize_vect(sphere_light.c)),0,1);
+	diff = fmax(dot(normalize_vect(n),normalize_vect(sphere_light.c)),0);
 	h = add_vect(normalize_vect(all.ray.d),normalize_vect(sphere_light.c));
-	spect_color = multi_color(light_c, multi_color_double(objct_color, 6*pow(fmax((dot(normalize_vect(h), normalize_vect(n))),0), 1.4)));
-	diff_color = multi_color(light_c, multi_color_double(objct_color, diff));
+	spect_color = multi_color(light_c ,multi_color_double(light_c, pow(dot(normalize_vect(h), normalize_vect(n)), 4)));
+	diff_color =  multi_color(light_c, multi_color_double(objct_color, diff));
 	//color_condition(&diff_color);
 	//color_condition(&spect_color);
-	printf("%f\n", diff);
-	final_color = multi_color(spect_color, diff_color);
+	final_color = add_color(spect_color, objct_color);
+	if (spect_color.r < 0 || spect_color.g < 0 || spect_color.b < 0)
+		printf("r=%f\n g=%f\n  b=%f\n",spect_color.r,spect_color.g,spect_color.b);
+	printf("r=%f\n g=%f\n  b=%f\n",diff_color.r,diff_color.g,diff_color.b);
+
 	//color_condition(&final_color);
-	return (spect_color);
+	return (final_color);
 }
 
 t_color color_phong(t_color objct_color, t_vect inter, t_sphere sphere_light, t_all all)
@@ -61,76 +64,20 @@ t_color color_phong(t_color objct_color, t_vect inter, t_sphere sphere_light, t_
 
 	light_c = init_color(255,255,255,40);
 
-	diff = clamp(dot(normalize_vect(inter),normalize_vect(sphere_light.c)),0,1);
+	diff = fmax(dot(normalize_vect(inter),normalize_vect(sphere_light.c)),0);
 	h = add_vect(normalize_vect(all.ray.d),normalize_vect(sphere_light.c));
-	spect_color = multi_color(light_c, multi_color_double(objct_color, fmax(pow((dot(normalize_vect(h), normalize_vect(inter))), 1),0)));
+	spect_color = multi_color_double(light_c, pow((dot(normalize_vect(h), normalize_vect(inter))), 4));
 	diff_color = multi_color(light_c, multi_color_double(objct_color, diff));
 	//color_condition(&diff_color);
 	//color_max(&diff_color);
-	color_max(&spect_color);
-	final_color = multi_color(spect_color, diff_color);
-	return (diff_color);
+	//color_max(&spect_color);
+	//printf("%f\n", pow((dot(normalize_vect(h), normalize_vect(inter))),1));
+
+	final_color = add_color(spect_color, objct_color);
+	// color_condition(&final_color);
+	return (final_color);
 }
-// vecteur x y z
-// ray	vecteur origin et vecteur direction
-// sphere centre rayon 
-// intersec
-// int		intersect_cylinder(t_ray *ray, t_cylinder cylinder)
-// {
-// 	double		discriminant;
-// 	double		b;
-// 	double		c;
 
-// 	double		R;
-// 	double		a;
-
-// 	double		t0, t1;
-// 	double		cx, cy, cz; // centre spher
-// 	double		x0, y0, z0; // directtion
-// 	double		x1, y1, z1; // origin
-
-// 	//initie les parametre de la sphere
-// 	cx = sphere.c.x; // centre sphere
-// 	cy = sphere.c.y;
-// 	cz = sphere.c.z;
-
-// 	R = sphere.r; // rayon sphere
-
-// 	x0 = ray->o.x; // orgine
-// 	y0 = ray->o.y; 
-// 	z0 = ray->o.z;
-
-// 	x1 = ray->d.x; //direction
-// 	y1 = ray->d.y;
-// 	z1 = ray->d.z;// probleme avec la gestion de l'axe z
-
-
-// 	a = pow(x1,2)+pow(y1,2)+pow(z1,2);
-// 	b = 2 * (x1*x0+y1*y0+ z1*z0);
-// 	c = (pow(x0,2)+pow(y0,2)+pow(z0,2)) - R*R;
-// 	discriminant = pow(b,2) - (4*a*c);
-// 	if (discriminant < 0) // no intersection
-// 		return (0);
-// 	else if (discriminant == 0) 
-// 	{
-// 		//basic algo
-// 		//ray->t = - 0.5 * b;
-
-// 		//scratchapixel
-// 		ray->t = - 0.5 * b / a;
-
-// 		return (1);
-// 	}
-// 	else if (discriminant > 0)  // ray->is tangent to sphere
-// 	{
-// 		discriminant = sqrt(discriminant);
-// 		t0 = ((-b + discriminant)/(2*a));
-// 		t1 = ((-b - discriminant)/(2*a));
-// 		ray->t = (t0 < t1) ? t0 : t1;
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 int 	intersect_plane(t_ray *ray, t_plane *plane)
 {
 	double 		a;

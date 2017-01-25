@@ -91,7 +91,7 @@ void		init_plane(t_plane *plane)
 	// plane->n.y = -10000000;
 	// plane->n.z = 1;
 
-	plane->d.x = -100;
+	plane->d.x = 0;
 	plane->d.y = 100;
 	plane->d.z = 1;
 	plane->d = normalize_vect(plane->d);
