@@ -2,24 +2,27 @@
 
 void		init_cam(t_cam *cam)
 {
-	init_vect(&cam->campos, 0,0, 80);
-	init_vect(&cam->camdir,0,0,1);
-	init_vect(&cam->camup,0,-1,0);
-	init_vect(&cam->camright,1,0,0);
+	cam->campos =init_vect( 0,0, -80);
+	cam->camdir =init_vect(0,0,1);
+	cam->camup =init_vect(0,-1,0);
+	cam->camright =init_vect(1,0,0);
 }
 
 void		init_axe(t_axe *axe)
 {
-	init_vect(&axe->x,1,0,0);
-	init_vect(&axe->y,0,1,0);
-	init_vect(&axe->z,0,0,1);
+	axe->x = init_vect(1,0,0);
+	axe->y = init_vect(0,1,0);
+	axe->z = init_vect(0,0,1);
 }
 
-void		init_vect(t_vect *vect, double x, double y, double z)
+t_vect		init_vect(double x, double y, double z)
 {
-	vect->x = x;
-	vect->y = y;
-	vect->z = z;
+	t_vect		tmp;
+
+	tmp.x = x;
+	tmp.y = y;
+	tmp.z = z;
+	return (tmp);
 }
 
 void		compute_ray(t_cam cam, t_ray *ray, int x, int y)
@@ -42,7 +45,7 @@ void		compute_ray(t_cam cam, t_ray *ray, int x, int y)
 	img_p_x = (screen_pix_x * cam.camright.x) + (screen_pix_y * cam.camup.x) + (cam.campos.x + cam.camdir.x);
 	img_p_y = (screen_pix_x * cam.camright.y) + (screen_pix_y * cam.camup.y) + (cam.campos.y + cam.camdir.y);
 	img_p_z = (screen_pix_x * cam.camright.z) + (screen_pix_y * cam.camup.z) + (cam.campos.z + cam.camdir.z);
-	init_vect(&image_point, img_p_x, img_p_y, img_p_z);
+	image_point = init_vect(img_p_x, img_p_y, img_p_z);
 
 	ray->o = cam.campos;
 	ray->d = minus_vect(image_point, cam.campos);
@@ -69,7 +72,7 @@ void		compute_ray(t_cam cam, t_ray *ray, int x, int y)
 void		init_sphere_light(t_sphere *sphere_light)
 {
 	sphere_light->c.x = 255;
-	sphere_light->c.y = 255;
+	sphere_light->c.y = -255;
 	sphere_light->c.z = 0;
 	sphere_light->r = 0;
 }
@@ -84,6 +87,16 @@ void		init_sphere(t_sphere *sphere)
 	init_color_sphere(&sphere->color_sphere);
 }
 
+void		init_cylinder(t_cylinder *cylinder)
+{
+	cylinder->p1 = init_vect(13, 23, 10); // extramité 1
+	cylinder->p2 = init_vect(23, 32, 10);
+	cylinder->r = 10; // rayon du disc
+
+	cylinder->color_cylind = init_color(0, 0, 255, 40);
+
+}
+
 void		init_plane(t_plane *plane)
 {
 	//before
@@ -92,13 +105,13 @@ void		init_plane(t_plane *plane)
 	// plane->n.z = 1;
 
 	plane->d.x = 0;
-	plane->d.y = 100;
+	plane->d.y = 2;
 	plane->d.z = 1;
 	plane->d = normalize_vect(plane->d);
 
 	plane->o.x = 0;
 	plane->o.y = 0;
-	plane->o.z = 0;
+	plane->o.z = 1;
 
 	init_color_plane(&plane->color_plane);
 }

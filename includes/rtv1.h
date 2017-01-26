@@ -74,11 +74,15 @@ typedef struct		s_sphere
 
 typedef struct		s_cylinder
 {
-	t_vect			axe; // direction d'axe
 	t_vect			c; // centre
+	t_vect			p1; // extramité 1
+	t_vect			p2;
 	double			r; // rayon du disc
 	double			h; // hauteur
 	double 			t;
+	double 			t0;
+	double 			t1;
+	t_vect			inter;
 	t_color			color_cylind;
 }					t_cylinder;
 
@@ -131,8 +135,9 @@ double 				minus_double(t_vect a, t_vect b);
 double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 t_vect				cross_prod(t_vect a, t_vect b);
 double 				neg_dot(t_vect a, t_vect b);
-int					solveQuadratic(double a, double b, double c, t_sphere *sphere);
+double				solveQuadratic(double a, double b, double c);
 double 				clamp(double x, double upper, double lower);
+double 				lengh(t_vect a);
 
 //color
 void				init_color_background(t_color *color_background);
@@ -146,10 +151,11 @@ t_color				multi_color(t_color color, t_color b);
 t_color				minus_color(t_color a, t_color b);
 void				color_max(t_color *color);
 //obj
-void				init_vect(t_vect *vect, double x, double y, double z);
+t_vect				init_vect(double x, double y, double z);
 void				init_axe(t_axe *axe);
 void				init_plane(t_plane *plane);
 void				init_sphere(t_sphere *sphere);
+void				init_cylinder(t_cylinder *cylinder);
 void				init_sphere_light(t_sphere *sphere_light);
 void				compute_ray(t_cam cam, t_ray *ray, int x, int y);
 void				init_cam(t_cam *cam);
