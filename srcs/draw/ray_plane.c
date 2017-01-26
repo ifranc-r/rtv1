@@ -37,19 +37,23 @@ t_color sphere_color_phong(t_color objct_color, t_vect inter, t_sphere sphere_li
 
 	light_c = init_color(255,255,255,40);
 
-	n = minus_vect(inter, all.sphere.c);
+	n = minus_vect(all.sphere.c, inter);
 	diff = fmax(dot(normalize_vect(n),normalize_vect(sphere_light.c)),0);
 	h = add_vect(normalize_vect(all.ray.d),normalize_vect(sphere_light.c));
-	spect_color = multi_color(light_c ,multi_color_double(light_c, pow(dot(normalize_vect(h), normalize_vect(n)), 4)));
-	diff_color =  multi_color(light_c, multi_color_double(objct_color, diff));
+	spect_color = multi_color_double(multi_color(light_c, light_c), pow(dot(normalize_vect(h), normalize_vect(n)),2));
+	diff_color =  multi_color_double(multi_color(objct_color, light_c), diff);
+	diff_color =  multi_color_double(diff_color, 0.03);
+	spect_color =  multi_color_double(spect_color, 0.003);
 	//color_condition(&diff_color);
 	//color_condition(&spect_color);
 	final_color = add_color(spect_color, objct_color);
-	if (spect_color.r < 0 || spect_color.g < 0 || spect_color.b < 0)
+	//final_color =  multi_color_double(final_color, 0.003);
+	if ((spect_color.r  > 1)|| (spect_color.g > 1)|| (spect_color.b > 1))
 		printf("r=%f\n g=%f\n  b=%f\n",spect_color.r,spect_color.g,spect_color.b);
-	printf("r=%f\n g=%f\n  b=%f\n",diff_color.r,diff_color.g,diff_color.b);
+	//printf("r=%f\n g=%f\n  b=%f\n",diff_color.r,diff_color.g,diff_color.b);
+	//printf("diff = %f\n", diff);
 
-	//color_condition(&final_color);
+	color_condition(&final_color);
 	return (final_color);
 }
 
@@ -102,6 +106,25 @@ int 	intersect_plane(t_ray *ray, t_plane *plane)
 	return (1);
 }
 
+int		intersect_cylinder(t_ray *ray, t_sphere *cylinder)
+{
+	t_vect		L;
+	double 		a;
+	double 		b;
+	double 		c;
+
+	L = minus_vect(cylinder->c, ray->o);
+	a = dot(ray->d,ray->d);
+	b = 2 * dot(ray->d, L);
+	c = dot(L, L) - pow(cylinder->r, 2);
+	if (solveQuadratic(a, b, c, &*cylinder) == 1)
+	{
+		cylinder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylinder->t));
+		return (1);
+	}
+	return (0);
+}
+
 int		intersect_sphere(t_ray *ray, t_sphere *sphere)
 {
 	t_vect		L;
@@ -109,7 +132,7 @@ int		intersect_sphere(t_ray *ray, t_sphere *sphere)
 	double 		b;
 	double 		c;
 
-	L = minus_vect(sphere->c, ray->o);
+	L = minus_vect(ray->o, sphere->c);
 	a = dot(ray->d,ray->d);
 	b = 2 * dot(ray->d, L);
 	c = dot(L, L) - pow(sphere->r, 2);

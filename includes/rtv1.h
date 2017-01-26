@@ -78,6 +78,7 @@ typedef struct		s_cylinder
 	t_vect			c; // centre
 	double			r; // rayon du disc
 	double			h; // hauteur
+	double 			t;
 	t_color			color_cylind;
 }					t_cylinder;
 

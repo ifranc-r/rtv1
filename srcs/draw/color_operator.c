@@ -32,7 +32,7 @@ void	init_color_plane(t_color *color)
 void	init_color_sphere(t_color *color)
 {
 	color->a = 40;
-	color->r = 40;
+	color->r = 50;
 	color->b = 0;
 	color->g = 0;
 }
