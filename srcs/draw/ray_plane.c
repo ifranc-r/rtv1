@@ -70,15 +70,17 @@ t_color color_phong(t_color objct_color, t_vect inter, t_sphere sphere_light, t_
 
 	diff = fmax(dot(normalize_vect(inter),normalize_vect(sphere_light.c)),0);
 	h = add_vect(normalize_vect(all.ray.d),normalize_vect(sphere_light.c));
-	spect_color = multi_color_double(light_c, pow((dot(normalize_vect(h), normalize_vect(inter))), 4));
+	spect_color = multi_color_double(multi_color(light_c, light_c), pow((dot(normalize_vect(h), normalize_vect(inter))), 4));
 	diff_color = multi_color(light_c, multi_color_double(objct_color, diff));
+	diff_color =  multi_color_double(diff_color, 0.03);
+	spect_color =  multi_color_double(spect_color, 0.003);
 	//color_condition(&diff_color);
 	//color_max(&diff_color);
 	//color_max(&spect_color);
 	//printf("%f\n", pow((dot(normalize_vect(h), normalize_vect(inter))),1));
 
 	final_color = add_color(spect_color, objct_color);
-	// color_condition(&final_color);
+	color_condition(&final_color);
 	return (final_color);
 }
 

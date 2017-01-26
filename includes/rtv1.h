@@ -98,6 +98,7 @@ typedef struct		s_cam
 
 typedef struct		s_all
 {
+	t_cylinder		cylinder;
 	t_ray			ray;
 	t_sphere		sphere;
 	t_sphere		sphere_light;

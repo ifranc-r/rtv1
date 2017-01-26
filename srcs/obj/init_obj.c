@@ -2,10 +2,10 @@
 
 void		init_cam(t_cam *cam)
 {
-	init_vect(&cam->campos, 0,0, -80);
-	init_vect(&cam->camdir,0,0,-1);
-	init_vect(&cam->camup,0,1,0);
-	init_vect(&cam->camright,-1,0,0);
+	init_vect(&cam->campos, 0,0, 80);
+	init_vect(&cam->camdir,0,0,1);
+	init_vect(&cam->camup,0,-1,0);
+	init_vect(&cam->camright,1,0,0);
 }
 
 void		init_axe(t_axe *axe)
@@ -68,8 +68,8 @@ void		compute_ray(t_cam cam, t_ray *ray, int x, int y)
 
 void		init_sphere_light(t_sphere *sphere_light)
 {
-	sphere_light->c.x = -255;
-	sphere_light->c.y = -255;
+	sphere_light->c.x = 255;
+	sphere_light->c.y = 255;
 	sphere_light->c.z = 0;
 	sphere_light->r = 0;
 }
