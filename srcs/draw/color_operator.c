@@ -13,13 +13,6 @@ t_color init_color(double r, double g, double b, double a)
 	return (tmp);
 }
 
-void	init_color_background(t_color *color_background)
-{
-	color_background->a = 40;
-	color_background->r = 255;
-	color_background->b = 255;
-	color_background->g = 255;
-}
 
 void	init_color_plane(t_color *color)
 {

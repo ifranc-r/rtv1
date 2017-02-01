@@ -1,5 +1,14 @@
 #include "../includes/rtv1.h"
 
+void		init_sceen(t_all *all)
+{
+	init_cylinder(&all->cylinder);
+	init_sphere_light(&all->sphere_light);
+	init_plane(&all->plane);
+	init_sphere(&all->sphere);
+	all->chg++;
+}
+
 void		init_cam(t_cam *cam)
 {
 	cam->campos =init_vect( 0,0, -80);
@@ -89,8 +98,8 @@ void		init_sphere(t_sphere *sphere)
 
 void		init_cylinder(t_cylinder *cylinder)
 {
-	cylinder->p1 = init_vect(13, 23, 10); // extramité 1
-	cylinder->p2 = init_vect(23, 32, 10);
+	cylinder->p1 = init_vect(0, 30, 30); // extramité 1
+	cylinder->p2 = init_vect(0, -30, 30);
 	cylinder->r = 10; // rayon du disc
 
 	cylinder->color_cylind = init_color(0, 0, 255, 40);

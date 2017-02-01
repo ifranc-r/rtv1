@@ -100,6 +100,15 @@ typedef struct		s_cam
 	t_vect			camright; 
 }					t_cam;
 
+typedef struct		s_sdl
+{
+	SDL_Surface		*win_surf;
+	SDL_Window		*screen;
+	SDL_Event		event;
+	SDL_Renderer 	*ren;
+	const Uint8 	*state;
+}					t_sdl;
+
 typedef struct		s_all
 {
 	t_cylinder		cylinder;
@@ -107,19 +116,18 @@ typedef struct		s_all
 	t_sphere		sphere;
 	t_sphere		sphere_light;
 	t_plane			plane;
-	SDL_Surface		*win_surf;
-	SDL_Window		*screen;
-	SDL_Event		event;
-	SDL_Renderer 	*ren;
-	const Uint8 	*state;
-
+	t_sdl			sdl;
+	int 			chg;
 }					t_all;
 
-void				draw(t_all *all);
+void 				sdl_and_funct(t_all *all);
+
+void				draw(t_all *all, t_sdl *sdl);
 //sdl
-void 				sdl(t_all *all);
-void				event(t_all *all);
-void				sdl_close(t_all *all);
+void				event(t_all *all, t_sdl *sdl);
+void				sdl_close(t_sdl *sdl);
+void				sdl_err();
+void				sdl_init(t_sdl *sdl);
 //operation
 t_vect				add_vect(t_vect a, t_vect b);
 t_vect				minus_vect(t_vect a, t_vect b);
@@ -140,7 +148,6 @@ double 				clamp(double x, double upper, double lower);
 double 				lengh(t_vect a);
 
 //color
-void				init_color_background(t_color *color_background);
 t_color				multi_color_double(t_color color, double b);
 t_color				add_color(t_color a, t_color b);
 void				color_condition(t_color *color);
@@ -150,7 +157,8 @@ t_color 			init_color(double r, double g, double b, double a);
 t_color				multi_color(t_color color, t_color b);
 t_color				minus_color(t_color a, t_color b);
 void				color_max(t_color *color);
-//obj
+//obj and sceen
+void				init_sceen(t_all *all);
 t_vect				init_vect(double x, double y, double z);
 void				init_axe(t_axe *axe);
 void				init_plane(t_plane *plane);
