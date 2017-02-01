@@ -31,22 +31,23 @@ t_color sphere_color_phong(t_color objct_color, t_vect inter, t_sphere sphere_li
 	t_color		final_color;
 	t_color		diff_color;
 	t_color		spect_color;
+	t_color		ambiant;
 	double 		diff;
 	t_vect 		n;
 	t_vect 		h;
 
 	light_c = init_color(255,255,255,40);
+	ambiant = init_color(10,10,20,40);
 
 	n = minus_vect(inter, all.sphere.c);
 	diff = fmax(dot(normalize_vect(n),normalize_vect(sphere_light.c)),0);
-
 	h = add_vect(negative_vect(normalize_vect(all.ray.d)),normalize_vect(sphere_light.c));
-
 	spect_color = multi_color_double(multi_color(light_c, light_c), pow(dot(normalize_vect(h), normalize_vect(n)),30));
-
 	diff_color =  multi_color_double(multi_color(objct_color, light_c), diff);
+	
 	final_color = add_color(spect_color, diff_color);
 	final_color =  multi_color_double(final_color, 0.0038);
+	final_color = add_color(final_color, ambiant);
 	color_condition(&final_color);
 	return (final_color);
 }
@@ -216,17 +217,17 @@ void		draw(t_all *all)
 		while (y++ < WIN_Y)
 		{
 			compute_ray(cam,&all->ray,x,y);
-			// if (intersect_sphere(&all->ray, &all->sphere))
-			// {
-			// 	color = sphere_color_phong(all->sphere.color_sphere, all->sphere.inter, all->sphere_light, *all);
-			// 	SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
-			// }
+			if (intersect_sphere(&all->ray, &all->sphere))
+			{
+				color = sphere_color_phong(all->sphere.color_sphere, all->sphere.inter, all->sphere_light, *all);
+				SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
+			}
 			// else if (intersect_plane(&all->ray, &all->plane))
 			// {
 			// 	color = color_phong(all->plane.color_plane, all->plane.inter, all->sphere_light, *all);
 			// 	SDL_SetRenderDrawColor(all->ren, color.r, color.g, color.b, color.a);
 			// }
-			if (intersect_cylinder(&all->ray, &all->cylinder))
+			else if (intersect_cylinder(&all->ray, &all->cylinder))
 			{
 				//color = color_phong(all->cylinder.color_cylind, all->cylinder.inter, all->sphere_light, *all);
 				color = all->cylinder.color_cylind;
