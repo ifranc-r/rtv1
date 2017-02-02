@@ -53,10 +53,8 @@ typedef struct		s_axe
 
 typedef struct		s_plane
 {
-	t_vect			d; //vector derector
+	t_vect			n; //vector derector
 	t_vect			o; //origin
-	t_vect			in; //inclinaison
-	double 			t;
 	t_vect			inter;
 	t_color			color_plane;
 }					t_plane;
@@ -146,6 +144,7 @@ double 				neg_dot(t_vect a, t_vect b);
 double				solveQuadratic(double a, double b, double c);
 double 				clamp(double x, double upper, double lower);
 double 				lengh(t_vect a);
+t_vect				devide_vect(t_vect a, t_vect b);
 
 //color
 t_color				multi_color_double(t_color color, double b);
@@ -157,6 +156,7 @@ t_color 			init_color(double r, double g, double b, double a);
 t_color				multi_color(t_color color, t_color b);
 t_color				minus_color(t_color a, t_color b);
 void				color_max(t_color *color);
+t_color				devide_color_double(t_color color, double b);
 //obj and sceen
 void				init_sceen(t_all *all);
 t_vect				init_vect(double x, double y, double z);

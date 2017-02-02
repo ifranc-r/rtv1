@@ -36,6 +36,8 @@ int		key_event(t_sdl	*sdl, t_all *all)
 			mod_vect(&all->sphere.c, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_2])
 			mod_vect(&all->plane.o, sdl->state, &*all);
+		else if (sdl->state[SDL_SCANCODE_KP_5])
+			mod_vect(&all->plane.n, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_3])
 		{
 			mod_vect(&all->cylinder.p1, sdl->state, &*all);

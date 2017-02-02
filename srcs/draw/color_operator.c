@@ -52,6 +52,17 @@ t_color	multi_color(t_color color, t_color b)
 	return (tmp);
 }
 
+t_color	devide_color_double(t_color color, double b)
+{
+	t_color tmp;
+
+	//tmp.a = color.a / b;
+	tmp.r = color.r / b;
+	tmp.b = color.b / b;
+	tmp.g = color.g / b;
+	return (tmp);
+}
+
 t_color	add_color(t_color a, t_color b)
 {
 	t_color tmp;

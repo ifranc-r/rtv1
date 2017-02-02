@@ -80,8 +80,8 @@ void		compute_ray(t_cam cam, t_ray *ray, int x, int y)
 
 void		init_sphere_light(t_sphere *sphere_light)
 {
-	sphere_light->c.x = 255;
-	sphere_light->c.y = -255;
+	sphere_light->c.x = 0;
+	sphere_light->c.y = 0;
 	sphere_light->c.z = 0;
 	sphere_light->r = 0;
 }
@@ -113,14 +113,14 @@ void		init_plane(t_plane *plane)
 	// plane->n.y = -10000000;
 	// plane->n.z = 1;
 
-	plane->d.x = 0;
-	plane->d.y = 2;
-	plane->d.z = 1;
-	plane->d = normalize_vect(plane->d);
+	plane->n.x = 0;
+	plane->n.y = 0;
+	plane->n.z = 1;
+	plane->n = normalize_vect(plane->n);
 
 	plane->o.x = 0;
 	plane->o.y = 0;
-	plane->o.z = 1;
+	plane->o.z = 4;
 
 	init_color_plane(&plane->color_plane);
 }
