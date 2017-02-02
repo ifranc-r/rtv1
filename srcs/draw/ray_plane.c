@@ -32,6 +32,7 @@ t_color sphere_color_phong(t_color objct_color, t_vect inter, t_sphere sphere_li
 	t_color		diff_color;
 	t_color		spect_color;
 	t_color		ambiant;
+	t_vect		light_dir;
 	double 		diff;
 	t_vect 		n;
 	t_vect 		h;
@@ -39,10 +40,13 @@ t_color sphere_color_phong(t_color objct_color, t_vect inter, t_sphere sphere_li
 	light_c = init_color(255,255,255,40);
 	ambiant = init_color(70,22,22,40);
 
+	light_dir = negative_vect(normalize_vect(minus_vect(inter, sphere_light.c)));
 	n = minus_vect(inter, all.sphere.c);
 	diff = fmax(dot(normalize_vect(n),normalize_vect(sphere_light.c)),0);
-	h = add_vect(negative_vect(normalize_vect(all.ray.d)),normalize_vect(sphere_light.c));
-	spect_color = multi_color_double(multi_color(light_c, light_c), pow(dot(normalize_vect(h), normalize_vect(n)),30));
+	h = normalize_vect(add_vect(light_dir,multi_vect_double(n, 2.0 * dot(light_dir, n))));
+	double spect = (diff > 0 ? pow(dot(h, negative_vect(light_dir)),30) : 0);
+	spect = (spect > 0 ? spect : 0);
+	spect_color = multi_color_double(multi_color(light_c, light_c), spect);
 	diff_color =  multi_color_double(multi_color(objct_color, light_c), diff);
 	
 	final_color = add_color(spect_color, diff_color);
@@ -142,32 +146,56 @@ t_color color_phong(t_color objct_color, t_vect inter, t_sphere sphere_light, t_
 
 int 	intersect_plane(t_ray *ray, t_plane *plane)
 {
+	t_vect		L;
 	double 		a;
 	double 		t;
-	t_vect 		v;
-	double 		d2;
 
-	a = dot(ray->d, plane->n); // calcule angle of the vect
-	if (a != 0) // plane parallel to the ray no intersection
+	a = dot(ray->d, plane->n);
+	L = minus_vect(ray->o, plane->o);
+	if (a != 0) //paralle
 	{
-	//sratchc++ vide
-	//t = (((plane->p1.x * plane->n.x +plane->p1.y * plane->n.y +plane->p1.z * plane->n.z) -(plane->n.x * ray->o.x) -(plane->n.y * ray->o.y) -(plane->n.z * ray->o.z)) / a);
-	// myself
-	//t = (((neg_dot(plane->d,ray->o) + dot(plane->o, plane->d))* plane->di)/a); // problem hereeeee ,<<<<<<<<<<<<<<<<<
-	//scratchapixel wedsite
-		t  = dot(minus_vect(normalize_vect(plane->o),ray->o), plane->n)/a;
-		if (t >= 0)
+		double b = dot(L, plane->n);
+		if (a != b) // behind
 		{
-	//plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
+			t = dot(negative_vect(L), plane->n) / a;
 			plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
-			v = minus_vect(plane->inter, plane->o);
-			d2 = dot(v,v);
-			if (sqrt(d2) <= 50)
-				return (1);
 		}
-
 	}
 	return (0);
+
+
+
+
+
+
+
+
+
+	// double 		a;
+	// double 		t;
+	// t_vect 		v;
+	// double 		d2;
+	// a = dot(ray->d, plane->n); // calcule angle of the vect
+	// if (a != 0) // plane parallel to the ray no intersection
+	// {
+	// //sratchc++ vide
+	// //t = (((plane->p1.x * plane->n.x +plane->p1.y * plane->n.y +plane->p1.z * plane->n.z) -(plane->n.x * ray->o.x) -(plane->n.y * ray->o.y) -(plane->n.z * ray->o.z)) / a);
+	// // myself
+	// //t = (((neg_dot(plane->d,ray->o) + dot(plane->o, plane->d))* plane->di)/a); // problem hereeeee ,<<<<<<<<<<<<<<<<<
+	// //scratchapixel wedsite
+	// 	t  = dot(minus_vect(normalize_vect(plane->o),ray->o), plane->n)/a;
+	// 	if (t >= 0)
+	// 	{
+	// //plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
+	// 		plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
+	// 		v = minus_vect(plane->inter, plane->o);
+	// 		d2 = dot(v,v);
+	// 		if (sqrt(d2) <= 50)
+	// 			return (1);
+	// 	}
+
+	// }
+	// return (0);
 }
 
 int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder)
