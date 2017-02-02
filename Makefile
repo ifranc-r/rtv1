@@ -35,7 +35,7 @@ SRC = ./srcs/main.c\
 	  srcs/draw/vect_operator.c\
 	  srcs/event/loop.c\
 
-SDL = -L ./libft/ -lft  -framework SDL2
+SDL = -L ./libft/ -lft  -I/Library/Frameworks/SDL2.framework/Headers -F/Library/Frameworks -framework SDL2
 
 GCC = gcc -Wall -Wextra -Werror 
 

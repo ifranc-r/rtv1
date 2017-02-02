@@ -2,7 +2,7 @@
 # define RTV1_H
 # define FRACT_OL_H
 # include "../libft/libft.h"
-# include <SDL2/SDL.h>
+# include <SDL.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
