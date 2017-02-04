@@ -37,7 +37,7 @@ int		key_event(t_sdl	*sdl, t_all *all)
 		else if (sdl->state[SDL_SCANCODE_KP_2])
 			mod_vect(&all->plane.o, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_5])
-			mod_vect(&all->plane.n, sdl->state, &*all);
+			mod_vect(&all->plane.d, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_3])
 		{
 			mod_vect(&all->cylinder.p1, sdl->state, &*all);
@@ -67,7 +67,7 @@ void	event(t_all *all, t_sdl *sdl)
 			if (all->chg != check_all)
 			{
 				check_all = all->chg;
-				printf("merddde");
+				// printf("merddde");
 				draw(&*all, &*sdl);
 			}
 			isrunning = key_event(&all->sdl, &*all);

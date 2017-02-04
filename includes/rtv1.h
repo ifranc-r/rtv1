@@ -53,6 +53,7 @@ typedef struct		s_axe
 
 typedef struct		s_plane
 {
+	t_vect			d; // axe
 	t_vect			n; //vector derector
 	t_vect			o; //origin
 	t_vect			inter;
@@ -66,6 +67,7 @@ typedef struct		s_sphere
 	double 			t;
 	double 			t0;
 	double 			t1;
+	t_vect			n; // normal surface
 	t_vect			inter;// position of intersection
 	t_color			color_sphere;
 }					t_sphere;

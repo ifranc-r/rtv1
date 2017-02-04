@@ -150,12 +150,12 @@ double		solveQuadratic(double a, double b, double c)
     discriminant = b * b -  4*a * c;
 	if (discriminant < 0) // no intersection
 		return (0);
-	else if (discriminant == 0) 
-	{
-		t = - 0.5 * b / a;
-		return (t);
-	}
-	else if (discriminant > 0)  // ray->is tangent to sphere
+	// else if (discriminant == 0) 
+	// {
+	// 	t = - 0.5 * b / a;
+	// 	return (t);
+	// }
+	else if (discriminant >= 0)  // ray->is tangent to sphere
 	{
 		discriminant = sqrt(discriminant);
 		t0 = ((-b + discriminant)/(2*a));

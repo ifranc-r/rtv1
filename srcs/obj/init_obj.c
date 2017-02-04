@@ -112,15 +112,13 @@ void		init_plane(t_plane *plane)
 	// plane->n.x = 0;
 	// plane->n.y = -10000000;
 	// plane->n.z = 1;
-
-	plane->n.x = 0;
-	plane->n.y = 0;
-	plane->n.z = 1;
-	plane->n = normalize_vect(plane->n);
+	plane->d.x = 0;
+	plane->d.y = 2;
+	plane->d.z = 1;
 
 	plane->o.x = 0;
 	plane->o.y = 0;
-	plane->o.z = 4;
+	plane->o.z = 30;
 
 	init_color_plane(&plane->color_plane);
 }
