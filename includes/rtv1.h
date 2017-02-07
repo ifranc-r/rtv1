@@ -2,7 +2,8 @@
 # define RTV1_H
 # define FRACT_OL_H
 # include "../libft/libft.h"
-# include <SDL.h>
+// # include <SDL.h>
+# include <SDL2/SDL.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -75,21 +76,37 @@ typedef struct		s_sphere
 typedef struct		s_cylinder
 {
 	t_vect			c; // centre
-	t_vect			p1; // extramité 1
-	t_vect			p2;
+	t_vect			axe;
+	t_vect			v;
+	double			m;
+	t_vect			n;
 	double			r; // rayon du disc
 	double			h; // hauteur
 	double 			t;
-	double 			t0;
-	double 			t1;
 	t_vect			inter;
 	t_color			color_cylind;
 }					t_cylinder;
+
+typedef struct		s_cone
+{
+	t_vect			c; // centre
+	t_vect			axe;
+	t_vect			v;
+	double			m;
+	t_vect			n;
+	double			r; // rayon du disc
+	double			h; // hauteur
+	double 			k;
+	double 			t;
+	t_vect			inter;
+	t_color			color_cone;
+}					t_cone;
 
 typedef struct		s_ray
 {
 	t_vect			o; // origin
 	t_vect			d; // direction
+	t_vect			inter;
 }					t_ray;
 
 typedef struct		s_cam
@@ -111,6 +128,7 @@ typedef struct		s_sdl
 
 typedef struct		s_all
 {
+	t_cone			cone;
 	t_cylinder		cylinder;
 	t_ray			ray;
 	t_sphere		sphere;
@@ -167,6 +185,7 @@ void				init_plane(t_plane *plane);
 void				init_sphere(t_sphere *sphere);
 void				init_cylinder(t_cylinder *cylinder);
 void				init_sphere_light(t_sphere *sphere_light);
+void				init_cone(t_cone *cone);
 void				compute_ray(t_cam cam, t_ray *ray, int x, int y);
 void				init_cam(t_cam *cam);
 #endif

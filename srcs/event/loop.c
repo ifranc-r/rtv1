@@ -39,10 +39,13 @@ int		key_event(t_sdl	*sdl, t_all *all)
 		else if (sdl->state[SDL_SCANCODE_KP_5])
 			mod_vect(&all->plane.d, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_3])
-		{
-			mod_vect(&all->cylinder.p1, sdl->state, &*all);
-			mod_vect(&all->cylinder.p2, sdl->state, &*all);
-		}
+			mod_vect(&all->cylinder.c, sdl->state, &*all);
+		else if (sdl->state[SDL_SCANCODE_KP_6])
+			mod_vect(&all->cylinder.axe, sdl->state, &*all);
+		else if (sdl->state[SDL_SCANCODE_KP_4])
+			mod_vect(&all->cone.c, sdl->state, &*all);
+		else if (sdl->state[SDL_SCANCODE_KP_7])
+			mod_vect(&all->cone.axe, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_1])
 			init_sceen(&*all);
 	}

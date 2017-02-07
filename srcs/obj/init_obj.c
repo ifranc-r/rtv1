@@ -6,6 +6,7 @@ void		init_sceen(t_all *all)
 	init_sphere_light(&all->sphere_light);
 	init_plane(&all->plane);
 	init_sphere(&all->sphere);
+	init_cone(&all->cone);
 	all->chg++;
 }
 
@@ -98,11 +99,22 @@ void		init_sphere(t_sphere *sphere)
 
 void		init_cylinder(t_cylinder *cylinder)
 {
-	cylinder->p1 = init_vect(0, 30, 30); // extramité 1
-	cylinder->p2 = init_vect(0, -30, 30);
+	cylinder->c = init_vect(0, 30, 30); // extramité 1
+	cylinder->axe = init_vect(0, 1, 0);
+	cylinder->h = 40;
 	cylinder->r = 10; // rayon du disc
-
 	cylinder->color_cylind = init_color(0, 0, 255, 40);
+}
+
+void		init_cone(t_cone *cone)
+{
+	cone->c = init_vect(0, 30, 30); // extramité 1
+	cone->axe = init_vect(0, 1, 0);
+
+	cone->k = 0.5;
+	cone->r = 10; // rayon du disc
+
+	cone->color_cone = init_color(255, 0, 0, 40);
 
 }
 
