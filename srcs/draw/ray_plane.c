@@ -350,6 +350,66 @@ int		intersect_sphere(t_ray *ray, t_sphere *sphere)
 	return (0);
 }
 
+typedef struct		s_callobj
+{
+	int				number;
+	t_cone			cone;
+	t_cylinder		cylinder;
+	t_ray			ray;
+	t_sphere		sphere;
+	t_plane			plane;
+}					t_callobj;
+
+static t_callobj	*obj()
+{
+	static t_callfract	tmp[4] = {
+		{ 1, all->sphere },
+		{ 2, all->plane },
+		{ 3, all->cylinder },
+		{ 4, all-> },
+	};
+
+	return (tmp);
+}
+
+t_vect		get_close_inter(t_ray *ray,t_all *all)
+{
+	t_vect		tmp;
+	double 		lengh;
+	double 		tmp_lengh;
+
+	tmp_lengh = 0;
+	lengh = 0;
+	if (intersect_sphere(&all->ray, &all->sphere))
+	{
+		tmp_lengh = lengh(minus_vect(ray->o,tmp));
+		if (lengh > 0 && tmp_lengh > 0 && tmp_lengh < lengh)
+		{
+			tmp = all->sphere.inter;
+		}
+		else if (lengh == 0)
+		{
+			tmp = all->sphere.inter;
+			lengh = lengh(minus_vect(ray->o,tmp));
+		}
+	}
+	if (intersect_plane(&all->ray, &all->plane))
+	{
+		tmp_lengh = lengh(minus_vect(ray->o,tmp));
+		if (lengh > 0 && tmp_lengh > 0 && tmp_lengh < lengh)
+		{
+			tmp = all->plane.inter;
+		}
+		else if (lengh == 0)
+		{
+			tmp = all->plane.inter;
+			lengh = lengh(minus_vect(ray->o,tmp));
+		}
+	}
+	return (tmp);
+}
+
+
 void		draw(t_all *all, t_sdl *sdl)
 {
 	int 		x;
@@ -407,8 +467,12 @@ void		draw(t_all *all, t_sdl *sdl)
 			// 	// color = all->cylinder.color_cylind;
 			// 	SDL_SetRenderDrawColor(sdl->ren, color.r, color.g, color.b, color.a);
 			// }
-			if (intersect_cone(&all->ray, &all->cone))
+			if (intersect_cone(&all->ray, &all->cone) || \
+				intersect_plane(&all->ray, &all->plane) || \
+				intersect_cylinder(&all->ray, &all->cylinder) || \
+				intersect_sphere(&all->ray, &all->sphere))
 			{
+
 				color = color_phong(all->cone.color_cone, all->sphere_light, all->cone.n, all->ray);
 				// color = all->cone.color_cone;
 				SDL_SetRenderDrawColor(sdl->ren, color.r, color.g, color.b, color.a);

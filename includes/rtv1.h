@@ -138,6 +138,16 @@ typedef struct		s_all
 	int 			chg;
 }					t_all;
 
+typedef struct		s_callobj
+{
+	int				number;
+	t_cone			cone;
+	t_cylinder		cylinder;
+	t_ray			ray;
+	t_sphere		sphere;
+	t_plane			plane;
+}					t_callobj;
+
 void 				sdl_and_funct(t_all *all);
 
 void				draw(t_all *all, t_sdl *sdl);
