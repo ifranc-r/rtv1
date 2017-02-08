@@ -33,19 +33,19 @@ int		key_event(t_sdl	*sdl, t_all *all)
 		if (sdl->state[SDL_SCANCODE_KP_0])
 			mod_vect(&all->sphere_light.c, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_1])
-			mod_vect(&all->sphere.c, sdl->state, &*all);
+			mod_vect(&all->obj.sphere.c, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_2])
-			mod_vect(&all->plane.o, sdl->state, &*all);
+			mod_vect(&all->obj.plane.o, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_5])
-			mod_vect(&all->plane.d, sdl->state, &*all);
+			mod_vect(&all->obj.plane.d, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_3])
-			mod_vect(&all->cylinder.c, sdl->state, &*all);
+			mod_vect(&all->obj.cylinder.c, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_6])
-			mod_vect(&all->cylinder.axe, sdl->state, &*all);
+			mod_vect(&all->obj.cylinder.axe, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_4])
-			mod_vect(&all->cone.c, sdl->state, &*all);
+			mod_vect(&all->obj.cone.c, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_7])
-			mod_vect(&all->cone.axe, sdl->state, &*all);
+			mod_vect(&all->obj.cone.axe, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_1])
 			init_sceen(&*all);
 	}

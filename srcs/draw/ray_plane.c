@@ -25,62 +25,64 @@
 
  // pseudo algo de phong
 
-t_color color_phong(t_color objct_color, t_sphere sphere_light, t_vect n, t_ray ray)
+
+t_color color_phong(t_color objct_color, t_sphere sphere_light, t_vect n,t_ray ray, t_vect inter)
 {
 	t_color		light_c;
 	t_color		final_color;
 	t_color		diff_color;
 	t_color		spect_color;
+	t_vect		light_dir;
 	t_color		ambiant;
 	double 		diff;
 	t_vect 		h;
 
 	light_c = init_color(255,255,255,40); // il manque la le point d'inter avec le centre de la lumiere
 	ambiant = init_color(10,10,20,40);
-
-	diff = fmax(dot(n,normalize_vect(sphere_light.c)),0);
-	h = normalize_vect(add_vect(negative_vect(ray.d),sphere_light.c));
-	spect_color = multi_color_double(multi_color(light_c, light_c), (diff > 0 ? pow(dot(normalize_vect(h),n),30) : 0));
+	light_dir = negative_vect(normalize_vect(minus_vect(inter, sphere_light.c)));
+	diff = fmax(dot(n,light_dir),0);
+	h = normalize_vect(minus_vect(ray.d,light_dir));
+	spect_color = multi_color_double(multi_color(light_c, light_c), (diff > 0 ? pow(dot(h,n),30) : 0));
 	diff_color =  multi_color_double(multi_color(objct_color, light_c), diff);
 	
 	final_color = add_color(spect_color, diff_color);
-	final_color =  multi_color_double(final_color, 0.0038);
+	final_color =  multi_color_double(diff_color, 0.0038);
 	final_color = add_color(final_color, ambiant);
 	color_condition(&final_color);
 	return (final_color);
-
-	// Le mec
-	// t_color color_phong(t_color objct_color, t_sphere sphere_light, t_vect n,t_vect inter)
-	// t_color		light_c;
-	// t_color		final_color;
-	// t_color		diff_color;
-	// t_color		spect_color;
-	// t_color		ambiant;
-	// t_vect		light_dir;
-	// double 		diff;
-	// // t_vect 		n;
-	// t_vect 		h;
-
-	// light_c = init_color(255,255,255,40);
-	// ambiant = init_color(70,22,22,40);
-
-	// light_dir = negative_vect(normalize_vect(minus_vect(inter, sphere_light.c)));
-	// // n = normalize_vect(minus_vect(inter, all.sphere.c));
-	// diff = fmax(dot(n,normalize_vect(sphere_light.c)),0);
-	// h = normalize_vect(add_vect(negative_vect(light_dir),multi_vect_double(n, 2.0 * dot(light_dir, n))));
-	// double spect = (diff > 0 ? pow(dot(h, negative_vect(light_dir)),30) : 0);
-	// spect = (spect > 0 ? spect : 0);
-	// spect_color = multi_color_double(multi_color(light_c, light_c), spect);
-	// diff_color =  multi_color_double(multi_color(objct_color, light_c), diff);
-	
-	// final_color = add_color(spect_color, diff_color);
-	// final_color =  multi_color_double(final_color, 0.0038);
-	// final_color = add_color(final_color, ambiant);
-	// color_condition(&final_color);
-	// if (final_color.r  == 255 )
-		// printf("spect = %f        diff = %f            \n     ",spect, diff);
-	// return (final_color);
 }
+	// Le mec
+// 	t_color color_phong(t_color objct_color, t_sphere sphere_light, t_vect n,t_vect inter){
+// 	t_color		light_c;
+// 	t_color		final_color;
+// 	t_color		diff_color;
+// 	t_color		spect_color;
+// 	t_color		ambiant;
+// 	t_vect		light_dir;
+// 	double 		diff;
+// 	// t_vect 		n;
+// 	t_vect 		h;
+
+// 	light_c = init_color(255,255,255,40);
+// 	ambiant = init_color(70,22,22,40);
+
+// 	light_dir = negative_vect(normalize_vect(minus_vect(inter, sphere_light.c)));
+// 	// n = normalize_vect(minus_vect(inter, all.sphere.c));
+// 	diff = fmax(dot(n,normalize_vect(sphere_light.c)),0);
+// 	h = normalize_vect(add_vect(negative_vect(light_dir),multi_vect_double(n, 2.0 * dot(light_dir, n))));
+// 	double spect = (diff > 0 ? pow(dot(h, negative_vect(light_dir)),30) : 0);
+// 	spect = (spect > 0 ? spect : 0);
+// 	spect_color = multi_color_double(multi_color(light_c, light_c), spect);
+// 	diff_color =  multi_color_double(multi_color(objct_color, light_c), diff);
+	
+// 	final_color = add_color(spect_color, diff_color);
+// 	final_color =  multi_color_double(final_color, 0.0038);
+// 	final_color = add_color(final_color, ambiant);
+// 	color_condition(&final_color);
+// 	// if (final_color.r  == 255 )
+// 		// printf("spect = %f        diff = %f            \n     ",spect, diff);
+// 	return (final_color);
+// }
 
 // t_color color_phong(t_color objct_color, t_vect inter, t_sphere sphere_light, t_all all)
 // {
@@ -350,74 +352,114 @@ int		intersect_sphere(t_ray *ray, t_sphere *sphere)
 	return (0);
 }
 
-typedef struct		s_callobj
-{
-	int				number;
-	t_cone			cone;
-	t_cylinder		cylinder;
-	t_ray			ray;
-	t_sphere		sphere;
-	t_plane			plane;
-}					t_callobj;
 
-static t_callobj	*obj()
-{
-	static t_callfract	tmp[4] = {
-		{ 1, all->sphere },
-		{ 2, all->plane },
-		{ 3, all->cylinder },
-		{ 4, all-> },
-	};
 
-	return (tmp);
+
+
+int		get_close_inter(t_ray *ray,t_obj *obj)
+{
+	t_vect		tmpinter;
+	double 		le = 999999.9;
+	double 		tmp_lengh;
+	int 		num_obj;
+
+	if (intersect_sphere(&*ray, &obj->sphere))
+	{
+		tmp_lengh = lengh(minus_vect(ray->o, obj->sphere.inter));
+		if (tmp_lengh < le)
+		{
+			le = tmp_lengh;
+			tmpinter = obj->sphere.inter;
+			num_obj = 1;
+		}
+	}
+	if (intersect_plane(&*ray, &obj->plane))
+	{
+		tmp_lengh = lengh(minus_vect(ray->o, obj->plane.inter));
+		if (tmp_lengh < le)
+		{
+			le = tmp_lengh;
+			tmpinter = obj->plane.inter;
+			num_obj = 2;
+		}
+	}
+	if (intersect_cylinder(&*ray, &obj->cylinder))
+	{
+		tmp_lengh = lengh(minus_vect(ray->o, obj->cylinder.inter));
+		if (tmp_lengh < le)
+		{
+			le = tmp_lengh;
+			tmpinter = obj->cylinder.inter;
+			num_obj = 3;
+		}
+	}
+	if (intersect_cone(&*ray, &obj->cone))
+	{
+		tmp_lengh = lengh(minus_vect(ray->o, obj->cone.inter));
+		if (tmp_lengh < le)
+		{
+			le = tmp_lengh;
+			tmpinter = obj->cone.inter;
+			num_obj = 4;
+		}
+	}
+	return (num_obj);
 }
 
-t_vect		get_close_inter(t_ray *ray,t_all *all)
+t_vect	call_obj_n(t_obj obj, int num_obj)
 {
 	t_vect		tmp;
-	double 		lengh;
-	double 		tmp_lengh;
 
-	tmp_lengh = 0;
-	lengh = 0;
-	if (intersect_sphere(&all->ray, &all->sphere))
-	{
-		tmp_lengh = lengh(minus_vect(ray->o,tmp));
-		if (lengh > 0 && tmp_lengh > 0 && tmp_lengh < lengh)
-		{
-			tmp = all->sphere.inter;
-		}
-		else if (lengh == 0)
-		{
-			tmp = all->sphere.inter;
-			lengh = lengh(minus_vect(ray->o,tmp));
-		}
-	}
-	if (intersect_plane(&all->ray, &all->plane))
-	{
-		tmp_lengh = lengh(minus_vect(ray->o,tmp));
-		if (lengh > 0 && tmp_lengh > 0 && tmp_lengh < lengh)
-		{
-			tmp = all->plane.inter;
-		}
-		else if (lengh == 0)
-		{
-			tmp = all->plane.inter;
-			lengh = lengh(minus_vect(ray->o,tmp));
-		}
-	}
+	if (num_obj == 1)
+		tmp = (obj.sphere.n);
+	if (num_obj == 2)
+		tmp = negative_vect(obj.plane.n);
+	if (num_obj == 3)
+		tmp = obj.cylinder.n;
+	if (num_obj == 4)
+		tmp = (obj.cone.n);
 	return (tmp);
 }
 
+t_color	 call_obj_color(t_obj obj, int num_obj)
+{
+	t_color		tmp;
+
+	if (num_obj == 1)
+		tmp = (obj.sphere.color);
+	if (num_obj == 2)
+		tmp = (obj.plane.color);
+	if (num_obj == 3)
+		tmp = (obj.cylinder.color);
+	if (num_obj == 4)
+		tmp = (obj.cone.color);
+	return (tmp);
+}
+
+t_vect	 call_obj_inter(t_obj obj, int num_obj)
+{
+	t_vect		tmp;
+
+	if (num_obj == 1)
+		tmp = (obj.sphere.inter);
+	if (num_obj == 2)
+		tmp = (obj.plane.inter);
+	if (num_obj == 3)
+		tmp = (obj.cylinder.inter);
+	if (num_obj == 4)
+		tmp = (obj.cone.inter);
+	return (tmp);
+}
 
 void		draw(t_all *all, t_sdl *sdl)
 {
-	int 		x;
-	int			y;
-	t_color		color;
-	t_color		color_background;
-	t_cam 		cam;
-	t_axe		axe;
+	int 				num_obj;
+	int 				x;
+	int					y;
+	t_color				color;
+	t_color				color_background;
+	t_cam 				cam;
+	t_axe				axe;
 
 	// bymyself
 
@@ -467,14 +509,16 @@ void		draw(t_all *all, t_sdl *sdl)
 			// 	// color = all->cylinder.color_cylind;
 			// 	SDL_SetRenderDrawColor(sdl->ren, color.r, color.g, color.b, color.a);
 			// }
-			if (intersect_cone(&all->ray, &all->cone) || \
-				intersect_plane(&all->ray, &all->plane) || \
-				intersect_cylinder(&all->ray, &all->cylinder) || \
-				intersect_sphere(&all->ray, &all->sphere))
+			if (intersect_cone(&all->ray, &all->obj.cone) || \
+				intersect_plane(&all->ray, &all->obj.plane) || \
+				intersect_cylinder(&all->ray, &all->obj.cylinder) || \
+				intersect_sphere(&all->ray, &all->obj.sphere))
 			{
 
-				color = color_phong(all->cone.color_cone, all->sphere_light, all->cone.n, all->ray);
-				// color = all->cone.color_cone;
+				num_obj = get_close_inter(&all->ray, &all->obj);
+				// color = color_phong(call_obj_color(all->obj, num_obj), all->sphere_light, call_obj_n(all->obj, num_obj), all->ray);
+				color = color_phong(call_obj_color(all->obj, num_obj), all->sphere_light, call_obj_n(all->obj, num_obj),all->ray,call_obj_inter(all->obj, num_obj));
+				//color = call_obj_color(all->obj, num_obj);
 				SDL_SetRenderDrawColor(sdl->ren, color.r, color.g, color.b, color.a);
 			}
 			// envoyer ray par chaque pixel
@@ -485,6 +529,7 @@ void		draw(t_all *all, t_sdl *sdl)
 	}
 	SDL_RenderPresent(sdl->ren);
 }
+
 
 
 	// if (intersect_plane(&all->ray, &all->plane) || intersect_sphere(&all->ray, &all->sphere))

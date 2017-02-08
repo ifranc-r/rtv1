@@ -2,11 +2,11 @@
 
 void		init_sceen(t_all *all)
 {
-	init_cylinder(&all->cylinder);
+	init_cylinder(&all->obj.cylinder);
 	init_sphere_light(&all->sphere_light);
-	init_plane(&all->plane);
-	init_sphere(&all->sphere);
-	init_cone(&all->cone);
+	init_plane(&all->obj.plane);
+	init_sphere(&all->obj.sphere);
+	init_cone(&all->obj.cone);
 	all->chg++;
 }
 
@@ -81,56 +81,44 @@ void		compute_ray(t_cam cam, t_ray *ray, int x, int y)
 
 void		init_sphere_light(t_sphere *sphere_light)
 {
-	sphere_light->c.x = 0;
-	sphere_light->c.y = 0;
-	sphere_light->c.z = 0;
+	sphere_light->c = init_vect(0, 0, 0);
 	sphere_light->r = 0;
 }
 
 void		init_sphere(t_sphere *sphere)
 {
-	sphere->c.x = 0;
-	sphere->c.y = 0;
-	sphere->c.z = 20;
+	sphere->c = init_vect(0, 10, 40);
 
 	sphere->r = 10;
-	init_color_sphere(&sphere->color_sphere);
+	sphere->color = init_color(255, 0, 0, 40);
 }
 
 void		init_cylinder(t_cylinder *cylinder)
 {
-	cylinder->c = init_vect(0, 30, 30); // extramité 1
-	cylinder->axe = init_vect(0, 1, 0);
+	cylinder->c = init_vect(40, 30, 30); // extramité 1
+	cylinder->axe = init_vect(0, -1, 0);
 	cylinder->h = 40;
 	cylinder->r = 10; // rayon du disc
-	cylinder->color_cylind = init_color(0, 0, 255, 40);
+	cylinder->color = init_color(0, 0, 255, 40);
 }
 
 void		init_cone(t_cone *cone)
 {
-	cone->c = init_vect(0, 30, 30); // extramité 1
-	cone->axe = init_vect(0, 1, 0);
+	cone->c = init_vect(-40, 30, 30); // extramité 1
+	cone->axe = init_vect(0, -1, 0);
 
 	cone->k = 0.5;
 	cone->r = 10; // rayon du disc
 
-	cone->color_cone = init_color(255, 0, 0, 40);
+	cone->color = init_color(200, 40, 40, 40);
 
 }
 
 void		init_plane(t_plane *plane)
 {
-	//before
-	// plane->n.x = 0;
-	// plane->n.y = -10000000;
-	// plane->n.z = 1;
-	plane->d.x = 0;
-	plane->d.y = 2;
-	plane->d.z = 1;
+	plane->d =init_vect(0, -5, 1);
 
-	plane->o.x = 0;
-	plane->o.y = 0;
-	plane->o.z = 30;
+	plane->o = init_vect(0, -10, 30);
 
-	init_color_plane(&plane->color_plane);
+	plane->color = init_color(0, 255, 0, 40);
 }

@@ -13,23 +13,6 @@ t_color init_color(double r, double g, double b, double a)
 	return (tmp);
 }
 
-
-void	init_color_plane(t_color *color)
-{
-	color->a = 40;
-	color->r = 0;
-	color->b = 255;
-	color->g = 0;
-}
-
-void	init_color_sphere(t_color *color)
-{
-	color->a = 40;
-	color->r = 255;
-	color->b = 0;
-	color->g = 0;
-}
-
 t_color	multi_color_double(t_color color, double b)
 {
 	t_color tmp;

@@ -2,8 +2,8 @@
 # define RTV1_H
 # define FRACT_OL_H
 # include "../libft/libft.h"
-// # include <SDL.h>
-# include <SDL2/SDL.h>
+# include <SDL.h>
+//# include <SDL2/SDL.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -58,7 +58,7 @@ typedef struct		s_plane
 	t_vect			n; //vector derector
 	t_vect			o; //origin
 	t_vect			inter;
-	t_color			color_plane;
+	t_color			color;
 }					t_plane;
 
 typedef struct		s_sphere
@@ -70,7 +70,7 @@ typedef struct		s_sphere
 	double 			t1;
 	t_vect			n; // normal surface
 	t_vect			inter;// position of intersection
-	t_color			color_sphere;
+	t_color			color;
 }					t_sphere;
 
 typedef struct		s_cylinder
@@ -84,7 +84,7 @@ typedef struct		s_cylinder
 	double			h; // hauteur
 	double 			t;
 	t_vect			inter;
-	t_color			color_cylind;
+	t_color			color;
 }					t_cylinder;
 
 typedef struct		s_cone
@@ -99,7 +99,7 @@ typedef struct		s_cone
 	double 			k;
 	double 			t;
 	t_vect			inter;
-	t_color			color_cone;
+	t_color			color;
 }					t_cone;
 
 typedef struct		s_ray
@@ -126,27 +126,22 @@ typedef struct		s_sdl
 	const Uint8 	*state;
 }					t_sdl;
 
+typedef struct		s_obj
+{
+	t_sphere		sphere;
+	t_plane			plane;
+	t_cylinder		cylinder;
+	t_cone			cone;
+}					t_obj;
+
 typedef struct		s_all
 {
-	t_cone			cone;
-	t_cylinder		cylinder;
 	t_ray			ray;
-	t_sphere		sphere;
+	t_obj 			obj;
 	t_sphere		sphere_light;
-	t_plane			plane;
 	t_sdl			sdl;
 	int 			chg;
 }					t_all;
-
-typedef struct		s_callobj
-{
-	int				number;
-	t_cone			cone;
-	t_cylinder		cylinder;
-	t_ray			ray;
-	t_sphere		sphere;
-	t_plane			plane;
-}					t_callobj;
 
 void 				sdl_and_funct(t_all *all);
 
@@ -180,8 +175,6 @@ t_vect				devide_vect(t_vect a, t_vect b);
 t_color				multi_color_double(t_color color, double b);
 t_color				add_color(t_color a, t_color b);
 void				color_condition(t_color *color);
-void				init_color_sphere(t_color *color);
-void				init_color_plane(t_color *color);
 t_color 			init_color(double r, double g, double b, double a);
 t_color				multi_color(t_color color, t_color b);
 t_color				minus_color(t_color a, t_color b);
