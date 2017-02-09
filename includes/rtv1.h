@@ -134,14 +134,21 @@ typedef struct		s_obj
 	t_cone			cone;
 }					t_obj;
 
+typedef struct		s_light
+{
+	t_ray			ray;
+	t_color			color;
+}					t_light;
+
 typedef struct		s_all
 {
 	t_ray			ray;
 	t_obj 			obj;
-	t_sphere		sphere_light;
+	t_light			light;
 	t_sdl			sdl;
 	int 			chg;
 }					t_all;
+
 
 void 				sdl_and_funct(t_all *all);
 
@@ -152,6 +159,7 @@ void				sdl_close(t_sdl *sdl);
 void				sdl_err();
 void				sdl_init(t_sdl *sdl);
 //operation
+t_vect				multi_vect(t_vect a, t_vect b);
 t_vect				add_vect(t_vect a, t_vect b);
 t_vect				minus_vect(t_vect a, t_vect b);
 t_vect				multi_vect(t_vect a, t_vect b);
@@ -187,7 +195,7 @@ void				init_axe(t_axe *axe);
 void				init_plane(t_plane *plane);
 void				init_sphere(t_sphere *sphere);
 void				init_cylinder(t_cylinder *cylinder);
-void				init_sphere_light(t_sphere *sphere_light);
+void				init_light(t_light *light);
 void				init_cone(t_cone *cone);
 void				compute_ray(t_cam cam, t_ray *ray, int x, int y);
 void				init_cam(t_cam *cam);

@@ -32,6 +32,15 @@ t_vect	devide_vect(t_vect a, t_vect b)
 	return (tmp);
 }
 
+t_vect	multi_vect(t_vect a, t_vect b) 
+{
+	t_vect		tmp;
+
+	tmp.x = a.x * b.x;
+	tmp.y = a.y * b.y;
+	tmp.z = a.z * b.z;
+	return (tmp);
+}
 
 t_vect	cross_prod(t_vect a, t_vect b) 
 {

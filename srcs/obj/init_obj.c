@@ -3,7 +3,7 @@
 void		init_sceen(t_all *all)
 {
 	init_cylinder(&all->obj.cylinder);
-	init_sphere_light(&all->sphere_light);
+	init_light(&all->light);
 	init_plane(&all->obj.plane);
 	init_sphere(&all->obj.sphere);
 	init_cone(&all->obj.cone);
@@ -12,10 +12,10 @@ void		init_sceen(t_all *all)
 
 void		init_cam(t_cam *cam)
 {
-	cam->campos =init_vect( 0,0, -80);
-	cam->camdir =init_vect(0,0,1);
-	cam->camup =init_vect(0,-1,0);
-	cam->camright =init_vect(1,0,0);
+	cam->campos = init_vect( 0,0, -80);
+	cam->camdir = init_vect(0,0,1);
+	cam->camup = init_vect(0,-1,0);
+	cam->camright = init_vect(1,0,0);
 }
 
 void		init_axe(t_axe *axe)
@@ -79,10 +79,10 @@ void		compute_ray(t_cam cam, t_ray *ray, int x, int y)
 	// ray->d =  normalize_vect(add_vect(cam.camdir, add_vect(cam_r, cam_do)));
 }
 
-void		init_sphere_light(t_sphere *sphere_light)
+void		init_light(t_light *light)
 {
-	sphere_light->c = init_vect(0, 0, 0);
-	sphere_light->r = 0;
+	light->ray.o = init_vect(0, 0, 0);
+	light->color = init_color(255,255,255,40);
 }
 
 void		init_sphere(t_sphere *sphere)
