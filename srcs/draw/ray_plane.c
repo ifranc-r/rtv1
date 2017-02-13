@@ -81,7 +81,7 @@ t_color color_phong(t_color objct_color, t_light light, t_vect n,t_ray ray, t_ve
 // 	// if (final_color.r  == 255 )
 // 		// printf("spect = %f        diff = %f            \n     ",spect, diff);
 // 	return (final_color);
-// }
+// }+---------
 
 
 
@@ -139,11 +139,12 @@ int 	intersect_cone(t_ray *ray, t_cone *cone, int i)
 	return (0);
 }
 
-int 	intersect_plane(t_ray *ray, t_plane *plane, int i)
+int 	intersect_plane(t_ray *ray, t_plane *plane, double shadowlengh, int i)
 {
 	t_vect		L;
 	double 		a;
 	double 		t;
+	t_vect 		inter;
 
 	plane->n = normalize_vect(plane->d);
 	a = dot(ray->d, plane->n);
@@ -153,37 +154,40 @@ int 	intersect_plane(t_ray *ray, t_plane *plane, int i)
 		double b = dot(L, plane->n);
 		if (a != b) // behind
 		{
+			t = dot(negative_vect(L), plane->n) / a;
+			if (i == 0 && (shadowlengh < t))
+				return (0);
+			inter = add_vect(ray->o, multi_vect_double(ray->d, t));
+			// t_vect v = minus_vect(plane->inter, plane->o);
+			// double d2 = dot(v,v);
+			// if (sqrt(d2) <= 50)
 			if (i == 1)
-			{
-				t = dot(negative_vect(L), plane->n) / a;
-				plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
-				// t_vect v = minus_vect(plane->inter, plane->o);
-				// double d2 = dot(v,v);
-				// if (sqrt(d2) <= 50)
-			}
+				plane->inter = inter;
 			return (1);
 		}
 	}
 	return (0);
 }
 
-int		intersect_sphere(t_ray *ray, t_sphere *sphere, int i)
+int		intersect_sphere(t_ray *ray, t_sphere *sphere, double shadowlengh, int i)
 {
 	t_vect		L;
 	double 		a;
 	double 		b;
 	double 		c;
+	t_vect		inter;
 
 	L = minus_vect(ray->o, sphere->c);
 	a = dot(ray->d,ray->d);
 	b = dot(ray->d, L) *2;
 	c = dot(L, L) - pow(sphere->r, 2);
-	if (solveQuadratic(a, b, c))
+	if (solveQuadratic(a, b, c) > 0.0001)
 	{
+		if ((i == 0) && (shadowlengh < solveQuadratic(a, b, c)))
+			return (0);
+		inter = add_vect(ray->o, multi_vect_double(ray->d, solveQuadratic(a, b, c)));
 		if (i == 1)
-		{
-			sphere->inter = add_vect(ray->o, multi_vect_double(ray->d, solveQuadratic(a, b, c)));
-		}
+			sphere->inter = inter;
 		return (1);
 	}
 	return (0);
@@ -200,7 +204,7 @@ int		get_close_inter(t_ray *ray,t_obj *obj)
 	double 		tmp_lengh;
 	int 		num_obj;
 
-	if (intersect_sphere(&*ray, &obj->sphere, 1))
+	if (intersect_sphere(&*ray, &obj->sphere, 0, 1))
 	{
 		tmp_lengh = lengh(minus_vect(ray->o, obj->sphere.inter));
 		if (tmp_lengh < le)
@@ -210,7 +214,7 @@ int		get_close_inter(t_ray *ray,t_obj *obj)
 			num_obj = 1;
 		}
 	}
-	if (intersect_plane(&*ray, &obj->plane, 1))
+	if (intersect_plane(&*ray, &obj->plane, 0, 1))
 	{
 		tmp_lengh = lengh(minus_vect(ray->o, obj->plane.inter));
 		if (tmp_lengh < le)
@@ -219,7 +223,7 @@ int		get_close_inter(t_ray *ray,t_obj *obj)
 			tmpinter = obj->plane.inter;
 			num_obj = 2;
 		}
-	// }
+	}
 	// if (intersect_cylinder(&*ray, &obj->cylinder, 1))
 	// {
 	// 	tmp_lengh = lengh(minus_vect(ray->o, obj->cylinder.inter));
@@ -239,7 +243,7 @@ int		get_close_inter(t_ray *ray,t_obj *obj)
 	// 		tmpinter = obj->cone.inter;
 	// 		num_obj = 4;
 	// 	}
-	}
+	// }
 	return (num_obj);
 }
 
@@ -293,13 +297,13 @@ int 	shadow(t_vect inter, t_ray light, t_obj obj) // les rayon intersepte les ob
 	t_ray	shadow;
 	double 	r2;
 
-	shadow.o = inter; 
-	shadow.d = normalize_vect(minus_vect(light.o, shadow.o));
-	r2 = lengh(shadow.d);
-	shadow.d = devide_vect_double(shadow.d, sqrt(r2));
-	if (//intersect_sphere(&shadow, &obj.sphere, 0) || \//
-		intersect_plane(&shadow, &obj.plane, 0)) //|| \
-		// intersect_cylinder(&shadow, &obj.cylinder, 0) || \
+	shadow.o = inter;
+	shadow.d = minus_vect(light.o,shadow.o);
+	r2 = sqrt(dot(shadow.d, shadow.d));
+	shadow.d = normalize_vect(shadow.d);
+	if (intersect_sphere(&shadow, &obj.sphere, r2, 0) || \
+		(intersect_plane(&shadow, &obj.plane, r2, 0)))// || \
+		// intersect_cylinder(&shadow, &obj.cylinder, 0))// || \
 		// intersect_cone(&shadow, &obj.cone, 0))
 		return (1);
 	else
@@ -349,20 +353,20 @@ void		draw(t_all *all, t_sdl *sdl)
 		while (y++ < WIN_Y)
 		{
 			compute_ray(cam,&all->ray,x,y);
-			if (intersect_sphere(&all->ray, &all->obj.sphere,1) || \
-				intersect_plane(&all->ray, &all->obj.plane, 1)) //|| \
-				// intersect_cylinder(&all->ray, &all->obj.cylinder, 1) || \
+			if (intersect_sphere(&all->ray, &all->obj.sphere,0 , 1) || \
+				intersect_plane(&all->ray, &all->obj.plane,0, 1))
+				// intersect_cylinder(&all->ray, &all->obj.cylinder, 1)) //|| \
 				// intersect_cone(&all->ray, &all->obj.cone,1))
 			{
-
 				num_obj = get_close_inter(&all->ray, &all->obj);
 				if (shadow(call_obj_inter(all->obj, num_obj), all->light.ray, all->obj))
 					color = init_color(10,10,20,40);
 				else
-					color = call_obj_color(all->obj, num_obj);
-					// color = color_phong(call_obj_color(all->obj, num_obj), all->light, \
-					// 	call_obj_n(all->obj, num_obj),all->ray,call_obj_inter(all->obj, num_obj));
+					// color = call_obj_color(all->obj, num_obj);
+					color = color_phong(call_obj_color(all->obj, num_obj), all->light, \
+						call_obj_n(all->obj, num_obj),all->ray,call_obj_inter(all->obj, num_obj));
 				SDL_SetRenderDrawColor(sdl->ren, color.r, color.g, color.b, color.a);
+
 			}
 			else
 				SDL_SetRenderDrawColor(sdl->ren, 0, 0, 0, 40);
