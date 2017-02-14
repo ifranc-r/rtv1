@@ -30,7 +30,7 @@ int		key_event(t_sdl	*sdl, t_all *all)
 	}
 	if (sdl->state)
 	{
-		if (sdl->state[SDL_SCANCODE_KP_0])
+		if (sdl->state[SDL_SCANCODE_0])
 			mod_vect(&all->light.ray.o, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_1])
 			mod_vect(&all->obj.sphere.c, sdl->state, &*all);

@@ -87,53 +87,44 @@ t_color color_phong(t_color objct_color, t_light light, t_vect n,t_ray ray, t_ve
 
 
 
-int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder, int i)
+int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, int i)
 {
-	double m;
-	t_vect v = normalize_vect(cylinder->axe);
+	double t;
+	cylinder->v = normalize_vect(cylinder->axe);
 	t_vect x = minus_vect(ray->o, cylinder->c);
 	double a = dot(ray->d,ray->d) - pow(dot(ray->d,cylinder->v),2);
 	double b = 2*(dot(ray->d, x) - dot(ray->d, cylinder->v)* dot(x, cylinder->v));
 	double c = dot(x,x) - pow(dot(x,cylinder->v), 2) - pow(cylinder->r,2);
-	if (solveQuadratic(a, b, c))
+	if ((t = solveQuadratic(a, b, c)) > 0.0001)
 	{
-		if (i == 1)
-		{
-			cylinder->t = solveQuadratic(a, b, c);
-			cylinder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylinder->t));
-			t_vect xc = cylinder->c;
-			xc.y /= 2;
-			cylinder->n = normalize_vect(multi_vect_double(minus_vect(minus_vect(cylinder->inter, cylinder->v),xc),cylinder->m));
-		}
-		m = dot(ray->d, v) * solveQuadratic(a, b, c) + dot(x,v);
-		if (fmax(m, 0) > 0 && fmax(m, 0) < cylinder->h)
+		if (i == 0 && (shadowlengh < t))
+				return (0);
+		cylinder->t = solveQuadratic(a, b, c);
+		cylinder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylinder->t));
+		cylinder->m = dot(ray->d, cylinder->v) * cylinder->t + dot(x,cylinder->v);
+		cylinder->n = normalize_vect(multi_vect_double(minus_vect(minus_vect(cylinder->inter, cylinder->c),cylinder->v),cylinder->m));
+		if (fmax(cylinder->m, 0) > 0 && fmax(cylinder->m, 0) < cylinder->h)
 			return (1);
 	}
-	return (0);
-}
+	return (0);}
 
-int 	intersect_cone(t_ray *ray, t_cone *cone, int i)
+int 	intersect_cone(t_ray *ray, t_cone *cone, double shadowlengh, int i)
 {
-	double		m;
-	t_vect		xc;
-	t_vect		v;
-
-	v = normalize_vect(cone->axe);
+	double t;
+	cone->v = normalize_vect(cone->axe);
 	t_vect x = minus_vect(ray->o, cone->c);
 	double a = dot(ray->d,ray->d) - ((1+(cone->k*cone->k))*pow(dot(ray->d,cone->v),2));
 	double b = 2*(dot(ray->d,x) - ((1+(cone->k*cone->k)) * (dot(ray->d,cone->v) * dot(x,cone->v))));
 	double c = dot(x,x) - ((1+(cone->k*cone->k)) * pow(dot(x,cone->v),2));
-	if (solveQuadratic(a, b, c))
+	if ((t = solveQuadratic(a, b, c)) > 0.0001)
 	{
-		m = dot(ray->d, v) * solveQuadratic(a, b, c) + dot(x,v);
-		if (i == 1){
-			cone->t = solveQuadratic(a, b, c);
-			cone->inter = add_vect(ray->o, multi_vect_double(ray->d, cone->t));
-			xc = cone->c;
-			xc.y /= 2;
-			cone->n = normalize_vect(minus_vect(minus_vect(cone->inter,xc),multi_vect_double(v, m * pow(cone->k,2))));
-		}
-		if (fmax(m,0) > 0 && fmax(m,0) < 50)
+		if (i == 0 && (shadowlengh < t))
+				return (0);
+		cone->t = solveQuadratic(a, b, c);
+		cone->inter = add_vect(ray->o, multi_vect_double(ray->d, cone->t));
+		cone->m = dot(ray->d, cone->v) * cone->t + dot(x,cone->v);
+		cone->n = normalize_vect(minus_vect(minus_vect(cone->inter,cone->c),multi_vect_double(cone->v, cone->m * pow(cone->k,2))));
+		if (fmax(cone->m,0) > 0 && fmax(cone->m,0) < 50)
 			return (1);
 	}
 	return (0);
@@ -175,17 +166,18 @@ int		intersect_sphere(t_ray *ray, t_sphere *sphere, double shadowlengh, int i)
 	double 		a;
 	double 		b;
 	double 		c;
+	double 		t;
 	t_vect		inter;
 
 	L = minus_vect(ray->o, sphere->c);
 	a = dot(ray->d,ray->d);
 	b = dot(ray->d, L) *2;
 	c = dot(L, L) - pow(sphere->r, 2);
-	if (solveQuadratic(a, b, c) > 0.0001)
+	if ((t = solveQuadratic(a, b, c)) > 0.0001)
 	{
-		if ((i == 0) && (shadowlengh < solveQuadratic(a, b, c)))
+		if ((i == 0) && (shadowlengh < t))
 			return (0);
-		inter = add_vect(ray->o, multi_vect_double(ray->d, solveQuadratic(a, b, c)));
+		inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 		if (i == 1)
 			sphere->inter = inter;
 		return (1);
@@ -224,26 +216,26 @@ int		get_close_inter(t_ray *ray,t_obj *obj)
 			num_obj = 2;
 		}
 	}
-	// if (intersect_cylinder(&*ray, &obj->cylinder, 1))
-	// {
-	// 	tmp_lengh = lengh(minus_vect(ray->o, obj->cylinder.inter));
-	// 	if (tmp_lengh < le)
-	// 	{
-	// 		le = tmp_lengh;
-	// 		tmpinter = obj->cylinder.inter;
-	// 		num_obj = 3;
-	// 	}
-	// }
-	// if (intersect_cone(&*ray, &obj->cone, 1))
-	// {
-	// 	tmp_lengh = lengh(minus_vect(ray->o, obj->cone.inter));
-	// 	if (tmp_lengh < le)
-	// 	{
-	// 		le = tmp_lengh;
-	// 		tmpinter = obj->cone.inter;
-	// 		num_obj = 4;
-	// 	}
-	// }
+	if (intersect_cylinder(&*ray, &obj->cylinder,0, 1))
+	{
+		tmp_lengh = lengh(minus_vect(ray->o, obj->cylinder.inter));
+		if (tmp_lengh < le)
+		{
+			le = tmp_lengh;
+			tmpinter = obj->cylinder.inter;
+			num_obj = 3;
+		}
+	}
+	if (intersect_cone(&*ray, &obj->cone,0, 1))
+	{
+		tmp_lengh = lengh(minus_vect(ray->o, obj->cone.inter));
+		if (tmp_lengh < le)
+		{
+			le = tmp_lengh;
+			tmpinter = obj->cone.inter;
+			num_obj = 4;
+		}
+	}
 	return (num_obj);
 }
 
@@ -302,9 +294,9 @@ int 	shadow(t_vect inter, t_ray light, t_obj obj) // les rayon intersepte les ob
 	r2 = sqrt(dot(shadow.d, shadow.d));
 	shadow.d = normalize_vect(shadow.d);
 	if (intersect_sphere(&shadow, &obj.sphere, r2, 0) || \
-		(intersect_plane(&shadow, &obj.plane, r2, 0)))// || \
-		// intersect_cylinder(&shadow, &obj.cylinder, 0))// || \
-		// intersect_cone(&shadow, &obj.cone, 0))
+		intersect_plane(&shadow, &obj.plane, r2, 0) || \
+		intersect_cylinder(&shadow, &obj.cylinder, r2, 0) || \
+		intersect_cone(&shadow, &obj.cone, r2, 0))
 		return (1);
 	else
 		return (0);
@@ -354,9 +346,9 @@ void		draw(t_all *all, t_sdl *sdl)
 		{
 			compute_ray(cam,&all->ray,x,y);
 			if (intersect_sphere(&all->ray, &all->obj.sphere,0 , 1) || \
-				intersect_plane(&all->ray, &all->obj.plane,0, 1))
-				// intersect_cylinder(&all->ray, &all->obj.cylinder, 1)) //|| \
-				// intersect_cone(&all->ray, &all->obj.cone,1))
+				intersect_plane(&all->ray, &all->obj.plane,0, 1) || \
+				intersect_cylinder(&all->ray, &all->obj.cylinder,0 , 1) || \
+				intersect_cone(&all->ray, &all->obj.cone,0,1))
 			{
 				num_obj = get_close_inter(&all->ray, &all->obj);
 				if (shadow(call_obj_inter(all->obj, num_obj), all->light.ray, all->obj))
