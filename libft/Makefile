@@ -102,7 +102,12 @@ SRC = ft_atoi.c\
 	 ft_strrealloc.c\
 	 ft_power.c\
 	 ft_ditoa.c\
-	 ft_exp.c
+	 ft_exp.c\
+	 ft_operation_vect1.c\
+	 ft_operation_vect2.c\
+	 ft_operation_vect3.c\
+	 ft_operation_color1.c\
+	 ft_operation_color2.c
 
 OUTPUT = $(SRC:.c=.o)
 

@@ -46,6 +46,8 @@ int		key_event(t_sdl	*sdl, t_all *all)
 			mod_vect(&all->obj.cone.c, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_7])
 			mod_vect(&all->obj.cone.axe, sdl->state, &*all);
+		else if (sdl->state[SDL_SCANCODE_C])
+			mod_vect(&all->cam.campos, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_1])
 			init_sceen(&*all);
 	}

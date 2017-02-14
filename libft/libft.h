@@ -20,6 +20,21 @@
 # include <math.h>
 # define BUFF_SIZE 1024
 
+typedef struct		s_color
+{
+	double			a;
+	double			r;
+	double			g;
+	double			b;
+}					t_color;
+
+typedef struct		s_vect
+{
+	double			x;
+	double			y;
+	double			z;
+}					t_vect;
+
 typedef	struct		s_list
 {
 	void			*content;
@@ -97,4 +112,31 @@ int					ft_isascii(int c);
 int					ft_isprint(int c);
 char				*ft_ditoa(double n, int c);
 int					ft_exp(int n, int p);
+
+t_vect				multi_vect(t_vect a, t_vect b);
+t_vect				add_vect(t_vect a, t_vect b);
+t_vect				minus_vect(t_vect a, t_vect b);
+t_vect				multi_vect(t_vect a, t_vect b);
+t_vect				devide_vect_double(t_vect a, double b);
+t_vect				multi_vect_double(t_vect a, double b);
+t_vect				normalize_vect(t_vect a);
+t_vect				add_vect_double(t_vect a, double b);
+t_vect				negative_vect(t_vect a);
+double 				magintude(t_vect a);
+double 				dot(t_vect a, t_vect b);
+double 				minus_double(t_vect a, t_vect b);
+double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
+t_vect				cross_prod(t_vect a, t_vect b);
+double 				neg_dot(t_vect a, t_vect b);
+double				solveQuadratic(double a, double b, double c, int i);
+double 				lengh(t_vect a);
+t_vect				devide_vect(t_vect a, t_vect b);
+
+t_color				multi_color_double(t_color color, double b);
+t_color				add_color(t_color a, t_color b);
+void				color_condition(t_color *color);
+t_color 			init_color(double r, double g, double b, double a);
+t_color				multi_color(t_color color, t_color b);
+t_color				minus_color(t_color a, t_color b);
+t_color				devide_color_double(t_color color, double b);
 #endif

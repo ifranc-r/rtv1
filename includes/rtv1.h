@@ -29,29 +29,6 @@
 # define LESS_GREEN 4
 
 
-typedef struct		s_color
-{
-	double			a;
-	double			r;
-	double			g;
-	double			b;
-}					t_color;
-
-
-typedef struct		s_vect
-{
-	double			x;
-	double			y;
-	double			z;
-}					t_vect;
-
-typedef struct		s_axe
-{
-	t_vect			x;
-	t_vect			y;
-	t_vect			z;
-}					t_axe;
-
 typedef struct		s_plane
 {
 	t_vect			d; // axe
@@ -60,6 +37,16 @@ typedef struct		s_plane
 	t_vect			inter;
 	t_color			color;
 }					t_plane;
+
+typedef struct		s_disc
+{
+	t_vect			d; // axe
+	t_vect			n; //vector derector
+	t_vect			o; //origin
+	float 			r;
+	t_vect			inter;
+	t_color			color;
+}					t_disc;
 
 typedef struct		s_sphere
 {
@@ -146,6 +133,7 @@ typedef struct		s_all
 	t_obj 			obj;
 	t_light			light;
 	t_sdl			sdl;
+	t_cam 			cam;
 	int 			chg;
 }					t_all;
 
@@ -153,45 +141,24 @@ typedef struct		s_all
 void 				sdl_and_funct(t_all *all);
 
 void				draw(t_all *all, t_sdl *sdl);
+// intersection
+int					intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, int i);
+int 				intersect_cone(t_ray *ray, t_cone *cone, double shadowlengh, int i);
+int 				intersect_plane(t_ray *ray, t_plane *plane, double shadowlengh, int i);
+int					intersect_sphere(t_ray *ray, t_sphere *sphere, double shadowlengh, int i);
+int 				intersect_disc(t_ray *ray, t_disc *disc, double shadowlengh, int i);
 //sdl
 void				event(t_all *all, t_sdl *sdl);
 void				sdl_close(t_sdl *sdl);
 void				sdl_err();
 void				sdl_init(t_sdl *sdl);
 //operation
-t_vect				multi_vect(t_vect a, t_vect b);
-t_vect				add_vect(t_vect a, t_vect b);
-t_vect				minus_vect(t_vect a, t_vect b);
-t_vect				multi_vect(t_vect a, t_vect b);
-t_vect				devide_vect_double(t_vect a, double b);
-t_vect				multi_vect_double(t_vect a, double b);
-t_vect				normalize_vect(t_vect a);
-t_vect				add_vect_double(t_vect a, double b);
-t_vect				negative_vect(t_vect a);
-double 				magintude(t_vect a);
-double 				dot(t_vect a, t_vect b);
-double 				minus_double(t_vect a, t_vect b);
 double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
-t_vect				cross_prod(t_vect a, t_vect b);
-double 				neg_dot(t_vect a, t_vect b);
 double				solveQuadratic(double a, double b, double c, int i);
-double 				clamp(double x, double upper, double lower);
-double 				lengh(t_vect a);
-t_vect				devide_vect(t_vect a, t_vect b);
 
-//color
-t_color				multi_color_double(t_color color, double b);
-t_color				add_color(t_color a, t_color b);
-void				color_condition(t_color *color);
-t_color 			init_color(double r, double g, double b, double a);
-t_color				multi_color(t_color color, t_color b);
-t_color				minus_color(t_color a, t_color b);
-void				color_max(t_color *color);
-t_color				devide_color_double(t_color color, double b);
 //obj and sceen
 void				init_sceen(t_all *all);
 t_vect				init_vect(double x, double y, double z);
-void				init_axe(t_axe *axe);
 void				init_plane(t_plane *plane);
 void				init_sphere(t_sphere *sphere);
 void				init_cylinder(t_cylinder *cylinder);
@@ -199,4 +166,13 @@ void				init_light(t_light *light);
 void				init_cone(t_cone *cone);
 void				compute_ray(t_cam cam, t_ray *ray, int x, int y);
 void				init_cam(t_cam *cam);
+
+int 				get_close_inter(t_ray *ray,t_obj *obj);
+t_vect				call_obj_n(t_obj obj, int num_obj);
+t_color				call_obj_color(t_obj obj, int num_obj);
+t_vect				call_obj_inter(t_obj obj, int num_obj);
+
+t_color				color_phong(t_color objct_color, t_light light, t_vect n,t_ray ray, t_vect inter);
+int 				shadow(t_vect inter, t_ray light, t_obj obj);
+
 #endif

@@ -29,11 +29,13 @@ NAME = rtv1
 
 SRC = ./srcs/main.c\
 	  srcs/obj/init_obj.c\
+	  srcs/obj/intersection.c\
 	  srcs/sdl_fct/sdl_init.c\
 	  srcs/draw/ray_plane.c\
-	  srcs/draw/color_operator.c\
 	  srcs/draw/vect_operator.c\
 	  srcs/event/loop.c\
+	  srcs/get_parameter_obj/get_parameter.c\
+	  srcs/lightandcolor/light.c
 
 SDL = -L ./libft/ -lft  -I/Library/Frameworks/SDL2.framework/Headers -F/Library/Frameworks -framework SDL2
 
