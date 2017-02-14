@@ -149,7 +149,7 @@ double triangle_area(t_vect p1, t_vect p2, t_vect p3)
 	return (sqrt(s*(s - a)*(s - b)*(s - c)));
 }
 
-double		solveQuadratic(double a, double b, double c)
+double		solveQuadratic(double a, double b, double c, int i)
 {
 	double 		discriminant;
 	double 		t;
@@ -169,7 +169,10 @@ double		solveQuadratic(double a, double b, double c)
 		discriminant = sqrt(discriminant);
 		t0 = ((-b + discriminant)/(2*a));
 		t1 = ((-b - discriminant)/(2*a));
-		t = (t0 < t1) ? t0 : t1;
+		if (i == 0)
+			t = (t0 > t1) ? t0 : t1;
+		else
+			t = (t0 < t1) ? t0 : t1;
 		return (t);
 	}
     return (0);

@@ -95,11 +95,11 @@ int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, in
 	double a = dot(ray->d,ray->d) - pow(dot(ray->d,cylinder->v),2);
 	double b = 2*(dot(ray->d, x) - dot(ray->d, cylinder->v)* dot(x, cylinder->v));
 	double c = dot(x,x) - pow(dot(x,cylinder->v), 2) - pow(cylinder->r,2);
-	if ((t = solveQuadratic(a, b, c)) > 0.0001)
+	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
 	{
-		if (i == 0 && (shadowlengh < t))
+		if (i == 0 && (shadowlengh <= t))
 				return (0);
-		cylinder->t = solveQuadratic(a, b, c);
+		cylinder->t = t;
 		cylinder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylinder->t));
 		cylinder->m = dot(ray->d, cylinder->v) * cylinder->t + dot(x,cylinder->v);
 		cylinder->n = normalize_vect(multi_vect_double(minus_vect(minus_vect(cylinder->inter, cylinder->c),cylinder->v),cylinder->m));
@@ -116,11 +116,11 @@ int 	intersect_cone(t_ray *ray, t_cone *cone, double shadowlengh, int i)
 	double a = dot(ray->d,ray->d) - ((1+(cone->k*cone->k))*pow(dot(ray->d,cone->v),2));
 	double b = 2*(dot(ray->d,x) - ((1+(cone->k*cone->k)) * (dot(ray->d,cone->v) * dot(x,cone->v))));
 	double c = dot(x,x) - ((1+(cone->k*cone->k)) * pow(dot(x,cone->v),2));
-	if ((t = solveQuadratic(a, b, c)) > 0.0001)
+	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
 	{
 		if (i == 0 && (shadowlengh < t))
 				return (0);
-		cone->t = solveQuadratic(a, b, c);
+		cone->t = t;
 		cone->inter = add_vect(ray->o, multi_vect_double(ray->d, cone->t));
 		cone->m = dot(ray->d, cone->v) * cone->t + dot(x,cone->v);
 		cone->n = normalize_vect(minus_vect(minus_vect(cone->inter,cone->c),multi_vect_double(cone->v, cone->m * pow(cone->k,2))));
@@ -173,7 +173,7 @@ int		intersect_sphere(t_ray *ray, t_sphere *sphere, double shadowlengh, int i)
 	a = dot(ray->d,ray->d);
 	b = dot(ray->d, L) *2;
 	c = dot(L, L) - pow(sphere->r, 2);
-	if ((t = solveQuadratic(a, b, c)) > 0.0001)
+	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
 	{
 		if ((i == 0) && (shadowlengh < t))
 			return (0);
@@ -351,8 +351,11 @@ void		draw(t_all *all, t_sdl *sdl)
 				intersect_cone(&all->ray, &all->obj.cone,0,1))
 			{
 				num_obj = get_close_inter(&all->ray, &all->obj);
-				if (shadow(call_obj_inter(all->obj, num_obj), all->light.ray, all->obj))
-					color = init_color(10,10,20,40);
+				if (shadow(call_obj_inter(all->obj, num_obj), all->light.ray, all->obj)){
+					color = add_color(call_obj_color(all->obj, num_obj), init_color(-130,-130,-130,0));
+					color = color_phong(color, all->light, \
+						call_obj_n(all->obj, num_obj),all->ray,call_obj_inter(all->obj, num_obj));
+				}
 				else
 					// color = call_obj_color(all->obj, num_obj);
 					color = color_phong(call_obj_color(all->obj, num_obj), all->light, \

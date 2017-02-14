@@ -174,7 +174,7 @@ double 				minus_double(t_vect a, t_vect b);
 double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 t_vect				cross_prod(t_vect a, t_vect b);
 double 				neg_dot(t_vect a, t_vect b);
-double				solveQuadratic(double a, double b, double c);
+double				solveQuadratic(double a, double b, double c, int i);
 double 				clamp(double x, double upper, double lower);
 double 				lengh(t_vect a);
 t_vect				devide_vect(t_vect a, t_vect b);
