@@ -58,13 +58,29 @@ void		init_sphere(t_sphere *sphere)
 	sphere->color = init_color(255, 0, 0, 40);
 }
 
+t_disc	init_disc(t_vect o, t_vect n, double r, t_color color)
+{
+	t_disc tmp;
+
+	tmp.o = o;
+	tmp.d = n;
+	tmp.r = r;
+	tmp.color = color;
+	return (tmp);
+}
+
 void		init_cylinder(t_cylinder *cylinder)
 {
-	cylinder->c = init_vect(40, 30, 30); // extramité 1
-	cylinder->axe = init_vect(0, -1, 0);
-	cylinder->h = 40;
+	cylinder->c = init_vect(0, -10, -30); // extramité 1
+	cylinder->end = init_vect(40, 10, 30); 
+	cylinder->v = minus_vect(cylinder->end, cylinder->c);
+	cylinder->h = sqrt(dot(cylinder->v, cylinder->v));
 	cylinder->r = 10; // rayon du disc
+	cylinder->v = normalize_vect(cylinder->v);
+	cylinder->disc = init_disc(cylinder->c, minus_vect(cylinder->end, cylinder->c), cylinder->r+0.1, cylinder->color);
+	cylinder->disc2 = init_disc(cylinder->end, negative_vect(cylinder->v), cylinder->r+0.07, cylinder->color);
 	cylinder->color = init_color(0, 0, 255, 40);
+	
 }
 
 void		init_cone(t_cone *cone)

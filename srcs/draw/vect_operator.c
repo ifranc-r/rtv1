@@ -42,7 +42,7 @@ double		solveQuadratic(double a, double b, double c, int i)
 		t0 = ((-b + discriminant)/(2*a));
 		t1 = ((-b - discriminant)/(2*a));
 		if (i == 0)
-			t = (t0 < t1) ? t0 : t1;
+			t = (t0 > t1) ? t0 : t1;
 		else
 			t = (t0 < t1) ? t0 : t1;
 	}

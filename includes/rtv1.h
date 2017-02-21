@@ -43,7 +43,7 @@ typedef struct		s_disc
 	t_vect			d; // axe
 	t_vect			n; //vector derector
 	t_vect			o; //origin
-	float 			r;
+	double 			r;
 	t_vect			inter;
 	t_color			color;
 }					t_disc;
@@ -70,6 +70,9 @@ typedef struct		s_cylinder
 	double			r; // rayon du disc
 	double			h; // hauteur
 	double 			t;
+	t_vect 			end;
+	t_disc			disc;
+	t_disc			disc2;
 	t_vect			inter;
 	t_color			color;
 }					t_cylinder;
@@ -157,6 +160,7 @@ double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 double				solveQuadratic(double a, double b, double c, int i);
 
 //obj and sceen
+t_disc				init_disc(t_vect o, t_vect n, double r, t_color color);
 void				init_sceen(t_all *all);
 t_vect				init_vect(double x, double y, double z);
 void				init_plane(t_plane *plane);

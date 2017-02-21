@@ -23,7 +23,9 @@ void		draw(t_all *all, t_sdl *sdl)
 			if (intersect_sphere(&all->ray, &all->obj.sphere,0 , 1) || \
 				intersect_plane(&all->ray, &all->obj.plane,0, 1) || \
 				intersect_cylinder(&all->ray, &all->obj.cylinder,0 , 1) || \
-				intersect_cone(&all->ray, &all->obj.cone,0,1))
+				intersect_cone(&all->ray, &all->obj.cone,0,1) || \
+				intersect_disc(&all->ray, &all->obj.cylinder.disc,0,1) || \
+				intersect_disc(&all->ray, &all->obj.cylinder.disc2,0,1))
 			{
 				num_obj = get_close_inter(&all->ray, &all->obj);
 				if (shadow(call_obj_inter(all->obj, num_obj), all->light.ray, all->obj)){

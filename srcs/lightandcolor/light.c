@@ -36,7 +36,9 @@ int 	shadow(t_vect inter, t_ray light, t_obj obj) // les rayon intersepte les ob
 	if (intersect_sphere(&shadow, &obj.sphere, r2, 0) || \
 		intersect_plane(&shadow, &obj.plane, r2, 0) || \
 		intersect_cylinder(&shadow, &obj.cylinder, r2, 0) || \
-		intersect_cone(&shadow, &obj.cone, r2, 0))
+		intersect_cone(&shadow, &obj.cone, r2, 0) || \
+		intersect_disc(&shadow, &obj.cylinder.disc, r2, 0) || \
+		intersect_disc(&shadow, &obj.cylinder.disc2, r2 ,0))
 		return (1);
 	else
 		return (0);
