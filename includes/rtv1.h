@@ -1,6 +1,5 @@
 #ifndef RTV1_H
 # define RTV1_H
-# define FRACT_OL_H
 # include "../libft/libft.h"
 # include <SDL.h>
 //# include <SDL2/SDL.h>
