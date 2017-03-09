@@ -21,7 +21,7 @@ void	mod_vect(t_vect	*vect, const Uint8 	*state, t_all *all)
 	}
 }
 
-int		key_event(t_sdl	*sdl, t_all *all)
+int		key_event(t_sdl	*sdl, t_all *all, int file)
 {
 	if (sdl->event.type == SDL_QUIT || sdl->state[SDL_SCANCODE_ESCAPE])
 	{
@@ -30,7 +30,7 @@ int		key_event(t_sdl	*sdl, t_all *all)
 	}
 	if (sdl->state)
 	{
-		if (sdl->state[SDL_SCANCODE_KP_0])
+		if (sdl->state[SDL_SCANCODE_L])
 			mod_vect(&all->light.ray.o, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_1])
 			mod_vect(&all->obj.sphere.c, sdl->state, &*all);
@@ -49,12 +49,12 @@ int		key_event(t_sdl	*sdl, t_all *all)
 		else if (sdl->state[SDL_SCANCODE_C])
 			mod_vect(&all->cam.campos, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_1])
-			init_sceen(&*all);
+			init_sceen(&*all, file);
 	}
 	return (1);
 }
 
-void	event(t_all *all, t_sdl *sdl)
+void	event(t_all *all, t_sdl *sdl, int file)
 {
 	int 	isrunning;
 	int 	check_all;
@@ -62,7 +62,7 @@ void	event(t_all *all, t_sdl *sdl)
 	all->chg = 0;
 	isrunning = 1;
 	check_all = all->chg;
-	init_sceen(&*all);
+	init_sceen(&*all, file);
 	draw(&*all, &*sdl);
 	while (isrunning == 1)
 	{
@@ -72,11 +72,10 @@ void	event(t_all *all, t_sdl *sdl)
 			if (all->chg != check_all)
 			{
 				check_all = all->chg;
-				// printf("merddde");
 				draw(&*all, &*sdl);
 			}
-			isrunning = key_event(&all->sdl, &*all);
-			key_event(&all->sdl, &*all);
+			isrunning = key_event(&all->sdl, &*all, file);
+			key_event(&all->sdl, &*all, file);
 		}
 	}
 		SDL_UpdateWindowSurface(sdl->screen);

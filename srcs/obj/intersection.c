@@ -97,9 +97,6 @@ int 	intersect_plane(t_ray *ray, t_plane *plane, double shadowlengh, int i)
 			if (i == 0 && (shadowlengh < t))
 				return (0);
 			inter = add_vect(ray->o, multi_vect_double(ray->d, t));
-			// t_vect v = minus_vect(plane->inter, plane->o);
-			// double d2 = dot(v,v);
-			// if (sqrt(d2) <= 50)
 			if (i == 1)
 				plane->inter = inter;
 			return (1);

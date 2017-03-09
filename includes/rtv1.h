@@ -28,6 +28,18 @@
 # define PLUS_GREEN 5
 # define LESS_GREEN 4
 
+typedef struct		s_ray
+{
+	t_vect			o; // origin
+	t_vect			d; // direction
+	t_vect			inter;
+}					t_ray;
+
+typedef struct		s_light
+{
+	t_ray			ray;
+	t_color			color;
+}					t_light;
 
 typedef struct		s_plane
 {
@@ -92,12 +104,7 @@ typedef struct		s_cone
 	t_color			color;
 }					t_cone;
 
-typedef struct		s_ray
-{
-	t_vect			o; // origin
-	t_vect			d; // direction
-	t_vect			inter;
-}					t_ray;
+
 
 typedef struct		s_cam
 {
@@ -118,17 +125,23 @@ typedef struct		s_sdl
 
 typedef struct		s_obj
 {
+	t_cam			cam;
 	t_sphere		sphere;
 	t_plane			plane;
 	t_cylinder		cylinder;
 	t_cone			cone;
+	t_disc 			disc;
+	t_light 		light;
 }					t_obj;
 
-typedef struct		s_light
+typedef struct		s_parse
 {
-	t_ray			ray;
-	t_color			color;
-}					t_light;
+	char			*num;
+	t_vect			pos;
+	t_vect			direct;
+	int 			radius;
+	t_color			color;			
+}					t_parse;
 
 typedef struct		s_all
 {
@@ -143,7 +156,23 @@ typedef struct		s_all
 
 void 				sdl_and_funct(t_all *all);
 
+// parse
+
+t_vect 				ft_vect_pars(char **num);
+t_color				ft_color_pars(char **num);
+t_vect				take_vect(char *line ,int start);
+double				take_double(char *line ,int start);
+t_color				take_color(char *line ,int start);
+t_cam 				get_cam_param(char *line);
+t_sphere 			get_sphere_param(char *line);
+t_plane 			get_plane_param(char *line);
+t_cylinder 			get_cylinder_param(char *line);
+t_disc 				get_disc_param(char *line);
+t_cone 				get_cone_param(char *line);
+int 				ft_strcoord(char *str, char *src, int loop);
 void				draw(t_all *all, t_sdl *sdl);
+t_obj				parse_map(int fd);
+
 // intersection
 int					intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, int i);
 int 				intersect_cone(t_ray *ray, t_cone *cone, double shadowlengh, int i);
@@ -151,7 +180,7 @@ int 				intersect_plane(t_ray *ray, t_plane *plane, double shadowlengh, int i);
 int					intersect_sphere(t_ray *ray, t_sphere *sphere, double shadowlengh, int i);
 int 				intersect_disc(t_ray *ray, t_disc *disc, double shadowlengh, int i);
 //sdl
-void				event(t_all *all, t_sdl *sdl);
+void				event(t_all *all, t_sdl *sdl, int file);
 void				sdl_close(t_sdl *sdl);
 void				sdl_err();
 void				sdl_init(t_sdl *sdl);
@@ -160,16 +189,19 @@ double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 double				solveQuadratic(double a, double b, double c, int i);
 
 //obj and sceen
+void				init_sceen(t_all *all, int file);
+void				init_cam(t_cam *cam, int file);
+void				init_light(t_light *light, int file);
 t_disc				init_disc(t_vect o, t_vect n, double r, t_color color);
-void				init_sceen(t_all *all);
+void				init_sceen(t_all *all, int file);
 t_vect				init_vect(double x, double y, double z);
 void				init_plane(t_plane *plane);
 void				init_sphere(t_sphere *sphere);
-void				init_cylinder(t_cylinder *cylinder);
-void				init_light(t_light *light);
-void				init_cone(t_cone *cone);
+void				init_cylinder(t_cylinder *cylinder, int file);
+void				init_light(t_light *light, int file);
+void				init_cone(t_cone *cone, int file);
 void				compute_ray(t_cam cam, t_ray *ray, int x, int y);
-void				init_cam(t_cam *cam);
+void				init_cam(t_cam *cam, int file);
 
 int 				get_close_inter(t_ray *ray,t_obj *obj);
 t_vect				call_obj_n(t_obj obj, int num_obj);
