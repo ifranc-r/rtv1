@@ -1,5 +1,30 @@
 #include "../includes/rtv1.h"
 
+int 	ft_strtrue(char *str, char *src, int loop)
+{
+	int i;
+	int a;
+
+	a = 0;
+	i = loop;
+	while (str[i])
+	{
+		if (str[i] == src[a])
+		{
+			while (str[++i] == src[++a])
+				;
+			if (src[a] != '\0')
+				return(ft_strtrue(str, src, i));
+			break;
+		}
+		i++;
+	}
+	if (src[a] == '\0')
+		return (1);
+	else
+		return (0);
+}
+
 int		num_c(char *str, char c)
 {
 	int		i;
@@ -48,6 +73,7 @@ void	ft_notlinenum(char *str, char *line)
 		ft_exit(line);
 	}
 }
+
 void	ft_exit(char *line)
 {
 	ft_putstr("Error on this line : \n");
