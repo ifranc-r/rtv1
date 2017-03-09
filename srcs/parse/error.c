@@ -19,19 +19,33 @@ int		num_c(char *str, char c)
 	}
 	return (a);
 }
-void	ft_notnum(char *str)
+
+void	ft_notnum(char *str, char *line)
 {
 	int 	i;
 
 	i = 0;
-	while ((str[i] >= '0' && str[i] <= '9') || str[i] == '-'\
-	 || str[i])
+	while ((str[i] >= '0' && str[i] <= '9') || str[i] == '-')
 		++i;
-	// printf("%d   %d\n", i,  (int)ft_strlen(str));
 	if (i != (int)ft_strlen(str))
 	{
 		ft_putstr("letter detected:\n"); 
-		ft_exit(str);
+		ft_exit(line);
+	}
+}
+
+void	ft_notlinenum(char *str, char *line)
+{
+	int 	i;
+
+	i = 0;
+	while ((str[i] >= '0' && str[i] <= '9') || str[i] == '-' ||
+		str[i] == ' ')
+		++i;
+	if (i != (int)ft_strlen(str))
+	{
+		ft_putstr("letter detected:\n"); 
+		ft_exit(line);
 	}
 }
 void	ft_exit(char *line)

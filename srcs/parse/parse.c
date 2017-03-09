@@ -34,7 +34,7 @@ t_obj		parse_map(int fd)
 			obj.cam = get_cam_param(line);
 		else if (i == 2)
 			obj.light.ray.o = take_vect(line,ft_strcoord(line,"position=", 0));
-		 else if (i == 3)
+		else if (i == 3)
 			obj.sphere = get_sphere_param(line);
 		else if (i == 4)
 			obj.plane = get_plane_param(line);

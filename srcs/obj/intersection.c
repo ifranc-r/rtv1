@@ -48,7 +48,7 @@ int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, in
 		cylinder->t = t;
 		cylinder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylinder->t));
 		cylinder->m = dot(ray->d, cylinder->v) * cylinder->t + dot(x,cylinder->v);
-		cylinder->n = normalize_vect(multi_vect_double(minus_vect(minus_vect(cylinder->inter, cylinder->c),cylinder->v),cylinder->m));
+		cylinder->n = normalize_vect(devide_vect_double(multi_vect_double(minus_vect(minus_vect(cylinder->inter, cylinder->c),cylinder->v),cylinder->m), 2));
 		
 		if (fmax(cylinder->m, 0) > 0 && fmax(cylinder->m, 0)< cylinder->h)
 			return (1);

@@ -27,7 +27,6 @@ t_vect		take_vect(char *line ,int start)
 	int 	a;
 	char	*param = NULL;
 	char	**axe = NULL;
-	t_vect 	vect;
 
 	i = 0;
 	a = start + 1;
@@ -39,13 +38,13 @@ t_vect		take_vect(char *line ,int start)
 		++a;
 	}
 	param[i] = '\0';
+	ft_notlinenum(param, line);
 	if (num_c(param,' ') != 2)
 		ft_exit(line);
 	axe = ft_strsplit(param, ' ');
 	free(param);
-	vect = ft_vect_pars(axe);
 	free(axe);
-	return (vect);
+	return (ft_vect_pars(axe));
 }
 
 double		take_double(char *line ,int start)
@@ -64,9 +63,8 @@ double		take_double(char *line ,int start)
 		++i;
 		++a;
 	}
-	param[i] = '\0'; 
-	// printf("%s\n", param);
-	ft_notnum(param);
+	param[i] = '\0';
+	ft_notnum(param, line);
 	num = (double)ft_atoi(param);
 	free(param);
 	return (num);
@@ -78,7 +76,6 @@ t_color		take_color(char *line ,int start)
 	int 	a;
 	char	*param = NULL;
 	char	**color = NULL;
-	t_color 	c;
 
 	i = 0;
 	a = start + 1;
@@ -89,11 +86,12 @@ t_color		take_color(char *line ,int start)
 		++i;
 		++a;
 	}
+	param[i] = '\0';
+	ft_notlinenum(param, line);
 	if (num_c(param,' ') != 3)
 		ft_exit(line);
 	color = ft_strsplit(param, ' ');
 	free(param);
-	c = ft_color_pars(color);
 	free(color);
-	return (c);
+	return (ft_color_pars(color));
 }

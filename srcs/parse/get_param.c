@@ -12,10 +12,12 @@ t_cam 	get_cam_param(char *line)
 t_sphere 	get_sphere_param(char *line)
 {
 	t_sphere 	sphere;
-
-	sphere.c = take_vect(line,ft_strcoord(line,"position=", 0));
-	sphere.r = take_double(line,ft_strcoord(line,"radius=", 0));
-	sphere.color = take_color(line,ft_strcoord(line,"color=", 0));
+	if (ft_strcmp(line,))
+	{
+		sphere.c = take_vect(line,ft_strcoord(line,"position=", 0));
+		sphere.r = take_double(line,ft_strcoord(line,"radius=", 0));
+		sphere.color = take_color(line,ft_strcoord(line,"color=", 0));
+	}
 	return (sphere);
 }
 
