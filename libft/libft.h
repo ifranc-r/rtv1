@@ -6,7 +6,7 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/05 17:48:11 by ifranc-r          #+#    #+#             */
-/*   Updated: 2016/02/01 15:27:13 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/09 16:59:32 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,20 +122,20 @@ t_vect				multi_vect_double(t_vect a, double b);
 t_vect				normalize_vect(t_vect a);
 t_vect				add_vect_double(t_vect a, double b);
 t_vect				negative_vect(t_vect a);
-double 				magintude(t_vect a);
-double 				dot(t_vect a, t_vect b);
-double 				minus_double(t_vect a, t_vect b);
-double 				triangle_area(t_vect p1, t_vect p2, t_vect p3);
+double				magintude(t_vect a);
+double				dot(t_vect a, t_vect b);
+double				minus_double(t_vect a, t_vect b);
+double				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 t_vect				cross_prod(t_vect a, t_vect b);
-double 				neg_dot(t_vect a, t_vect b);
-double				solveQuadratic(double a, double b, double c, int i);
-double 				lengh(t_vect a);
+double				neg_dot(t_vect a, t_vect b);
+double				solvequadratic(double a, double b, double c, int i);
+double				lengh(t_vect a);
 t_vect				devide_vect(t_vect a, t_vect b);
 
 t_color				multi_color_double(t_color color, double b);
 t_color				add_color(t_color a, t_color b);
 void				color_condition(t_color *color);
-t_color 			init_color(double r, double g, double b, double a);
+t_color				init_color(double r, double g, double b, double a);
 t_color				multi_color(t_color color, t_color b);
 t_color				minus_color(t_color a, t_color b);
 t_color				devide_color_double(t_color color, double b);

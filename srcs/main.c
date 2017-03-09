@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/09 17:00:10 by ifranc-r          #+#    #+#             */
+/*   Updated: 2017/03/09 17:01:58 by ifranc-r         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-void 	sdl_and_draw(t_all *all, int file)
+void	sdl_and_draw(t_all *all, int file)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		sdl_err();
@@ -13,10 +24,10 @@ void 	sdl_and_draw(t_all *all, int file)
 	sdl_close(&all->sdl);
 }
 
-int 	main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	t_all	all;
-	int 	fd;
+	int		fd;
 
 	if (argc == 2)
 	{
@@ -26,5 +37,5 @@ int 	main(int argc, char **argv)
 	}
 	else if (argc == 1)
 		sdl_and_draw(&all, 0);
-	return(0);
+	return (0);
 }

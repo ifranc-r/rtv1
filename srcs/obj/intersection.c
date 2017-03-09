@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   intersection.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/09 17:04:10 by ifranc-r          #+#    #+#             */
+/*   Updated: 2017/03/09 17:04:12 by ifranc-r         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/rtv1.h"
 
 int 	intersect_disc(t_ray *ray, t_disc *disc, double shadowlengh, int i)
@@ -41,7 +53,7 @@ int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, in
 	// cylinder->v = normalize_vect(cylinder->v);
 	// cylinder->disc2 = init_disc(add_vect(cylinder->c,minus_vect(cylinder->v,cylinder->end)), cylinder->v, cylinder->r, cylinder->color);
 	// intersect_disc(&*ray, &cylinder->disc, 0 ,1);
-	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
+	if ((t = solvequadratic(a, b, c, i)) > 0.0001)
 	{
 		if ((i == 0 || i == 2) && (shadowlengh <= t))
 				return (0);
@@ -64,7 +76,7 @@ int 	intersect_cone(t_ray *ray, t_cone *cone, double shadowlengh, int i)
 	double a = dot(ray->d,ray->d) - ((1+(cone->k*cone->k))*pow(dot(ray->d,cone->v),2));
 	double b = 2*(dot(ray->d,x) - ((1+(cone->k*cone->k)) * (dot(ray->d,cone->v) * dot(x,cone->v))));
 	double c = dot(x,x) - ((1+(cone->k*cone->k)) * pow(dot(x,cone->v),2));
-	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
+	if ((t = solvequadratic(a, b, c, i)) > 0.0001)
 	{
 		if ((i == 0 || i == 2) && (shadowlengh <= t))
 				return (0);
@@ -118,7 +130,7 @@ int		intersect_sphere(t_ray *ray, t_sphere *sphere, double shadowlengh, int i)
 	a = dot(ray->d,ray->d);
 	b = dot(ray->d, L) *2;
 	c = dot(L, L) - pow(sphere->r, 2);
-	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
+	if ((t = solvequadratic(a, b, c, i)) > 0.0001)
 	{
 		if ((i == 0 || i == 2) && (shadowlengh < t))
 			return (0);
