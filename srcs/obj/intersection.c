@@ -16,7 +16,7 @@ int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, in
 		cylinder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylinder->t));
 		cylinder->m = dot(ray->d, cylinder->v) * cylinder->t + dot(x,cylinder->v);
 		cylinder->n = normalize_vect(multi_vect_double(minus_vect(minus_vect(cylinder->inter, cylinder->c),cylinder->v),cylinder->m));
-		if (fmax(cylinder->m, 0) > 0 && fmax(cylinder->m, 0) < cylinder->h)
+		if (fmax(cylinder->m, 0) > 0)
 			return (1);
 	}
 	return (0);}
@@ -37,7 +37,7 @@ int 	intersect_cone(t_ray *ray, t_cone *cone, double shadowlengh, int i)
 		cone->inter = add_vect(ray->o, multi_vect_double(ray->d, cone->t));
 		cone->m = dot(ray->d, cone->v) * cone->t + dot(x,cone->v);
 		cone->n = normalize_vect(minus_vect(minus_vect(cone->inter,cone->c),multi_vect_double(cone->v, cone->m * pow(cone->k,2))));
-		if (fmax(cone->m,0) > 0 && fmax(cone->m,0) < 50)
+		if (fmax(cone->m,0) > 0)
 			return (1);
 	}
 	return (0);
@@ -62,9 +62,6 @@ int 	intersect_plane(t_ray *ray, t_plane *plane, double shadowlengh, int i)
 			if (i == 0 && (shadowlengh < t))
 				return (0);
 			inter = add_vect(ray->o, multi_vect_double(ray->d, t));
-			// t_vect v = minus_vect(plane->inter, plane->o);
-			// double d2 = dot(v,v);
-			// if (sqrt(d2) <= 50)
 			if (i == 1)
 				plane->inter = inter;
 			return (1);
@@ -84,10 +81,10 @@ int 	intersect_disc(t_ray *ray, t_disc *disc, double shadowlengh, int i)
 	disc->n = normalize_vect(disc->d);
 	a = dot(ray->d, disc->n);
 	L = minus_vect(ray->o, disc->o);
-	if (a > 0) //paralle
+	if (a > 0)
 	{
 		double b = dot(L, disc->n);
-		if (a != b) // behind
+		if (a != b)
 		{
 			t = dot(negative_vect(L), disc->n) / a;
 			if (i == 0 && (shadowlengh < t))

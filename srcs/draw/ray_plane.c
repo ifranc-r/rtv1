@@ -1,6 +1,15 @@
 #include "../includes/rtv1.h"
 
-
+int 		intersection(t_ray *ray, t_obj *obj)
+{
+	if (intersect_sphere(&*ray, &obj->sphere,0 , 1) || \
+	intersect_plane(&*ray, &obj->plane,0, 1) || \
+	intersect_cylinder(&*ray, &obj->cylinder,0 , 1) || \
+	intersect_cone(&*ray, &obj->cone,0,1))
+		return (1);
+	else
+		return (0);
+} 
 
 void		draw(t_all *all, t_sdl *sdl)
 {
@@ -8,11 +17,9 @@ void		draw(t_all *all, t_sdl *sdl)
 	int 				x;
 	int					y;
 	t_color				color;
-	t_color				color_background;
 	t_cam 				cam;
 
 	cam = all->cam;
-	color_background = init_color(255, 255, 255, 40);
 	x = -1;
 	while (x++ < WIN_X)
 	{
@@ -20,14 +27,11 @@ void		draw(t_all *all, t_sdl *sdl)
 		while (y++ < WIN_Y)
 		{
 			compute_ray(cam,&all->ray,x,y);
-			if (intersect_sphere(&all->ray, &all->obj.sphere,0 , 1) || \
-				intersect_plane(&all->ray, &all->obj.plane,0, 1) || \
-				intersect_cylinder(&all->ray, &all->obj.cylinder,0 , 1) || \
-				intersect_cone(&all->ray, &all->obj.cone,0,1))
+			if (intersection(&all->ray, &all->obj))
 			{
 				num_obj = get_close_inter(&all->ray, &all->obj);
 				if (shadow(call_obj_inter(all->obj, num_obj), all->light.ray, all->obj)){
-					color = add_color(call_obj_color(all->obj, num_obj), init_color(-130,-130,-130,0));
+					color = devide_color_double(call_obj_color(all->obj, num_obj), 2);
 					color = color_phong(color, all->light, \
 						call_obj_n(all->obj, num_obj),all->ray,call_obj_inter(all->obj, num_obj));
 				}

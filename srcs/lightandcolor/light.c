@@ -18,8 +18,8 @@ t_color color_phong(t_color objct_color, t_light light, t_vect n,t_ray ray, t_ve
 	diff_color =  multi_color_double(multi_color(objct_color, light.color), diff);
 	
 	final_color = add_color(spect_color, diff_color);
-	final_color =  multi_color_double(diff_color, 0.0038);
 	final_color = add_color(final_color, ambiant);
+	final_color =  multi_color_double(final_color, 0.0038);
 	color_condition(&final_color);
 	return (final_color);
 }
