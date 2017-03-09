@@ -157,6 +157,9 @@ typedef struct		s_all
 void 				sdl_and_funct(t_all *all);
 
 // parse
+int					num_c(char *str, char c);
+void				ft_exit(char *line);
+void				ft_notnum(char *str);
 
 t_vect 				ft_vect_pars(char **num);
 t_color				ft_color_pars(char **num);

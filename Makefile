@@ -40,7 +40,8 @@ SRC = ./srcs/main.c\
 	  srcs/parse/parse.c\
 	  srcs/parse/get_param.c\
 	  srcs/parse/get_param2.c\
-	  srcs/parse/fnct_value.c
+	  srcs/parse/fnct_value.c\
+	  srcs/parse/error.c
 
 SDL = -L ./libft/ -lft  -I/Library/Frameworks/SDL2.framework/Headers -F/Library/Frameworks -framework SDL2
 

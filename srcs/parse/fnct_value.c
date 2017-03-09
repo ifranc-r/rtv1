@@ -38,6 +38,9 @@ t_vect		take_vect(char *line ,int start)
 		++i;
 		++a;
 	}
+	param[i] = '\0';
+	if (num_c(param,' ') != 2)
+		ft_exit(line);
 	axe = ft_strsplit(param, ' ');
 	free(param);
 	vect = ft_vect_pars(axe);
@@ -61,6 +64,9 @@ double		take_double(char *line ,int start)
 		++i;
 		++a;
 	}
+	param[i] = '\0'; 
+	// printf("%s\n", param);
+	ft_notnum(param);
 	num = (double)ft_atoi(param);
 	free(param);
 	return (num);
@@ -83,6 +89,8 @@ t_color		take_color(char *line ,int start)
 		++i;
 		++a;
 	}
+	if (num_c(param,' ') != 3)
+		ft_exit(line);
 	color = ft_strsplit(param, ' ');
 	free(param);
 	c = ft_color_pars(color);
