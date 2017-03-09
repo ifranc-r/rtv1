@@ -17,7 +17,7 @@ int 	intersect_disc(t_ray *ray, t_disc *disc, double shadowlengh, int i)
 		if (a != b) // behind
 		{
 			t = dot(negative_vect(L), disc->n) / a;
-			if (i == 0 && (shadowlengh > t))
+			if ((i == 0 || i == 2) && (shadowlengh > t))
 				return (0);
 			inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 			v = minus_vect(disc->inter, disc->o);
@@ -43,7 +43,7 @@ int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, in
 	// intersect_disc(&*ray, &cylinder->disc, 0 ,1);
 	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
 	{
-		if (i == 0 && (shadowlengh <= t))
+		if ((i == 0 || i == 2) && (shadowlengh <= t))
 				return (0);
 		cylinder->t = t;
 		cylinder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylinder->t));
@@ -66,7 +66,7 @@ int 	intersect_cone(t_ray *ray, t_cone *cone, double shadowlengh, int i)
 	double c = dot(x,x) - ((1+(cone->k*cone->k)) * pow(dot(x,cone->v),2));
 	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
 	{
-		if (i == 0 && (shadowlengh <= t))
+		if ((i == 0 || i == 2) && (shadowlengh <= t))
 				return (0);
 		cone->t = t;
 		cone->inter = add_vect(ray->o, multi_vect_double(ray->d, cone->t));
@@ -94,7 +94,7 @@ int 	intersect_plane(t_ray *ray, t_plane *plane, double shadowlengh, int i)
 		if (a != b) // behind
 		{
 			t = dot(negative_vect(L), plane->n) / a;
-			if (i == 0 && (shadowlengh < t))
+			if ((i == 0 || i == 2) && (shadowlengh < t))
 				return (0);
 			inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 			if (i == 1)
@@ -120,7 +120,7 @@ int		intersect_sphere(t_ray *ray, t_sphere *sphere, double shadowlengh, int i)
 	c = dot(L, L) - pow(sphere->r, 2);
 	if ((t = solveQuadratic(a, b, c, i)) > 0.0001)
 	{
-		if ((i == 0) && (shadowlengh < t))
+		if ((i == 0 || i == 2) && (shadowlengh < t))
 			return (0);
 		inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 		if (i == 1)

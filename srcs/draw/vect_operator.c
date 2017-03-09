@@ -32,17 +32,19 @@ double		solveQuadratic(double a, double b, double c, int i)
 	double 		t1;
 
 	t = 0;
-	if ((discriminant = b*b-4*a*c) < 0) // no intersection
+	if ((discriminant = b*b-4*a*c) < 0)
 		return (0);
 	else if (discriminant == 0) 
 		t = -0.5 * b / a;
-	else if (discriminant >= 0)  // ray->is tangent to sphere
+	else if (discriminant >= 0)
 	{
 		discriminant = sqrt(discriminant);
 		t0 = ((-b + discriminant)/(2*a));
 		t1 = ((-b - discriminant)/(2*a));
 		if (i == 0)
 			t = (t0 > t1) ? t0 : t1;
+		else if (i == 2)
+			t = (t0 < t1) ? t0 : t1;
 		else
 			t = (t0 < t1) ? t0 : t1;
 	}

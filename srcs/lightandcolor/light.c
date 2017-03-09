@@ -24,7 +24,7 @@ t_color color_phong(t_color objct_color, t_light light, t_vect n,t_ray ray, t_ve
 	return (final_color);
 }
 
-int 	shadow(t_vect inter, t_ray light, t_obj obj) // les rayon intersepte les objet de l'autre cote de la lumiere
+int 	shadow(t_vect inter, t_ray light, t_obj obj)
 {
 	t_ray	shadow;
 	double 	r2;
@@ -39,6 +39,13 @@ int 	shadow(t_vect inter, t_ray light, t_obj obj) // les rayon intersepte les ob
 		intersect_cone(&shadow, &obj.cone, r2, 0) || \
 		intersect_disc(&shadow, &obj.cylinder.disc, r2, 0) || \
 		intersect_disc(&shadow, &obj.cylinder.disc2, r2 ,0))
+		return (1);
+	if (intersect_sphere(&shadow, &obj.sphere, r2, 2) || \
+		intersect_plane(&shadow, &obj.plane, r2, 2) || \
+		intersect_cylinder(&shadow, &obj.cylinder, r2, 2) || \
+		intersect_cone(&shadow, &obj.cone, r2, 2) || \
+		intersect_disc(&shadow, &obj.cylinder.disc, r2, 2) || \
+		intersect_disc(&shadow, &obj.cylinder.disc2, r2 , 2))
 		return (1);
 	else
 		return (0);
