@@ -1,3 +1,4 @@
+
 #include "../includes/rtv1.h"
 
 void 	sdl_and_draw(t_all *all, int file)
@@ -16,15 +17,11 @@ int 	main(int argc, char **argv)
 {
 	t_all	all;
 	int 	fd;
-	// int 	i= -1;
 
-	(void)all;
-	if (argc == 2) // if(str_dir(argv[1]) == ".xml")
+	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY);
 		all.obj = parse_map(fd);
-		// printf("%f %f %f\n", parse.pos.x, parse.pos.y, parse.pos.z);
-		//all = parse(fd);
 		sdl_and_draw(&all, 1);
 	}
 	else if (argc == 1)
