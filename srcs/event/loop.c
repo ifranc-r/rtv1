@@ -6,34 +6,35 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:02:55 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/09 17:02:58 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/10 17:10:51 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-void	mod_vect(t_vect	*vect, const Uint8 	*state, t_all *all)
+void	mod_vect(t_vect *vect, const Uint8 *state, t_all *all)
 {
-	if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] || state[SDL_SCANCODE_UP] || \
-		state[SDL_SCANCODE_DOWN] || state[SDL_SCANCODE_KP_MINUS] || state[SDL_SCANCODE_KP_PLUS])
+	if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] ||\
+			state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN] ||\
+			state[SDL_SCANCODE_KP_MINUS] || state[SDL_SCANCODE_KP_PLUS])
 	{
 		if (state[SDL_SCANCODE_RIGHT])
-			vect->x+= 1;
+			vect->x += 5;
 		else if (state[SDL_SCANCODE_LEFT])
-			vect->x-= 1;
+			vect->x -= 5;
 		else if (state[SDL_SCANCODE_UP])
-			vect->y+= 1;
+			vect->y += 5;
 		else if (state[SDL_SCANCODE_DOWN])
-			vect->y-= 1;
+			vect->y -= 5;
 		else if (state[SDL_SCANCODE_KP_PLUS])
-			vect->z+= 1;
+			vect->z += 5;
 		else if (state[SDL_SCANCODE_KP_MINUS])
-			vect->z-= 1;
-		all->chg++;
+			vect->z -= 5;
+		++all->chg;
 	}
 }
 
-int		key_event2(t_sdl	*sdl, t_all *all)
+int		key_event2(t_sdl *sdl, t_all *all)
 {
 	if (sdl->state[SDL_SCANCODE_KP_6])
 	{
@@ -51,7 +52,7 @@ int		key_event2(t_sdl	*sdl, t_all *all)
 	return (1);
 }
 
-int		key_event(t_sdl	*sdl, t_all *all, int file)
+int		key_event(t_sdl *sdl, t_all *all, int file)
 {
 	if (sdl->event.type == SDL_QUIT || sdl->state[SDL_SCANCODE_ESCAPE])
 	{
@@ -79,8 +80,8 @@ int		key_event(t_sdl	*sdl, t_all *all, int file)
 
 void	event(t_all *all, t_sdl *sdl, int file)
 {
-	int 	isrunning;
-	int 	check_all;
+	int		isrunning;
+	int		check_all;
 
 	all->chg = 0;
 	isrunning = 1;
@@ -101,5 +102,5 @@ void	event(t_all *all, t_sdl *sdl, int file)
 			key_event(&all->sdl, &*all, file);
 		}
 	}
-		SDL_UpdateWindowSurface(sdl->screen);
+	SDL_UpdateWindowSurface(sdl->screen);
 }

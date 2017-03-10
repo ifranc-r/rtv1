@@ -33,14 +33,14 @@ int 	ft_strcoord(char *str, char *src, int loop)
 	}
 	return (i);
 }
-
+#include <stdio.h>
 t_obj		parse_map(int fd)
 {
 	int 		i = 0;
 	char		*line = NULL;
 	t_obj		obj;
-
-	while (get_next_line(fd, &line) > 0)
+	int			oct;
+	while ((oct = get_next_line(fd, &line)) > 0)
 	{
 		if (i == 1)
 			obj.cam = get_cam_param(line);
@@ -58,5 +58,11 @@ t_obj		parse_map(int fd)
 			obj.cone = get_cone_param(line);
 		++i;
 	}
+	if (oct == -1)
+		{
+			//oct = 23;
+			printf("%d\n", oct);
+			exit(-1);			
+		}
 	return (obj);
 }

@@ -12,28 +12,25 @@
 
 #include "../includes/rtv1.h"
 
-t_color color_phong(t_color objct_color, t_light light, t_vect n,t_ray ray, t_vect inter)
+t_color color_phong(t_color objct_color, t_light light, t_vect n, t_ray ray, t_vect inter)
 {
-	t_color		final_color;
-	t_color		diff_color;
-	t_color		spect_color;
+	t_phong		phong;
 	t_vect		light_dir;
-	t_color		ambiant;
 	double 		diff;
 	t_vect 		h;
 
-	ambiant = init_color(10,10,20,40);
+	phong.ambiant = init_color(10,10,20,40);
 	light_dir = negative_vect(normalize_vect(minus_vect(inter, light.ray.o)));
 	diff = fmax(dot(n,light_dir),0);
 	h = normalize_vect(minus_vect(ray.d,light_dir));
-	spect_color = multi_color_double(multi_color(light.color, light.color), (diff > 0 ? pow(dot(h,n),30) : 0));
-	diff_color =  multi_color_double(multi_color(objct_color, light.color), diff);
+	phong.spect_color = multi_color_double(multi_color(light.color, light.color), (diff > 0 ? pow(dot(h,n),30) : 0));
+	phong.diff_color =  multi_color_double(multi_color(objct_color, light.color), diff);
 	
-	final_color = add_color(spect_color, diff_color);
-	final_color =  multi_color_double(diff_color, 0.0038);
-	final_color = add_color(final_color, ambiant);
-	color_condition(&final_color);
-	return (final_color);
+	phong.final_color = add_color(phong.spect_color, phong.diff_color);
+	phong.final_color =  multi_color_double(phong.diff_color, 0.0038);
+	phong.final_color = add_color(phong.final_color, phong.ambiant);
+	color_condition(&phong.final_color);
+	return (phong.final_color);
 }
 
 int 	shadow(t_vect inter, t_ray light, t_obj obj)
@@ -50,9 +47,8 @@ int 	shadow(t_vect inter, t_ray light, t_obj obj)
 		intersect_cylinder(&shadow, &obj.cylinder, r2, 0) || \
 		intersect_cone(&shadow, &obj.cone, r2, 0) || \
 		intersect_disc(&shadow, &obj.cylinder.disc, r2, 0) || \
-		intersect_disc(&shadow, &obj.cylinder.disc2, r2 ,0))
-		return (1);
-	if (intersect_sphere(&shadow, &obj.sphere, r2, 2) || \
+		intersect_disc(&shadow, &obj.cylinder.disc2, r2 ,0)|| \
+		intersect_sphere(&shadow, &obj.sphere, r2, 2) || \
 		intersect_plane(&shadow, &obj.plane, r2, 2) || \
 		intersect_cylinder(&shadow, &obj.cylinder, r2, 2) || \
 		intersect_cone(&shadow, &obj.cone, r2, 2) || \

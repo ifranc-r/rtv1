@@ -6,83 +6,46 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:03:10 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/09 17:03:12 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/10 20:49:36 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int		get_close_inter(t_ray *ray,t_obj *obj)
+int			get_close(t_ray *ray, t_vect inter)
 {
-	t_vect		tmpinter;
-	double 		le = 999999.9;
-	double 		tmp_lengh;
-	int 		num_obj;
+	double		tmp_lengh;
 
+	tmp_lengh = lengh(minus_vect(ray->o, inter));
+	if (tmp_lengh < ray->lengh)
+	{
+		ray->lengh = tmp_lengh;
+		return (1);
+	}
+	return (0);
+}
+
+int			get_close_inter(t_ray *ray, t_obj *obj)
+{
+	int			num_obj;
+
+	ray->lengh = 999999.9;
 	if (intersect_sphere(&*ray, &obj->sphere, 0, 1))
-	{
-		tmp_lengh = lengh(minus_vect(ray->o, obj->sphere.inter));
-		if (tmp_lengh < le)
-		{
-			le = tmp_lengh;
-			tmpinter = obj->sphere.inter;
-			num_obj = 1;
-		}
-	}
+		get_close(&*ray, obj->sphere.inter) == 1 ? num_obj = 1 : 0;
 	if (intersect_plane(&*ray, &obj->plane, 0, 1))
-	{
-		tmp_lengh = lengh(minus_vect(ray->o, obj->plane.inter));
-		if (tmp_lengh < le)
-		{
-			le = tmp_lengh;
-			tmpinter = obj->plane.inter;
-			num_obj = 2;
-		}
-	}
-	if (intersect_cylinder(&*ray, &obj->cylinder,0, 1))
-	{
-		tmp_lengh = lengh(minus_vect(ray->o, obj->cylinder.inter));
-		if (tmp_lengh < le)
-		{
-			le = tmp_lengh;
-			tmpinter = obj->cylinder.inter;
-			num_obj = 3;
-		}
-	}
-	if (intersect_cone(&*ray, &obj->cone,0, 1))
-	{
-		tmp_lengh = lengh(minus_vect(ray->o, obj->cone.inter));
-		if (tmp_lengh < le)
-		{
-			le = tmp_lengh;
-			tmpinter = obj->cone.inter;
-			num_obj = 4;
-		}
-	}
-	if (intersect_disc(&*ray, &obj->cylinder.disc,0, 1))
-	{
-		tmp_lengh = lengh(minus_vect(ray->o, obj->cylinder.disc.inter));
-		if (tmp_lengh < le)
-		{
-			le = tmp_lengh;
-			tmpinter = obj->cylinder.disc.inter;
-			num_obj = 5;
-		}
-	}
-		if (intersect_disc(&*ray, &obj->cylinder.disc2,0, 1))
-	{
-		tmp_lengh = lengh(minus_vect(ray->o, obj->cylinder.disc2.inter));
-		if (tmp_lengh < le)
-		{
-			le = tmp_lengh;
-			tmpinter = obj->cylinder.disc2.inter;
-			num_obj = 6;
-		}
-	}
+		get_close(&*ray, obj->plane.inter) == 1 ? num_obj = 2 : 0;
+	if (intersect_cylinder(&*ray, &obj->cylinder, 0, 1))
+		get_close(&*ray, obj->cylinder.inter) == 1 ? num_obj = 3 : 0;
+	if (intersect_cone(&*ray, &obj->cone, 0, 1))
+		get_close(&*ray, obj->cone.inter) == 1 ? num_obj = 4 : 0;
+	if (intersect_disc(&*ray, &obj->cylinder.disc, 0, 1))
+		get_close(&*ray, obj->cylinder.disc.inter) == 1 ? num_obj = 5 : 0;
+	if (intersect_disc(&*ray, &obj->cylinder.disc2, 0, 1))
+		get_close(&*ray, obj->cylinder.disc2.inter) == 1 ? num_obj = 6 : 0;
 	return (num_obj);
 }
 
-t_vect	call_obj_n(t_obj obj, int num_obj)
+t_vect		call_obj_n(t_obj obj, int num_obj)
 {
 	t_vect		tmp;
 
@@ -101,7 +64,7 @@ t_vect	call_obj_n(t_obj obj, int num_obj)
 	return (tmp);
 }
 
-t_color	 call_obj_color(t_obj obj, int num_obj)
+t_color		call_obj_color(t_obj obj, int num_obj)
 {
 	t_color		tmp;
 
@@ -120,7 +83,7 @@ t_color	 call_obj_color(t_obj obj, int num_obj)
 	return (tmp);
 }
 
-t_vect	 call_obj_inter(t_obj obj, int num_obj)
+t_vect		call_obj_inter(t_obj obj, int num_obj)
 {
 	t_vect		tmp;
 

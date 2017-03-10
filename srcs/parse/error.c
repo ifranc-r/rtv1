@@ -62,6 +62,11 @@ void	ft_notnum(char *str, char *line)
 	int 	i;
 
 	i = 0;
+	if (ft_strcmp(str, "") == 0)
+	{	
+		ft_putstr("letter detected:\n"); 
+		ft_exit(line);
+	}
 	while ((str[i] >= '0' && str[i] <= '9') || str[i] == '-')
 		++i;
 	if (i != (int)ft_strlen(str))

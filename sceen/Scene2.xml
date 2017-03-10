@@ -5,5 +5,5 @@
 	<plane position="0 -10 30" normal="0 -5 1" color="255 0 255 30"/>
 	<cylinder position="40 -30 30" endpos="40 10 30" radius="10" color="255 0 0 30"/>
 	<disk position="0 0 0" radius="10" color="0 255 0 30" normal="0 -1 0"/>
-	<cone position="-40 30 30" color="255 255 0 30" radius="10" normal="0 -1 0"/>
+	<cone position="-40 30 30" color="132 255 0 30" radius="12" normal="0 -1 0"/>
 </end>

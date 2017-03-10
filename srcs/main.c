@@ -35,6 +35,11 @@ int		main(int argc, char **argv)
 		all.obj = parse_map(fd);
 		sdl_and_draw(&all, 1);
 	}
+	else if (argc < 2)
+	{
+		printf("usage: [./rtv1 filename.xml]");
+		return (-1);
+	}
 	else if (argc == 1)
 		sdl_and_draw(&all, 0);
 	return (0);

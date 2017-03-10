@@ -38,11 +38,19 @@
 # define PLUS_GREEN 5
 # define LESS_GREEN 4
 
+typedef struct		s_phong
+{
+	t_color 		final_color;
+	t_color 		diff_color;
+	t_color 		spect_color;
+	t_color 		ambiant;
+}					t_phong;
+
 typedef struct		s_ray
 {
 	t_vect			o;
 	t_vect			d;
-	t_vect			inter;
+	double			lengh;
 }					t_ray;
 
 typedef struct		s_light

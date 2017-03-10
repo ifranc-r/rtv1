@@ -51,7 +51,7 @@ t_vect		take_vect(char *line ,int start)
 	}
 	param[i] = '\0';
 	ft_notlinenum(param, line);
-	if (num_c(param,' ') != 2)
+	if (num_c(param,' ') != 2  || param[0] == ' ')
 		ft_exit(line);
 	axe = ft_strsplit(param, ' ');
 	free(param);
@@ -100,7 +100,7 @@ t_color		take_color(char *line ,int start)
 	}
 	param[i] = '\0';
 	ft_notlinenum(param, line);
-	if (num_c(param,' ') != 3)
+	if (num_c(param,' ') != 3 || param[0] == ' ')
 		ft_exit(line);
 	color = ft_strsplit(param, ' ');
 	free(param);
