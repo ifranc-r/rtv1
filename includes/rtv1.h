@@ -6,7 +6,7 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 16:24:28 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/09 16:54:04 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/11 18:50:42 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@
 
 typedef struct		s_phong
 {
-	t_color 		final_color;
-	t_color 		diff_color;
-	t_color 		spect_color;
-	t_color 		ambiant;
+	t_color			final;
+	t_color			diff;
+	t_color			spect;
+	t_color			ambiant;
 }					t_phong;
 
 typedef struct		s_ray
@@ -56,6 +56,7 @@ typedef struct		s_ray
 typedef struct		s_light
 {
 	t_ray			ray;
+	t_vect			dir;
 	t_color			color;
 }					t_light;
 
@@ -90,6 +91,15 @@ typedef struct		s_sphere
 	t_color			color;
 }					t_sphere;
 
+typedef struct		s_inter
+{
+	double			a;
+	double			b;
+	double			c;
+	double			t;
+	t_vect			x;
+}					t_inter;
+
 typedef struct		s_cylinder
 {
 	t_vect			c;
@@ -109,6 +119,7 @@ typedef struct		s_cylinder
 
 typedef struct		s_cone
 {
+	t_vect			x;
 	t_vect			c;
 	t_vect			axe;
 	t_vect			v;
@@ -149,6 +160,14 @@ typedef struct		s_obj
 	t_disc			disc;
 	t_light			light;
 }					t_obj;
+
+typedef struct		s_fd
+{
+	int				i;
+	char			*line;
+	t_obj			obj;
+	int				oct;
+}					t_fd;
 
 typedef struct		s_parse
 {
@@ -229,7 +248,7 @@ t_color				call_obj_color(t_obj obj, int num_obj);
 t_vect				call_obj_inter(t_obj obj, int num_obj);
 
 t_color				color_phong(t_color objct_color, t_light light,\
-								t_vect n, t_ray ray, t_vect inter);
+								t_vect n, t_ray ray);
 int					shadow(t_vect inter, t_ray light, t_obj obj);
 
 #endif

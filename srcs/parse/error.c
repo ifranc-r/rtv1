@@ -6,16 +6,16 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:04:27 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/09 17:04:30 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/11 18:13:53 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int 	ft_strtrue(char *str, char *src, int loop)
+int		ft_strtrue(char *str, char *src, int loop)
 {
-	int i;
-	int a;
+	int		i;
+	int		a;
 
 	a = 0;
 	i = loop;
@@ -26,8 +26,8 @@ int 	ft_strtrue(char *str, char *src, int loop)
 			while (str[++i] == src[++a])
 				;
 			if (src[a] != '\0')
-				return(ft_strtrue(str, src, i));
-			break;
+				return (ft_strtrue(str, src, i));
+			break ;
 		}
 		i++;
 	}
@@ -40,7 +40,7 @@ int 	ft_strtrue(char *str, char *src, int loop)
 int		num_c(char *str, char c)
 {
 	int		i;
-	int 	a;
+	int		a;
 
 	a = 0;
 	i = 0;
@@ -59,26 +59,26 @@ int		num_c(char *str, char c)
 
 void	ft_notnum(char *str, char *line)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	if (ft_strcmp(str, "") == 0)
-	{	
-		ft_putstr("letter detected:\n"); 
+	{
+		ft_putstr("letter detected:\n");
 		ft_exit(line);
 	}
 	while ((str[i] >= '0' && str[i] <= '9') || str[i] == '-')
 		++i;
 	if (i != (int)ft_strlen(str))
 	{
-		ft_putstr("letter detected:\n"); 
+		ft_putstr("letter detected:\n");
 		ft_exit(line);
 	}
 }
 
 void	ft_notlinenum(char *str, char *line)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	while ((str[i] >= '0' && str[i] <= '9') || str[i] == '-' ||
@@ -86,7 +86,7 @@ void	ft_notlinenum(char *str, char *line)
 		++i;
 	if (i != (int)ft_strlen(str))
 	{
-		ft_putstr("letter detected:\n"); 
+		ft_putstr("letter detected:\n");
 		ft_exit(line);
 	}
 }

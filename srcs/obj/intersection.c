@@ -6,137 +6,129 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:04:10 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/09 17:04:12 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/11 18:11:27 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-int 	intersect_disc(t_ray *ray, t_disc *disc, double shadowlengh, int i)
+int		intersect_disc(t_ray *ray, t_disc *disc, double shadowlengh, int i)
 {
-	t_vect		L;
-	double 		a;
-	double 		t;
-	t_vect 		inter;
-	t_vect 		v;
+	t_vect		l;
+	t_vect		v;
+	double		t;
 
 	disc->n = normalize_vect(disc->d);
-	a = dot(ray->d, disc->n);
-	L = minus_vect(ray->o, disc->o);
-	if (a > 0) //paralle
+	l = minus_vect(ray->o, disc->o);
+	if (dot(ray->d, disc->n) > 0)
 	{
-		double b = dot(L, disc->n);
-		if (a != b) // behind
+		if (dot(ray->d, disc->n) != dot(l, disc->n))
 		{
-			t = dot(negative_vect(L), disc->n) / a;
+			t = dot(negative_vect(l), disc->n) / dot(ray->d, disc->n);
 			if ((i == 0 || i == 2) && (shadowlengh > t))
 				return (0);
-			inter = add_vect(ray->o, multi_vect_double(ray->d, t));
+			disc->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 			v = minus_vect(disc->inter, disc->o);
-			disc->inter = inter;
-			if (sqrt(dot(v,v)) <= disc->r)
+			if (sqrt(dot(v, v)) <= disc->r)
 				return (1);
 		}
 	}
 	return (0);
 }
 
-int		intersect_cylinder(t_ray *ray, t_cylinder *cylinder, double shadowlengh, int i)
+int		intersect_cylinder(t_ray *ray, t_cylinder *cylder, double shd, int p)
 {
-	double t;
-	t_vect x = minus_vect(ray->o, cylinder->c);
-	double a = dot(ray->d,ray->d) - pow(dot(ray->d, cylinder->v),2);
-	double b = 2*(dot(ray->d, x) - dot(ray->d, cylinder->v)* dot(x, cylinder->v));
-	double c = dot(x,x) - pow(dot(x,cylinder->v), 2) - pow(cylinder->r,2);
-	// cylinder->v = minus_vect(cylinder->end, cylinder->c);
-	// cylinder->h = sqrt(dot(cylinder->v, cylinder->v));
-	// cylinder->v = normalize_vect(cylinder->v);
-	// cylinder->disc2 = init_disc(add_vect(cylinder->c,minus_vect(cylinder->v,cylinder->end)), cylinder->v, cylinder->r, cylinder->color);
-	// intersect_disc(&*ray, &cylinder->disc, 0 ,1);
-	if ((t = solvequadratic(a, b, c, i)) > 0.0001)
+	double		t;
+	t_inter		i;
+
+	i.x = minus_vect(ray->o, cylder->c);
+	i.a = dot(ray->d, ray->d) - pow(dot(ray->d, cylder->v), 2);
+	i.b = 2 * (dot(ray->d, i.x) - dot(ray->d, cylder->v) * dot(i.x, cylder->v));
+	i.c = dot(i.x, i.x) - pow(dot(i.x, cylder->v), 2) - pow(cylder->r, 2);
+	if ((t = solvequadratic(i.a, i.b, i.c, p)) > 0.0001)
 	{
-		if ((i == 0 || i == 2) && (shadowlengh <= t))
-				return (0);
-		cylinder->t = t;
-		cylinder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylinder->t));
-		cylinder->m = dot(ray->d, cylinder->v) * cylinder->t + dot(x,cylinder->v);
-		cylinder->n = normalize_vect(devide_vect_double(multi_vect_double(minus_vect(minus_vect(cylinder->inter, cylinder->c),cylinder->v),cylinder->m), 2));
-		
-		if (fmax(cylinder->m, 0) > 0 && fmax(cylinder->m, 0)< cylinder->h)
+		if ((p == 0 || p == 2) && (shd <= t))
+			return (0);
+		cylder->t = t;
+		cylder->inter = add_vect(ray->o, multi_vect_double(ray->d, cylder->t));
+		cylder->m = dot(ray->d, cylder->v) * cylder->t + dot(i.x, cylder->v);
+		cylder->n = normalize_vect(devide_vect_double(multi_vect_double(\
+			minus_vect(minus_vect(cylder->inter, cylder->c),\
+						cylder->v), cylder->m), 2));
+		if (fmax(cylder->m, 0) > 0 && fmax(cylder->m, 0) < cylder->h)
 			return (1);
 	}
 	return (0);
 }
 
-int 	intersect_cone(t_ray *ray, t_cone *cone, double shadowlengh, int i)
+int		intersect_cone(t_ray *r, t_cone *c, double shadowlengh, int i)
 {
-	double t;
-	cone->v = normalize_vect(cone->axe);
-	t_vect x = minus_vect(ray->o, cone->c);
-	double a = dot(ray->d,ray->d) - ((1+(cone->k*cone->k))*pow(dot(ray->d,cone->v),2));
-	double b = 2*(dot(ray->d,x) - ((1+(cone->k*cone->k)) * (dot(ray->d,cone->v) * dot(x,cone->v))));
-	double c = dot(x,x) - ((1+(cone->k*cone->k)) * pow(dot(x,cone->v),2));
-	if ((t = solvequadratic(a, b, c, i)) > 0.0001)
+	t_inter		p;
+
+	c->v = normalize_vect(c->axe);
+	p.x = minus_vect(r->o, c->c);
+	p.a = dot(r->d, r->d) - ((1 + (c->k * c->k)) * \
+			pow(dot(r->d, c->v), 2));
+	p.b = 2 * (dot(r->d, p.x) - ((1 + (c->k * c->k)) * \
+				(dot(r->d, c->v) * dot(p.x, c->v))));
+	p.c = dot(p.x, p.x) - ((1 + (c->k * c->k)) * pow(dot(p.x, c->v), 2));
+	if ((p.t = solvequadratic(p.a, p.b, p.c, i)) > 0.0001)
 	{
-		if ((i == 0 || i == 2) && (shadowlengh <= t))
-				return (0);
-		cone->t = t;
-		cone->inter = add_vect(ray->o, multi_vect_double(ray->d, cone->t));
-		cone->m = dot(ray->d, cone->v) * cone->t + dot(x,cone->v);
-		cone->n = normalize_vect(minus_vect(minus_vect(cone->inter,cone->c),multi_vect_double(cone->v, cone->m * pow(cone->k,2))));
-		if (fmax(cone->m,0) > 0 && fmax(cone->m,0) < 50)
+		if ((i == 0 || i == 2) && (shadowlengh <= p.t))
+			return (0);
+		c->t = p.t;
+		c->inter = add_vect(r->o, multi_vect_double(r->d, c->t));
+		c->m = dot(r->d, c->v) * c->t + dot(p.x, c->v);
+		c->n = normalize_vect(minus_vect(minus_vect(c->inter, c->c),\
+					multi_vect_double(c->v, c->m * pow(c->k, 2))));
+		if (fmax(c->m, 0) > 0 && fmax(c->m, 0) < 50)
 			return (1);
 	}
 	return (0);
 }
 
-int 	intersect_plane(t_ray *ray, t_plane *plane, double shadowlengh, int i)
+int		intersect_plane(t_ray *ray, t_plane *plane, double shadowlengh, int i)
 {
-	t_vect		L;
-	double 		a;
-	double 		t;
-	t_vect 		inter;
+	t_vect		l;
+	double		a;
+	double		t;
 
 	plane->n = normalize_vect(plane->d);
 	a = dot(ray->d, plane->n);
-	L = minus_vect(ray->o, plane->o);
-	if (a > 0) //paralle
+	l = minus_vect(ray->o, plane->o);
+	if (a > 0)
 	{
-		double b = dot(L, plane->n);
-		if (a != b) // behind
+		if (a != dot(l, plane->n))
 		{
-			t = dot(negative_vect(L), plane->n) / a;
+			t = dot(negative_vect(l), plane->n) / a;
 			if ((i == 0 || i == 2) && (shadowlengh < t))
 				return (0);
-			inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 			if (i == 1)
-				plane->inter = inter;
+				plane->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 			return (1);
 		}
 	}
 	return (0);
 }
 
-int		intersect_sphere(t_ray *ray, t_sphere *sphere, double shadowlengh, int i)
+int		intersect_sphere(t_ray *ray, t_sphere *sphere, double shwle, int i)
 {
-	t_vect		L;
-	double 		a;
-	double 		b;
-	double 		c;
-	double 		t;
-	t_vect		inter;
+	t_vect		l;
+	double		a;
+	double		b;
+	double		c;
+	double		t;
 
-	L = minus_vect(ray->o, sphere->c);
-	a = dot(ray->d,ray->d);
-	b = dot(ray->d, L) *2;
-	c = dot(L, L) - pow(sphere->r, 2);
+	l = minus_vect(ray->o, sphere->c);
+	a = dot(ray->d, ray->d);
+	b = dot(ray->d, l) * 2;
+	c = dot(l, l) - pow(sphere->r, 2);
 	if ((t = solvequadratic(a, b, c, i)) > 0.0001)
 	{
-		if ((i == 0 || i == 2) && (shadowlengh < t))
+		if ((i == 0 || i == 2) && (shwle < t))
 			return (0);
-		inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 		if (i == 1)
-			sphere->inter = inter;
+			sphere->inter = add_vect(ray->o, multi_vect_double(ray->d, t));
 		return (1);
 	}
 	return (0);

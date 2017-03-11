@@ -52,20 +52,20 @@ t_color		color_pixel(t_all *all)
 	t_color				color;
 
 	num_obj = get_close_inter(&all->ray, &all->obj);
+	all->light.dir = negative_vect(normalize_vect(\
+		minus_vect(call_obj_inter(all->obj, num_obj), all->light.ray.o)));
 	if (shadow(call_obj_inter(all->obj, num_obj), all->light.ray, all->obj))
 	{
 		color = devide_color_double(call_obj_color(all->obj, num_obj), 2);
 		color = color_phong(color, all->light, \
 			call_obj_n(all->obj, num_obj), \
-			all->ray, \
-			call_obj_inter(all->obj, num_obj));
+			all->ray);
 	}
 	else
 		color = color_phong(call_obj_color(all->obj, num_obj),\
 			all->light, \
 			call_obj_n(all->obj, num_obj), \
-			all->ray, \
-			call_obj_inter(all->obj, num_obj));
+			all->ray);
 	return (color);
 }
 

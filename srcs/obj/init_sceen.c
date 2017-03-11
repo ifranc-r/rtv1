@@ -6,7 +6,7 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:03:58 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/09 17:04:01 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/11 17:15:03 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void		init_cam(t_cam *cam, int file)
 {
 	if (file == 0)
 	{
-		cam->campos = init_vect( 0,0, -80);
-		cam->camdir = init_vect(0,0,1);
+		cam->campos = init_vect(0, 0, -80);
+		cam->camdir = init_vect(0, 0, 1);
 	}
-	cam->camup = init_vect(0,-1,0);
-	cam->camright = init_vect(1,0,0);
+	cam->camup = init_vect(0, -1, 0);
+	cam->camright = init_vect(1, 0, 0);
 	cam->camdir = normalize_vect(cam->camdir);
 	cam->camup = normalize_vect(cam->camup);
 	cam->camright = normalize_vect(cam->camright);
@@ -48,5 +48,5 @@ void		init_light(t_light *light, int file)
 	{
 		light->ray.o = init_vect(0, 0, 0);
 	}
-	light->color = init_color(255,255,255,40);
+	light->color = init_color(255, 255, 255, 40);
 }

@@ -6,13 +6,13 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:03:49 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/09 17:03:52 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/11 17:14:14 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
 
-t_disc	init_disc(t_vect o, t_vect n, double r, t_color color)
+t_disc		init_disc(t_vect o, t_vect n, double r, t_color color)
 {
 	t_disc tmp;
 
@@ -35,7 +35,7 @@ void		init_cylinder(t_cylinder *cylinder, int file)
 	if (file == 0)
 	{
 		cylinder->c = init_vect(0, -10, -30);
-		cylinder->end = init_vect(40, 10, 30); 
+		cylinder->end = init_vect(40, 10, 30);
 		cylinder->r = 10;
 		cylinder->color = init_color(0, 0, 255, 40);
 	}
@@ -45,11 +45,11 @@ void		init_cylinder(t_cylinder *cylinder, int file)
 	cylinder->disc = init_disc(cylinder->c, \
 								minus_vect(cylinder->end, \
 								cylinder->c), \
-								cylinder->r+0.1, \
+								cylinder->r + 0.1, \
 								cylinder->color);
 	cylinder->disc2 = init_disc(cylinder->end, \
 								negative_vect(cylinder->v),\
-								cylinder->r+0.07, \
+								cylinder->r + 0.07, \
 								cylinder->color);
 }
 
