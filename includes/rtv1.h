@@ -6,7 +6,7 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 16:24:28 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/11 18:50:42 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/13 13:53:32 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,8 @@ void				ft_exit(char *line);
 void				ft_notnum(char *str, char *line);
 void				ft_notlinenum(char *str, char *line);
 int					ft_strtrue(char *str, char *src, int loop);
+void				menu(void);
+int					ft_strcmp_end(char *str, char *src);
 t_vect				ft_vect_pars(char **num);
 t_color				ft_color_pars(char **num);
 t_vect				take_vect(char *line, int start);
@@ -206,8 +208,9 @@ t_cylinder			get_cylinder_param(char *line);
 t_disc				get_disc_param(char *line);
 t_cone				get_cone_param(char *line);
 int					ft_strcoord(char *str, char *src, int loop);
+t_obj				parse_map(int fd, int i);
+
 void				draw(t_all *all, t_sdl *sdl);
-t_obj				parse_map(int fd);
 
 int					intersect_cylinder(t_ray *ray, t_cylinder *cylinder,\
 										double shadowlengh, int i);
@@ -227,7 +230,7 @@ void				sdl_init(t_sdl *sdl);
 
 double				triangle_area(t_vect p1, t_vect p2, t_vect p3);
 double				solvequadratic(double a, double b, double c, int i);
-
+t_vect				get_light(char *line);
 void				init_sceen(t_all *all, int file);
 void				init_cam(t_cam *cam, int file);
 void				init_light(t_light *light, int file);

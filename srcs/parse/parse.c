@@ -34,7 +34,7 @@ int			ft_strcoord(char *str, char *src, int loop)
 	return (i);
 }
 
-t_obj		parse_map(int fd)
+t_obj		parse_map(int fd, int i)
 {
 	t_fd	val;
 
@@ -44,8 +44,7 @@ t_obj		parse_map(int fd)
 		if (val.i == 1)
 			val.obj.cam = get_cam_param(val.line);
 		else if (val.i == 2)
-			val.obj.light.ray.o = take_vect(val.line,\
-				ft_strcoord(val.line, "position=", 0));
+			val.obj.light.ray.o = get_light(val.line);
 		else if (val.i == 3)
 			val.obj.sphere = get_sphere_param(val.line);
 		else if (val.i == 4)
@@ -57,6 +56,7 @@ t_obj		parse_map(int fd)
 		else if (val.i == 7)
 			val.obj.cone = get_cone_param(val.line);
 	}
+	i == 1 ? menu() : exit(-1);
 	val.oct == -1 ? exit(-1) : 0;
 	return (val.obj);
 }

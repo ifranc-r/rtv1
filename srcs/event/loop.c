@@ -36,15 +36,12 @@ void	mod_vect(t_vect *vect, const Uint8 *state, t_all *all)
 
 int		key_event2(t_sdl *sdl, t_all *all)
 {
-	if (sdl->state[SDL_SCANCODE_KP_6])
+	if (sdl->state[SDL_SCANCODE_KP_3])
 	{
 		mod_vect(&all->obj.cylinder.c, sdl->state, &*all);
-		mod_vect(&all->obj.cylinder.end, sdl->state, &*all);
+		mod_vect(&all->obj.cylinder.disc.o, sdl->state, &*all);
+		mod_vect(&all->obj.cylinder.disc2.o, sdl->state, &*all);
 	}
-	else if (sdl->state[SDL_SCANCODE_KP_3])
-		mod_vect(&all->obj.cylinder.c, sdl->state, &*all);
-	else if (sdl->state[SDL_SCANCODE_KP_9])
-		mod_vect(&all->obj.cylinder.end, sdl->state, &*all);
 	else if (sdl->state[SDL_SCANCODE_KP_4])
 		mod_vect(&all->obj.cone.c, sdl->state, &*all);
 	else if (sdl->state[SDL_SCANCODE_KP_7])

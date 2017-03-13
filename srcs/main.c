@@ -6,11 +6,45 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:00:10 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/09 17:01:58 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/13 13:55:22 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/rtv1.h"
+
+int		ft_strcmp_end(char *str, char *src)
+{
+	int		i;
+	int		a;
+
+	i = ft_strlen(str);
+	a = ft_strlen(src);
+	if (str)
+	{
+		while (str[i] == src[a])
+		{
+			if (a == 0 || i == 0)
+				break ;
+			--i;
+			--a;
+		}
+		if (a == 0)
+			return (1);
+	}
+	return (0);
+}
+
+void	menu(void)
+{
+	ft_putstr("	  =========TUTO==========\n\n");
+	ft_putstr("   ---------Keys--------\n");
+	ft_putendl_fd("  Press the key right, up, down and left ", 2);
+	ft_putendl_fd("  plus and minus", 2);
+	ft_putendl_fd("        for moving the positions of the objs.\n", 2);
+	ft_putstr("   C = cam; 0 = light\n");
+	ft_putstr("   1 = sphere; 2 = pos plane || 5 = dir plane\n");
+	ft_putstr("   3 = cylinder; 4 = cone || 9 = dir cone\n");
+}
 
 void	sdl_and_draw(t_all *all, int file)
 {
@@ -32,12 +66,12 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		fd = open(argv[1], O_RDONLY);
-		all.obj = parse_map(fd);
+		all.obj = parse_map(fd, ft_strcmp_end(argv[1], ".xml"));
 		sdl_and_draw(&all, 1);
 	}
 	else if (argc < 2)
 	{
-		printf("usage: [./rtv1 filename.xml]");
+		ft_putstr("usage: [./rtv1 filename.xml]\n");
 		return (-1);
 	}
 	else if (argc == 1)

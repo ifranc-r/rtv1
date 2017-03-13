@@ -66,3 +66,18 @@ t_plane		get_plane_param(char *line)
 		ft_exit(line);
 	exit(-1);
 }
+
+t_vect		get_light(char *line)
+{
+	t_vect		pos;
+
+	if (ft_strtrue(line, "<light", 0) == 1 && \
+			ft_strtrue(line, "position=", 0) == 1)
+	{
+		pos = take_vect(line, ft_strcoord(line, "position=", 0));
+		return (pos);
+	}
+	else
+		ft_exit(line);
+	exit(-1);
+}

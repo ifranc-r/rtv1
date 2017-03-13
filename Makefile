@@ -68,7 +68,6 @@ $(NAME):
 	@echo "${_GREEN}Succes${_END}-> ${_BLUE}${_IWHITE}RTV1${_END} as been compile"
 	@clear
 	@cat ascii/rt.ascii
-	# @cat ascii/menu.ascii
 
 
 clean:
