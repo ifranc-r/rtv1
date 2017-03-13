@@ -56,7 +56,7 @@ t_obj		parse_map(int fd, int i)
 		else if (val.i == 7)
 			val.obj.cone = get_cone_param(val.line);
 	}
-	i == 1 ? menu() : exit(-1);
 	val.oct == -1 ? exit(-1) : 0;
+	i == 1 ? menu() : exit(-1);
 	return (val.obj);
 }
