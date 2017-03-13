@@ -1,4 +1,15 @@
 
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2017/03/13 15:12:54 by ifranc-r          #+#    #+#              #
+#    Updated: 2017/03/13 16:05:45 by ifranc-r         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 # This is a minimal set of ANSI/VT100 color codes
 _END=\x1b[0m
 _BOLD=\x1b[1m  
@@ -56,27 +67,30 @@ OBJS = $(notdir $(OBJ))
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(OBJ)
 	@echo "${_CYAN}Start${_END} to compile-> ${_BLUE}${_IWHITE}RTV1${_END}"
 	@echo " | "
 	@echo " \/ "
 	@make -C libft/
-	@$(GCC) -c $(SRC) -I libft/ -I includes/ 
-	@$(GCC) -o $(NAME) $(OBJS) $(SDL)
+	@$(GCC) -o $(NAME) $(OBJ) $(SDL)
 	@echo " | "
 	@echo " \/ "
 	@echo "${_GREEN}Succes${_END}-> ${_BLUE}${_IWHITE}RTV1${_END} as been compile"
 	@clear
 	@cat ascii/rt.ascii
 
+$(OBJS).o : %.c
+	@$(GCC) -I libft/ -I includes/ -c $(OBJS)
 
 clean:
 	@rm -rf $(OBJS)
+	@rm -rf $(OBJ)
 	@echo "${_BLUE}${_IWHITE}RTV1${_END} : ${_PURPLE}Delete${_END}-> -*.o-"
 	@make clean -C libft/
 
 fclean:
 	@rm -rf $(OBJS)
+	@rm -rf $(OBJ)
 	@echo "${_BLUE}${_IWHITE}RTV1${_END} : ${_PURPLE}Delete${_END}-> -*.o-"
 	@make fclean -C libft/
 	@rm -rf $(NAME)

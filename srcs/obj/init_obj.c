@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/rtv1.h"
+#include "../../includes/rtv1.h"
 
 t_disc		init_disc(t_vect o, t_vect n, double r, t_color color)
 {

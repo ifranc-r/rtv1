@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/rtv1.h"
+#include "../../includes/rtv1.h"
 
 t_vect		init_vect(double x, double y, double z)
 {

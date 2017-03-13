@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/rtv1.h"
+#include "../../includes/rtv1.h"
 
 void	mod_vect(t_vect *vect, const Uint8 *state, t_all *all)
 {

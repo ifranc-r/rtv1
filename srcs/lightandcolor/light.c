@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/rtv1.h"
+#include "../../includes/rtv1.h"
 
 t_color		color_phong(t_color objct_color, t_light light, t_vect n, t_ray ray)
 {

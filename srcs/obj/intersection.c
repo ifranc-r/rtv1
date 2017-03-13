@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/rtv1.h"
+#include "../../includes/rtv1.h"
 
 int		intersect_disc(t_ray *ray, t_disc *disc, double shadowlengh, int i)
 {
