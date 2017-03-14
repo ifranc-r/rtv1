@@ -1,5 +1,5 @@
 </start_scene>
-	<camera position="30 50 40" direction="0 0 1"/>
+	<camera position="30 30 40" direction="0 0 1"/>
 	<light position="-50 0 0"/>
 	<sphere position="10 30 130" radius="10" color="255 0 0 40"/>
 	<plane position="60 -10 30" normal="40 -4 0" color="255 0 255 30"/>
