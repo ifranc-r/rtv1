@@ -6,7 +6,7 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 16:24:28 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/13 13:53:32 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/22 17:44:11 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct		s_cone
 
 typedef struct		s_cam
 {
+	t_vect			rot;
 	t_vect			campos;
 	t_vect			camdir;
 	t_vect			camup;
@@ -188,6 +189,10 @@ typedef struct		s_all
 	int				chg;
 }					t_all;
 
+void				rotatexyz(t_vect *vec, t_vect rot);
+void				rotatex(t_vect *vec, double degree);
+void				rotatey(t_vect *vec, double degree);
+void				rotatez(t_vect *vec, double degree);
 void				sdl_and_funct(t_all *all);
 int					num_c(char *str, char c);
 void				ft_exit(char *line);

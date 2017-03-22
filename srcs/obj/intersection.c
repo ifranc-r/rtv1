@@ -6,7 +6,7 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:04:10 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/11 18:11:27 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/22 18:06:01 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int		intersect_cylinder(t_ray *ray, t_cylinder *cylder, double shd, int p)
 	double		t;
 	t_inter		i;
 
+	init_cylinder(&*cylder, 1);
 	i.x = minus_vect(ray->o, cylder->c);
 	i.a = dot(ray->d, ray->d) - pow(dot(ray->d, cylder->v), 2);
 	i.b = 2 * (dot(ray->d, i.x) - dot(ray->d, cylder->v) * dot(i.x, cylder->v));

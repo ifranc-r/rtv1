@@ -40,6 +40,7 @@ void		init_cam(t_cam *cam, int file)
 	cam->camdir = normalize_vect(cam->camdir);
 	cam->camup = normalize_vect(cam->camup);
 	cam->camright = normalize_vect(cam->camright);
+	cam->rot = cam->camdir;
 }
 
 void		init_light(t_light *light, int file)

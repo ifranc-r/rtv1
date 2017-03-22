@@ -6,7 +6,7 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:00:10 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/13 13:55:22 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/22 18:06:36 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ void	menu(void)
 	ft_putendl_fd("  Press the key right, up, down and left ", 2);
 	ft_putendl_fd("  plus and minus", 2);
 	ft_putendl_fd("        for moving the positions of the objs.\n", 2);
-	ft_putstr("   C = cam; 0 = light\n");
-	ft_putstr("   1 = sphere; 2 = pos plane || 5 = dir plane\n");
-	ft_putstr("   3 = cylinder; 4 = cone || 9 = dir cone\n");
+	ft_putstr("   C = cam; D = cam Rotation; 0 = light\n");
+	ft_putstr("   1 = sphere; 2 = pos plane || 5 = Rotation plane\n");
+	ft_putstr("   3 = cylinder; 8 = Rotation cylinder;");
+	ft_putstr(" 4 = cone || 9 = Rotation cone\n");
 }
 
 void	sdl_and_draw(t_all *all, int file)

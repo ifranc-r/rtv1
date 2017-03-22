@@ -6,11 +6,30 @@
 /*   By: ifranc-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 17:02:55 by ifranc-r          #+#    #+#             */
-/*   Updated: 2017/03/10 17:10:51 by ifranc-r         ###   ########.fr       */
+/*   Updated: 2017/03/22 18:05:22 by ifranc-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/rtv1.h"
+
+void	rot_vect(t_vect *vect, t_vect *rot, const Uint8 *state, t_all *all)
+{
+	if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_LEFT] ||\
+			state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_DOWN] ||\
+			state[SDL_SCANCODE_KP_MINUS] || state[SDL_SCANCODE_KP_PLUS])
+	{
+		if (state[SDL_SCANCODE_RIGHT])
+			rot->y += 2;
+		else if (state[SDL_SCANCODE_LEFT])
+			rot->y -= 2;
+		else if (state[SDL_SCANCODE_UP])
+			rot->x -= 2;
+		else if (state[SDL_SCANCODE_DOWN])
+			rot->x += 2;
+		rotatexyz(&*vect, init_vect(rot->x, rot->y, rot->z));
+		++all->chg;
+	}
+}
 
 void	mod_vect(t_vect *vect, const Uint8 *state, t_all *all)
 {
@@ -36,16 +55,24 @@ void	mod_vect(t_vect *vect, const Uint8 *state, t_all *all)
 
 int		key_event2(t_sdl *sdl, t_all *all)
 {
+	t_vect rot;
+
 	if (sdl->state[SDL_SCANCODE_KP_3])
-	{
 		mod_vect(&all->obj.cylinder.c, sdl->state, &*all);
-		mod_vect(&all->obj.cylinder.disc.o, sdl->state, &*all);
-		mod_vect(&all->obj.cylinder.disc2.o, sdl->state, &*all);
-	}
+	if (sdl->state[SDL_SCANCODE_KP_8])
+		mod_vect(&all->obj.cylinder.end, sdl->state, &*all);
 	else if (sdl->state[SDL_SCANCODE_KP_4])
 		mod_vect(&all->obj.cone.c, sdl->state, &*all);
 	else if (sdl->state[SDL_SCANCODE_KP_7])
-		mod_vect(&all->obj.cone.axe, sdl->state, &*all);
+	{
+		rot = normalize_vect(all->obj.cone.axe);
+		rot_vect(&all->obj.cone.axe, &rot, sdl->state, &*all);
+	}
+	else if (sdl->state[SDL_SCANCODE_KP_5])
+	{
+		rot = normalize_vect(all->obj.plane.d);
+		rot_vect(&all->obj.plane.d, &rot, sdl->state, &*all);
+	}
 	return (1);
 }
 
@@ -58,19 +85,19 @@ int		key_event(t_sdl *sdl, t_all *all, int file)
 	}
 	if (sdl->state)
 	{
-		key_event2(&*sdl, &*all);
 		if (sdl->state[SDL_SCANCODE_KP_0])
 			mod_vect(&all->light.ray.o, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_1])
 			mod_vect(&all->obj.sphere.c, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_KP_2])
 			mod_vect(&all->obj.plane.o, sdl->state, &*all);
-		else if (sdl->state[SDL_SCANCODE_KP_5])
-			mod_vect(&all->obj.plane.d, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_C])
 			mod_vect(&all->cam.campos, sdl->state, &*all);
+		else if (sdl->state[SDL_SCANCODE_D])
+			rot_vect(&all->cam.camdir, &all->cam.rot, sdl->state, &*all);
 		else if (sdl->state[SDL_SCANCODE_1])
 			init_sceen(&*all, file);
+		key_event2(&*sdl, &*all);
 	}
 	return (1);
 }

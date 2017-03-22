@@ -1,4 +1,3 @@
-
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
@@ -46,6 +45,7 @@ SRC = ./srcs/main.c\
 	  srcs/draw/ray_tracing.c\
 	  srcs/draw/vect_operator.c\
 	  srcs/event/loop.c\
+	  srcs/event/rotation.c\
 	  srcs/get_parameter_obj/get_parameter.c\
 	  srcs/lightandcolor/light.c\
 	  srcs/parse/parse.c\
